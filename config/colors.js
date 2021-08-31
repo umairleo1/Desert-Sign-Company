@@ -1,0 +1,16 @@
+export const blue = '#0B0287';
+export const lightGreen = '#7EC043';
+export const tertiary = '#060F2F';
+export const gray50 = '#F9FAFB';
+export const gray200 = '#E5E7EB';
+export const gray300 = '#D1D5DB';
+export const gray400 = '#9CA3AF';
+export const gray500 = '#6B7280';
+export const gray600 = '#4B5563';
+export const gray700 = '#374151';
+export const gray800 = '#1F2937';
+export const gray = '#060F2F';
+export const green = '#059669';
+export const white = '#FFFFFF';
+export const sky = '#1FA1DA';
+export const navy = '#071440';
