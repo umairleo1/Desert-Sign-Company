@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  Dimensions,
 } from 'react-native';
 import {Checkbox} from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -32,22 +33,33 @@ export default function index() {
   const [userName, setUserName] = React.useState('');
   const [fullName, setFullName] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [matchPassword, setMatchPassword] = React.useState(false);
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    {label: 'Apple', value: 'apple'},
-    {label: 'Banana', value: 'banana'},
+    {label: 'Lahore', value: 'lahore'},
+    {label: 'Krachi', value: 'krachi'},
   ]);
   const {colors} = useTheme();
   const navigation = useNavigation();
   const context = React.useContext(AuthContext);
 
+  const height = Dimensions.get('window').height;
+
   // const DismissKeyboard = () => (
   //   <TouchableWithoutFeedback
   //     onPress={() => Keyboard.dismiss()}></TouchableWithoutFeedback>
   // );
+  const verifyConfirmPass = () => {
+    if (confirmPassword != password) {
+      setMatchPassword(true);
+    } else {
+      setMatchPassword(false);
+    }
+  };
 
   const validateNmae = async text => {
     // console.log('here is user name ', text);
@@ -81,7 +93,7 @@ export default function index() {
     // validateNmae();
 
     userName.length < 1 ? setIsAvailable('') : null;
-  }, [userName, isAvailable]);
+  }, [userName, isAvailable, matchPassword]);
 
   //functions
   const handleSignup = async () => {
@@ -128,137 +140,163 @@ export default function index() {
   };
 
   return (
-    <SafeAreaView style={{paddingHorizontal: 10}} edges={['top', 'left']}>
-      {/* <ScrollView onPress={() => Keyboard.dismiss()}> */}
-      <KeyboardAvoidingView
-        keyboardShouldPersistTaps={true}
-        enabled={enableShift}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
-        <View style={{paddingVertical: 5}}>
-          <AppIcon />
-        </View>
-        <Text style={[styles.title, {color: colors.secondary}]}>Sign up</Text>
-        {/* <DismissKeyboard> */}
-        <View style={styles.testHolder}>
-          <Text style={{fontSize: 13}}>Full Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={text => setFullName(text)}
-            value={fullName}
-            placeholder="Enter your full name"
-            onFocus={() => setEnableShift(false)}
-            placeholderTextColor={'gray'}
-          />
-        </View>
-        <View style={styles.testHolder}>
-          <Text style={{fontSize: 13}}>Email</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={text => setEmail(text)}
-            value={email}
-            placeholder="Enter your email address"
-            onFocus={() => setEnableShift(false)}
-            placeholderTextColor={'gray'}
-          />
-        </View>
-        <View style={[styles.testHolder]}>
-          <Text style={{fontSize: 13}}>User Name</Text>
-          <View style={{flexDirection: 'row'}}>
+    <SafeAreaView
+      style={{paddingHorizontal: 15, height: height}}
+      edges={['top', 'left']}>
+      <View style={{paddingVertical: 5}}>
+        <AppIcon />
+      </View>
+
+      <Text style={[styles.title, {color: colors.secondary}]}>Sign up</Text>
+      <ScrollView onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView
+          keyboardShouldPersistTaps={true}
+          enabled={enableShift}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+          {/* <DismissKeyboard> */}
+
+          <View style={styles.testHolder}>
+            <Text style={{fontSize: 16}}>Full Name</Text>
             <TextInput
-              style={[styles.input, {flex: 1}]}
-              onChangeText={text => validateNmae(text)}
-              value={userName}
-              placeholder="Enter your username"
+              style={styles.input}
+              onChangeText={text => setFullName(text)}
+              value={fullName}
+              placeholder="Enter your full name"
               onFocus={() => setEnableShift(false)}
               placeholderTextColor={'gray'}
             />
-            {isAvailable === true && (
-              <Ionicons
-                style={{
-                  position: 'absolute',
-                  left: '90%',
-                  top: 15,
-                  fontSize: 18,
-                  color: 'green',
-                }}
-                name="checkmark-circle-outline"
-              />
-            )}
-            {isAvailable === false && (
-              <Entypo
-                style={{
-                  position: 'absolute',
-                  left: '90%',
-                  top: 15,
-                  fontSize: 18,
-                  color: 'red',
-                }}
-                name="circle-with-cross"
-              />
-            )}
           </View>
-        </View>
-        <View style={styles.testHolder}>
-          <Text style={{fontSize: 13}}>Password</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={text => setPassword(text)}
-            value={password}
-            placeholder="Enter your password"
-            secureTextEntry={true}
-            onFocus={() => setEnableShift(true)}
-            placeholderTextColor={'gray'}
-          />
-        </View>
-        <View style={styles.testHolder}>
-          <Text style={{fontSize: 13}}>Phone Number</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={text => setPhoneNumber(text)}
-            value={phoneNumber}
-            placeholder="Phone number"
-            keyboardType="numeric"
-            placeholderTextColor={'gray'}
-            onFocus={() => setEnableShift(true)}
-          />
-        </View>
-        <View style={styles.testHolder}>
-          <Text style={{fontSize: 13}}>Location</Text>
-          <View
-            style={{
-              marginHorizontal: 6,
-              marginVertical: 5,
-              // borderRadius: 10,
-              // zIndex: 5,
-              // paddingBottom: 50,
-            }}>
-            <DropDownPicker
-              style={{height: 40}}
-              labelStyle={{}}
-              // maxHeight={80}
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder="Select Location"
-              placeholderStyle={{color: '#9CA3AF'}}
-              // textStyle={{color: 'gray'}}
-              // labelProps={{fontWeight: 'red'}}
+          <View style={styles.testHolder}>
+            <Text style={{fontSize: 16}}>Email</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={text => setEmail(text)}
+              value={email}
+              placeholder="Enter your email address"
+              onFocus={() => setEnableShift(false)}
+              placeholderTextColor={'gray'}
             />
           </View>
-        </View>
-        {/* </DismissKeyboard> */}
+          <View style={[styles.testHolder]}>
+            <Text style={{fontSize: 16}}>User Name</Text>
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                style={[styles.input, {flex: 1}]}
+                onChangeText={text => validateNmae(text)}
+                value={userName}
+                placeholder="Enter your username"
+                onFocus={() => setEnableShift(false)}
+                placeholderTextColor={'gray'}
+              />
+              {isAvailable === true && (
+                <Ionicons
+                  style={{
+                    position: 'absolute',
+                    left: '90%',
+                    top: 15,
+                    fontSize: 18,
+                    color: 'green',
+                  }}
+                  name="checkmark-circle-outline"
+                />
+              )}
+              {isAvailable === false && (
+                <Entypo
+                  style={{
+                    position: 'absolute',
+                    left: '90%',
+                    top: 15,
+                    fontSize: 18,
+                    color: 'red',
+                  }}
+                  name="circle-with-cross"
+                />
+              )}
+            </View>
+          </View>
+          <View style={styles.testHolder}>
+            <Text style={{fontSize: 16}}>Password</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={text => setPassword(text)}
+              value={password}
+              placeholder="Enter your password"
+              secureTextEntry={true}
+              onFocus={() => setEnableShift(true)}
+              placeholderTextColor={'gray'}
+            />
+          </View>
+          <View style={styles.testHolder}>
+            <Text style={{fontSize: 16}}>Confirm Password</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={text => setConfirmPassword(text)}
+              value={confirmPassword}
+              placeholder="Renter Your Password"
+              secureTextEntry={true}
+              onFocus={() => setEnableShift(true)}
+              placeholderTextColor={'gray'}
+              onBlur={() => verifyConfirmPass()}
+            />
+            {matchPassword && (
+              <Text style={{color: 'red', padding: 5, paddingTop: 0}}>
+                Password not match
+              </Text>
+            )}
+          </View>
+          <View style={styles.testHolder}>
+            <Text style={{fontSize: 16}}>Phone Number</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={text => setPhoneNumber(text)}
+              value={phoneNumber}
+              placeholder="Phone number"
+              keyboardType="numeric"
+              placeholderTextColor={'gray'}
+              onFocus={() => setEnableShift(true)}
+            />
+          </View>
+          <View style={styles.testHolder}>
+            <Text style={{fontSize: 16}}>Location</Text>
+            <View
+              style={{
+                marginHorizontal: 6,
+                marginVertical: 5,
 
-        <Button
-          color={colors.button}
-          onPress={() => handleSignup()}
-          style={{marginTop: 10, padding: 10, borderRadius: 10}}
-          labelStyle={{color: colors.background}}
-          mode="contained">
-          Sign up
-        </Button>
+                // borderRadius: 10,
+                // zIndex: 200,
+                // paddingBottom: 50,
+              }}>
+              <DropDownPicker
+                style={{height: 45}}
+                labelStyle={{}}
+                // maxHeight={80}
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                placeholder="Select Location"
+                placeholderStyle={{color: 'gray'}}
+              />
+            </View>
+          </View>
+
+          {/* </DismissKeyboard> */}
+        </KeyboardAvoidingView>
+      </ScrollView>
+      <View style={{zIndex: -1}}>
+        <View style={{zIndex: -1}}>
+          <Button
+            color={colors.button}
+            onPress={() => handleSignup()}
+            style={{padding: 5, borderRadius: 10}}
+            labelStyle={{color: colors.background}}
+            mode="contained">
+            Sign up
+          </Button>
+        </View>
         <View style={styles.createAccount}>
           <Text>Already have an account?</Text>
           <Button
@@ -268,8 +306,7 @@ export default function index() {
             Sign in
           </Button>
         </View>
-      </KeyboardAvoidingView>
-      {/* </ScrollView> */}
+      </View>
     </SafeAreaView>
   );
 }
@@ -278,11 +315,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    // marginTop: 2,
+    marginVertical: 10,
   },
   input: {
-    height: 40,
-    margin: 5,
+    height: 45,
+    marginVertical: 10,
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
@@ -299,7 +336,7 @@ const styles = StyleSheet.create({
   },
   createAccount: {
     flexDirection: 'row',
-    // marginTop: 20,
+    paddingBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,

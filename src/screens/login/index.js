@@ -59,7 +59,7 @@ export default function index() {
         </View>
         <Text style={[styles.title, {color: colors.secondary}]}>Login</Text>
         <View style={styles.testHolder}>
-          <Text style={{fontSize: 13}}>Email</Text>
+          <Text style={{fontSize: 16}}>Email</Text>
           <TextInput
             style={styles.input}
             onChangeText={text => setEmail(text)}
@@ -70,7 +70,7 @@ export default function index() {
           />
         </View>
         <View style={styles.testHolder}>
-          <Text style={{fontSize: 13}}>Password</Text>
+          <Text style={{fontSize: 16}}>Password</Text>
           <TextInput
             style={styles.input}
             onChangeText={text => {
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   input: {
-    height: 40,
+    height: 45,
     margin: 12,
     borderWidth: 1,
     padding: 10,

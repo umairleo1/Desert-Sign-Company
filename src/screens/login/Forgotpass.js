@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   input: {
-    height: 40,
+    height: 45,
     margin: 12,
     borderWidth: 1,
     padding: 10,

@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
@@ -5,6 +6,7 @@ import AuthNavigator from './src/navigation/AuthNavigator';
 import AuthContext from './src/utils/authContext';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import FlashMessage from 'react-native-flash-message';
+import AppNavigator from './src/navigation/AppNavigator';
 
 import authStorage from './src/utils/authStorage';
 import {Button} from 'react-native-paper';
@@ -73,6 +75,7 @@ export default function App() {
             </Button>
           </View>
         ) : (
+          // <AppNavigator />
           <AuthNavigator />
         )}
       </AuthContext.Provider>
