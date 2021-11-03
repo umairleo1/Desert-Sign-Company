@@ -27,6 +27,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import AnimatedLoader from 'react-native-animated-loader';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
 import {getUser, updateUser} from '../../service/app.service';
 import authStorage from '../../utils/authStorage';
@@ -34,8 +35,9 @@ import URL from '../../utils/url_path';
 import AuthContext from '../../utils/authContext';
 
 export default function index() {
-  // const {height, width} = useWindowDimensions();
-  const [buttonDisable, setButtonDisable] = React.useState(true);
+  const {height, width} = useWindowDimensions();
+  const [listShow, setListShow] = React.useState();
+  const [enableShift, setEnableShift] = React.useState(false);
   const [location, setLocation] = React.useState();
   const [image, setImage] = React.useState();
   const [user, setUser] = React.useState();
@@ -49,6 +51,9 @@ export default function index() {
   const [editedName, setEditedName] = React.useState('');
   const [isEdit, setisEdit] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [compnayName, setComoanyName] = React.useState();
+  const [editedCompnayName, setEditedComoanyName] = React.useState();
+
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [isFocused, setIsFocused] = React.useState(false);
@@ -69,6 +74,7 @@ export default function index() {
     setEditedName(user?.data?.fullName);
     setEditedNumber(user?.data?.phoneNumber);
     setLocation(user?.data?.location);
+    setComoanyName(user?.data?.companyName);
     ref.current?.setAddressText('hello');
   };
 
@@ -81,13 +87,23 @@ export default function index() {
         break;
       case '2':
         setIsFoucus('2');
+        // setEnableShift(true);
         break;
       case '3':
         setIsFoucus('3');
+        // setEnableShift(true);
+        // setListShow(true);
+
+        break;
+      case '4':
+        setIsFoucus('4');
+        setEnableShift(true);
+
         break;
 
       default:
-      // code block
+        // code block
+        setEnableShift(false);
     }
   };
   const storeUser = async () => {
@@ -101,6 +117,7 @@ export default function index() {
       // console.log(data.data);
       setUser(data);
       context.setProfile(data.data);
+      console.log(data.data);
       setActivityIndicator(false);
     } catch (e) {
       console.log(e);
@@ -123,7 +140,8 @@ export default function index() {
       formData.append('fullName', editedName);
       formData.append('phoneNumber', editedNumber);
       formData.append('location', location);
-      console.log(editedImage, 'fuck');
+      formData.append('companyName', compnayName);
+      console.log(compnayName, 'fuck');
       // ? console.log(' added')
       image
         ? formData.append('profilePhoto', editedImage)
@@ -132,6 +150,7 @@ export default function index() {
       !image
         ? formData.append('profilePhotoOld', user?.data?.profilePhoto)
         : formData.append('profilePhotoOld', 'null');
+      formData.append('companyName', compnayName);
 
       const response = await updateUser(userId, formData);
       showMessage({
@@ -151,6 +170,14 @@ export default function index() {
   const navigation = useNavigation();
   return (
     <View style={{flex: 1}}>
+      {/* <KeyboardAwareScrollView
+      style={{flex: 1}}
+      keyboardShouldPersistTaps={true}
+      enabled={enableShift}
+      behavior={Platform.OS === 'ios' ? 'position' : null}
+      > */}
+      {/* <View style={{flex: 2}}> */}
+
       <StatusBar
         backgroundColor={colors.profileBcackGround}
         barStyle="light-content"
@@ -158,7 +185,7 @@ export default function index() {
 
       <View
         style={{
-          height: '45%',
+          height: '35%',
           alignItems: 'center',
         }}>
         <View
@@ -223,30 +250,38 @@ export default function index() {
                   })
                 }
                 name="eye-outline"
-                style={{fontSize: 40, position: 'absolute', color: 'white'}}
+                style={{
+                  fontSize: 40,
+                  position: 'absolute',
+                  color: 'white',
+                }}
               />
             )}
           </View>
         </View>
       </View>
-      <SafeAreaView
-        style={{
-          paddingHorizontal: 15,
-          marginTop: 25,
-          flex: 1,
-        }}
-        edges={['top']}>
-        <ScrollView style={{flex: 1}} keyboardShouldPersistTaps={'handled'}>
+      {/* </View> */}
+      {/* <ScrollView style={{}}> */}
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps={'handled'}
+        extraScrollHeight={175}>
+        <View
+          style={{
+            paddingHorizontal: 15,
+            // backgroundColor: 'yellow',
+            // height: height,
+          }}>
           <View
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              // marginVertical: 20,
+
+              marginTop: 35,
             }}>
             <View
               style={{
                 flexDirection: 'row',
-                // marginTop: 10,
+
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
@@ -256,7 +291,6 @@ export default function index() {
                     styles.userName,
                     {
                       color: colors.profileBcackGround,
-                      // marginTop: 1,
                     },
                   ]}>
                   {user?.data?.fullName}
@@ -282,58 +316,11 @@ export default function index() {
             </View>
           </View>
 
-          {/* <View style={[styles.field, {alignItems: 'center'}]}>
-            <Text style={[styles.values, {color: colors.profileBcackGround}]}>
-              Location
-            </Text>
-            {isEdit === false && (
-              <Text style={[styles.values, {color: 'gray'}]}>
-                {user?.data?.location}
-              </Text>
-            )}
-            {isEdit === true && (
-              <View
-                style={{
-                  width: '50%',
-                }}>
-                <KeyboardAvoidingView behavior={'height'}>
-                  <GooglePlacesAutocomplete
-                    styles={{
-                      listView: {
-                        backgroundColor: 'red',
-                      },
-                      textInput: {
-                        borderBottomColor:
-                          isFocus == '3' ? colors.secondary : null,
-                        borderBottomWidth: 1,
-                      },
-                    }}
-                    onFail={err => console.log(err, 'fuck')}
-                    textInputProps={{textAlign: 'left'}}
-                    placeholder="Loaction"
-                    // keepResultsAfterBlur={true}
-                    // listViewDisplayed={false}
-                    onPress={(data, details = null) => {
-                      handleonFocus('3');
-
-                      console.log(isFocus);
-                      // handleonFocus('3');
-                    }}
-                    query={{
-                      key: 'AIzaSyDDANw8GBVlla0rxNNegrBFhxjQizW6ZjE',
-                      language: 'en',
-                    }}
-                  />
-                </KeyboardAvoidingView>
-              </View>
-            )}
-          </View> */}
-
           <View
             style={[
               styles.field,
               {
-                marginTop: 5,
+                // marginTop: 5,
                 alignItems: 'center',
               },
             ]}>
@@ -341,14 +328,12 @@ export default function index() {
               Phone Number
             </Text>
             {isEdit === false && (
-              <Text
-                // onPress={() => setEditNumber(true)}
-                style={[styles.values, {color: 'gray'}]}>
+              <Text style={[styles.values, {color: 'gray'}]}>
                 {user?.data?.phoneNumber}
               </Text>
             )}
             {isEdit === true && (
-              <View style={{marginTop: 10, height: 45}}>
+              <View style={{marginTop: 5, height: 45}}>
                 <TextInput
                   placeholder="Phone Number"
                   keyboardType={'phone-pad'}
@@ -356,7 +341,6 @@ export default function index() {
                   value={editedNumber}
                   onFocus={() => handleonFocus('2')}
                   style={[isFocus == '2' ? styles.focusInput : styles.input]}
-                  // onBlur={() => setisEdit(false)}
                 />
               </View>
             )}
@@ -384,59 +368,151 @@ export default function index() {
             </View>
           </View>
 
-          <View style={[styles.field, {alignItems: 'center'}]}>
+          {/* <View style={[styles.field, {alignItems: 'center'}]}>
             <Text style={[styles.values, {color: colors.profileBcackGround}]}>
               Location
             </Text>
             {isEdit === false && (
-              <Text style={[styles.values, {color: 'gray'}]}>
-                {user?.data?.location}
-              </Text>
+              <Text style={[{color: 'gray'}]}>{user?.data?.location}</Text>
             )}
             {isEdit === true && (
               <View
                 style={{
                   width: '50%',
                 }}>
-                {/* <KeyboardAvoidingView behavior={'padding'}> */}
-                <TouchableWithoutFeedback onPress={() => ref.current?.focus()}>
-                  {console.log(isFocused, 'value')}
-                  <GooglePlacesAutocomplete
-                    ref={ref}
-                    styles={{
-                      listView: {},
-                      textInput: {
-                        borderBottomColor:
-                          isFocus == '3' ? colors.secondary : null,
-                        borderBottomWidth: 1,
-                      },
-                    }}
-                    // onFail={err => console.log(err, 'fuck')}
-                    // textInputProps={{placeholder: 'red'}}
+                <ScrollView style={{height: 70}}>
+                  <TouchableWithoutFeedback
+                    style={{}}
+                    onPress={() => ref.current?.focus()}>
+                    <GooglePlacesAutocomplete
+                      // autoFillOnNotFound={true}
+                      ref={ref}
+                      styles={{
+                        container: {height: 70},
+                        listView: {zIndex: 1},
 
-                    // isFocused={e => console.log(e, 'focused')}
-                    textInputProps={{
-                      textAlign: 'left',
-                      placeholderTextColor: 'black',
-                      onFocus: () => handleonFocus('3'),
-                    }}
-                    // placeholder={value}
-                    // keepResultsAfterBlur={true}
-                    // listViewDisplayed={true}
-                    onPress={(data, details = null) => {
-                      // handleonFocus('3');
+                        textInput: {
+                          borderBottomColor:
+                            isFocus == '3' ? colors.secondary : null,
+                          borderBottomWidth: 1,
+                        },
+                      }}
+                      textInputProps={{
+                        textAlign: 'left',
+                        placeholderTextColor: 'black',
+                        onFocus: () => handleonFocus('3'),
+                      }}
+                      onPress={(data, details = null) => {
+                        setLocation(data?.description);
+                        setListShow(false);
+                      }}
+                      keepResultsAfterBlur={listShow}
+                      query={{
+                        key: 'AIzaSyDDANw8GBVlla0rxNNegrBFhxjQizW6ZjE',
+                        language: 'en',
+                      }}
+                    />
+                  </TouchableWithoutFeedback>
+                </ScrollView>
+              </View>
+            )}
+          </View> */}
+          <View
+            style={[
+              styles.field,
+              {
+                marginTop: 5,
+                alignItems: 'center',
+              },
+            ]}>
+            <Text style={[styles.values, {color: colors.profileBcackGround}]}>
+              Company Name
+            </Text>
+            {isEdit === false && (
+              <Text style={[styles.values, {color: 'gray'}]}>
+                {user?.data?.companyName}
+              </Text>
+            )}
+            {isEdit === true && (
+              <View style={{height: 45}}>
+                <TextInput
+                  placeholder="Company Name"
+                  onChangeText={text => setComoanyName(text)}
+                  value={compnayName}
+                  onFocus={() => handleonFocus('4')}
+                  style={[isFocus == '4' ? styles.focusInput : styles.input]}
+                />
+              </View>
+            )}
+          </View>
+          <View
+            style={[
+              styles.field,
+              {
+                alignItems: 'flex-start',
+                // minHeight: 50,
+                // backgroundColor: 'red',
+              },
+            ]}>
+            {/* <View> */}
+            <Text style={[styles.values, {color: colors.profileBcackGround}]}>
+              Location
+            </Text>
+            {/* </View> */}
+            <View
+              style={{
+                flexShrink: 1,
+                justifyContent: 'center',
+                // backgroundColor: 'red',
+                // width: '50%',
+                paddingTop: 14,
+              }}>
+              {isEdit === false && (
+                <Text style={[{color: 'gray', textAlign: 'right'}]}>
+                  {user?.data?.location}
+                </Text>
+              )}
+            </View>
+            {isEdit === true && (
+              <View style={{width: '50%'}}>
+                <ScrollView
+                  style={{width: '100%'}}
+                  keyboardShouldPersistTaps={'handled'}>
+                  <TouchableWithoutFeedback
+                    style={{}}
+                    onPress={() => ref.current?.focus()}>
+                    <GooglePlacesAutocomplete
+                      // autoFillOnNotFound={true}
+                      ref={ref}
+                      styles={{
+                        container: {width: '100%'},
+                        // listView: {zIndex: -1},
 
-                      // console.log(data, details, 'here is');
-                      setLocation(data?.description);
-                      // handleonFocus('3');
-                    }}
-                    query={{
-                      key: 'AIzaSyDDANw8GBVlla0rxNNegrBFhxjQizW6ZjE',
-                      language: 'en',
-                    }}
-                  />
-                </TouchableWithoutFeedback>
-                {/* </KeyboardAvoidingView> */}
+                        textInput: {
+                          borderBottomColor:
+                            isFocus == '3' ? colors.secondary : null,
+                          borderBottomWidth: 1,
+                        },
+                      }}
+                      textInputProps={{
+                        textAlign: 'left',
+                        placeholderTextColor: 'black',
+                        onFocus: () => handleonFocus('3'),
+                      }}
+                      onPress={(data, details = null) => {
+                        console.log(data);
+                        setLocation(data?.description);
+                        // Keyboard.dismiss();
+                        // setListShow(false);
+                      }}
+                      // keepResultsAfterBlur={listShow}
+                      query={{
+                        key: 'AIzaSyDDANw8GBVlla0rxNNegrBFhxjQizW6ZjE',
+                        language: 'en',
+                      }}
+                    />
+                  </TouchableWithoutFeedback>
+                </ScrollView>
               </View>
             )}
           </View>
@@ -445,9 +521,15 @@ export default function index() {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              marginBottom: 5,
+
+              // marginBottom: 5,
             }}>
-            <View style={{zIndex: -1, width: '100%', marginTop: 15}}>
+            <View
+              style={{
+                zIndex: -1,
+                width: '100%',
+                marginTop: isEdit === true ? 15 : 50,
+              }}>
               <Button
                 color={colors.button}
                 onPress={() => handleUpdate()}
@@ -476,8 +558,13 @@ export default function index() {
                 speed={1}></AnimatedLoader>
             </View>
           )}
-        </ScrollView>
-      </SafeAreaView>
+        </View>
+      </KeyboardAwareScrollView>
+
+      {/* scrool */}
+      {/* </ScrollView> */}
+      {/* </View> */}
+      {/* </KeyboardAwareScrollView> */}
     </View>
   );
 }
@@ -488,8 +575,6 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    // alignItems: 'center',
-    // justifyContent: 'flex-end',
   },
   userName: {
     fontSize: 16,
@@ -502,11 +587,14 @@ const styles = StyleSheet.create({
   values: {
     fontSize: 14,
     fontWeight: '600',
-    marginVertical: 20,
+    marginVertical: 15,
+    // backgroundColor: 'yellow',
   },
   field: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+
+    marginTop: 5,
   },
   button: {
     marginTop: 3,
@@ -527,7 +615,7 @@ const styles = StyleSheet.create({
     width: 120,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'red',
+
     // position: 'absolute',
     // bottom: 30,
     // top: '55%',
