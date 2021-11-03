@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '11.0'
 
-target 'DesertSign' do
+target 'DesertSignMobile' do
   config = use_native_modules!
 
   use_react_native!(
@@ -34,7 +34,7 @@ target 'DesertSign' do
 
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
 
-  target 'DesertSignTests' do
+  target 'DesertSignMobileTests' do
     inherit! :complete
     # Pods for testing
   end

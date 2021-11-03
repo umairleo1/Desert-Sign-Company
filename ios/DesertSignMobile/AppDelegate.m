@@ -64,7 +64,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"DesertSign"
+                                                   moduleName:@"DesertSignMobile"
                                             initialProperties:nil];
 
   if (@available(iOS 13.0, *)) {
