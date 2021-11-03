@@ -2,10 +2,10 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
-import AppIcon from '../../../svgs/AppIcon';
+import AppIcon from '../../../assets/svgs/AppIcon';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation, useTheme} from '@react-navigation/native';
-import {Button} from 'react-native-paper';
+import {Button, ActivityIndicator} from 'react-native-paper';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import {verifyOTP, resendOTP} from '../../service/auth.service';
@@ -15,6 +15,8 @@ import AuthContext from '../../utils/authContext';
 export default function Otp() {
   const [otp, setOtp] = React.useState('');
   const [id, setId] = React.useState();
+  const [loading, setLoading] = React.useState(false);
+  const [loadingResend, setLoadingResend] = React.useState(false);
   const {colors} = useTheme();
   const navigation = useNavigation();
   const context = React.useContext(AuthContext);
@@ -25,15 +27,22 @@ export default function Otp() {
   React.useEffect(() => {
     // const id = authStorage.getUserid()
     getID();
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      e.preventDefault(); // Prevent default action
+      unsubscribe(); // Unsubscribe the event on first call to prevent infinite loop
+      navigation.navigate('Login'); // Navigate to your desired screen
+    });
   });
   const hadleVerify = async () => {
     try {
+      setLoading(true);
       const result = await verifyOTP(otp, id);
       // console.log(result);
       if (result.status == 200) {
         authStorage.setIsVerified('true');
         context.setIsverified('true');
         // authStorage.setIsVerified('true');
+        setLoading(false);
         showMessage({
           message: 'Verified',
           type: 'success',
@@ -41,7 +50,8 @@ export default function Otp() {
         // navigation.navigate('Login');
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
+      setLoading(false);
       showMessage({
         message: e.errMsg,
         type: 'warning',
@@ -50,7 +60,10 @@ export default function Otp() {
   };
   const resend = async () => {
     try {
+      setLoadingResend(true);
+      console.log(id, 'here is id');
       const result = await resendOTP(id);
+      setLoadingResend(false);
       // console.log(result, 'fuckoff');
       showMessage({
         message: result.message,
@@ -59,6 +72,7 @@ export default function Otp() {
 
       // console.log(result);
     } catch (e) {
+      setLoadingResend(false);
       showMessage({
         message: e.errMsg,
         type: 'info',
@@ -72,7 +86,12 @@ export default function Otp() {
       </View>
 
       <Text style={[styles.title, {color: colors.secondary}]}>Confirm OTP</Text>
-      <Text style={{fontSize: 16}}>
+      <Text
+        style={{
+          fontSize: 16,
+          marginTop: 15,
+          fontWeight: '400',
+        }}>
         Please confirm your OTP passcode to continue
       </Text>
       <View style={{alignItems: 'center'}}>
@@ -89,18 +108,43 @@ export default function Otp() {
           }}
         />
       </View>
-      <Button
-        color={colors.button}
-        onPress={() => hadleVerify()}
-        style={{marginTop: 20, padding: 10}}
-        labelStyle={{color: colors.background}}
-        mode="contained">
-        submit
-      </Button>
-      <View style={{marginTop: 10}}>
-        <Button onPress={() => resend()} color={colors.signupButton}>
-          Resend OTP
-        </Button>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{zIndex: -1, width: '100%'}}>
+          <Button
+            color={colors.button}
+            onPress={() => hadleVerify()}
+            style={styles.button}
+            labelStyle={{color: colors.background}}
+            mode="contained"
+            disabled={loading}>
+            submit
+          </Button>
+          {loading && (
+            <ActivityIndicator
+              animating={true}
+              color={'white'}
+              style={{position: 'absolute', top: 35, left: 100}}
+            />
+          )}
+        </View>
+      </View>
+      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+        <View style={{zIndex: -1, width: '100%'}}>
+          <Button
+            uppercase={false}
+            disabled={loading}
+            onPress={() => resend()}
+            color={colors.signupButton}>
+            Resend OTP
+          </Button>
+          {loadingResend && (
+            <ActivityIndicator
+              animating={true}
+              color={'black'}
+              style={{position: 'absolute', top: 8, left: 80}}
+            />
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -108,27 +152,43 @@ export default function Otp() {
 
 const styles = StyleSheet.create({
   borderStyleBase: {
-    width: 30,
+    width: 40,
     height: 45,
+    borderRadius: 10,
   },
 
   borderStyleHighLighted: {
     borderColor: '#03DAC6',
+    borderRadius: 10,
   },
 
   underlineStyleBase: {
-    width: 30,
-    height: 45,
+    width: 50,
+    height: 50,
     borderWidth: 1,
     borderBottomWidth: 1,
     color: '#000',
+    borderRadius: 10,
   },
 
   underlineStyleHighLighted: {
-    borderColor: '#000',
+    borderColor: '#7EC043',
   },
   title: {
     fontSize: 32,
     marginTop: 15,
+  },
+  button: {
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
+    marginTop: 20,
+    padding: 10,
+    borderRadius: 10,
   },
 });

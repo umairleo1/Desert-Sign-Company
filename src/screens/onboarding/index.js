@@ -3,13 +3,42 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button} from 'react-native-paper';
+import PushNotification, {Importance} from 'react-native-push-notification';
 
-import AppIcon from '../../../svgs/AppIcon';
-import Delivery from '../../../svgs/Delivery';
+import AppIcon from '../../../assets/svgs/AppIcon';
+import Delivery from '../../../assets/svgs/Delivery';
+import Notifications from '../Home/Notifications';
 
 export default function index() {
   const {colors} = useTheme();
   const navigation = useNavigation();
+  React.useEffect(() => {
+    PushNotification.createChannel(
+      {
+        channelId: 'channel-id', // (required)
+        channelName: 'My channel', // (required)
+        channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+        playSound: false, // (optional) default: true
+        soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+        importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+      },
+      created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+    );
+  }, []);
+  const ExampleSend = () => {
+    PushNotification.localNotification({
+      channelId: 'channel-id',
+      foreground: false,
+      userInteraction: true,
+      autoCancel: true,
+      // bigText: 'notification.data.body',
+      title: 'Desert Sign',
+      message: 'hello Jummah Mubarak',
+      // subText: 'notification.data.body',
+      // actions: '["Yes", "No"]',
+    });
+  };
   return (
     <SafeAreaView
       style={{
@@ -17,55 +46,56 @@ export default function index() {
         backgroundColor: '#ffffff',
         paddingHorizontal: 10,
       }}>
-      <ScrollView>
-        <View style={{paddingVertical: 10}}>
-          <AppIcon />
-        </View>
-        <View
-          style={{
-            marginTop: 10,
-            alignItems: 'center',
-          }}>
-          <Delivery />
-        </View>
-        <View style={{marginTop: 10}}>
-          <Text style={[styles.heading, {color: colors.secondary}]}>
-            Welcome to
-          </Text>
-          <Text style={[styles.heading, {color: colors.secondary}]}>
-            Desert sign
-          </Text>
-        </View>
-        <View style={{width: '70%', marginTop: 5}}>
-          <Text style={styles.description}>
-            Improve your productivity and save more time by on boarding all
-            consignments
-          </Text>
-        </View>
+      {/* <ScrollView> */}
+      <View style={{paddingVertical: 10}}>
+        <AppIcon />
+      </View>
+      <View
+        style={{
+          marginTop: 10,
+          alignItems: 'center',
+        }}>
+        <Delivery />
+      </View>
+      <View style={{marginTop: 10}}>
+        <Text style={[styles.heading, {color: colors.secondary}]}>
+          Welcome to
+        </Text>
+        <Text style={[styles.heading, {color: colors.secondary}]}>
+          Desert sign
+        </Text>
+      </View>
+      <View style={{width: '70%', marginTop: 5}}>
+        <Text onPress={() => ExampleSend()} style={styles.description}>
+          Improve your productivity and save more time by on boarding all
+          consignments
+        </Text>
+      </View>
+      <Button
+        color={colors.button}
+        onPress={() => navigation.navigate('Login')}
+        style={styles.button}
+        labelStyle={{color: colors.background}}
+        mode="contained">
+        Sign in
+      </Button>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 20,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 20,
+        }}>
+        <Text style={{color: 'gray'}}>Don't have an account?</Text>
         <Button
-          color={colors.button}
-          onPress={() => navigation.navigate('Login')}
-          style={{marginTop: 40, padding: 10, borderRadius: 10}}
-          labelStyle={{color: colors.background}}
-          mode="contained">
-          Sign in
+          uppercase={false}
+          onPress={() => navigation.navigate('SignUp')}
+          color={colors.signupButton}>
+          Create account
         </Button>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
-          }}>
-          <Text>Don't have an account?</Text>
-          <Button
-            onPress={() => navigation.navigate('SignUp')}
-            color={colors.signupButton}>
-            Create account
-          </Button>
-        </View>
-      </ScrollView>
+      </View>
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }
@@ -73,10 +103,25 @@ export default function index() {
 const styles = StyleSheet.create({
   heading: {
     fontSize: 32,
+    fontWeight: '700',
   },
   description: {
     fontSize: 18,
+
     // fontWeight: 'normal',
     // fontFamily: 'Proxima Nova Alt Condensed Light',
+  },
+  button: {
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0,
+    shadowRadius: 0,
+
+    elevation: 0,
+    marginTop: 40,
+    padding: 10,
+    borderRadius: 10,
   },
 });

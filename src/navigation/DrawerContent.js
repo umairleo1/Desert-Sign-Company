@@ -1,138 +1,266 @@
-// import React from 'react';
-// import {View, StyleSheet} from 'react-native';
-// import {
-//   useTheme,
-//   Avatar,
-//   Title,
-//   Caption,
-//   Paragraph,
-//   Drawer,
-//   Text,
-//   TouchableRipple,
-//   Switch,
-// } from 'react-native-paper';
-// import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import React, {useCallback} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  StatusBar,
+  Linking,
+  Alert,
+} from 'react-native';
+import {Button, Drawer} from 'react-native-paper';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 
-// import {AuthContext} from '../components/context';
+import AuthContext from '../utils/authContext';
+import {useNavigation, useTheme} from '@react-navigation/native';
 
-// export function DrawerContent(props) {
-//   return (
-//     <View style={{flex: 1, backgroundColor: '#ffffff'}}>
-//       <DrawerContentScrollView {...props}>
-//         <View style={styles.drawerContent}>
-//           {/* <View style={styles.userInfoSection}>
-//                         <View style={{flexDirection:'row',marginTop: 15}}>
-//                             <Avatar.Image
-//                                 source={{
-//                                     uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
-//                                 }}
-//                                 size={50}
-//                             />
-//                             <View style={{marginLeft:15, flexDirection:'column'}}>
-//                                 <Title style={styles.title}>John Doe</Title>
-//                                 <Caption style={styles.caption}>@j_doe</Caption>
-//                             </View>
-//                         </View>
+import URL from '../utils/url_path';
+import {getUser} from '../service/app.service';
+import authStorage from '../utils/authStorage';
+import OrderIcon from '../../assets/svgs/OrderIcon';
+import TermsIcon from '../../assets/svgs/TermsIcon';
 
-//                         <View style={styles.row}>
-//                             <View style={styles.section}>
-//                                 <Paragraph style={[styles.paragraph, styles.caption]}>80</Paragraph>
-//                                 <Caption style={styles.caption}>Following</Caption>
-//                             </View>
-//                             <View style={styles.section}>
-//                                 <Paragraph style={[styles.paragraph, styles.caption]}>100</Paragraph>
-//                                 <Caption style={styles.caption}>Followers</Caption>
-//                             </View>
-//                         </View>
-//                     </View> */}
+export function DrawerContent(props) {
+  const [data, setData] = React.useState();
+  // const [profile, setProfile] = React.useState();
+  const context = React.useContext(AuthContext);
 
-//           <Drawer.Section style={styles.drawerSection}>
-//             <DrawerItem
-//               icon={({color, size}) => (
-//                 <Icon name="home-outline" color={color} size={size} />
-//               )}
-//               label="Home"
-//               onPress={() => {
-//                 props.navigation.navigate('HomeStack', {screen: 'HomeScreen'});
-//               }}
-//             />
-//             <DrawerItem
-//               icon={({color, size}) => (
-//                 <Icon name="account-outline" color={color} size={size} />
-//               )}
-//               label="Orders"
-//               onPress={() => {
-//                 props.navigation.navigate('orderStack', {screen: 'Orders'});
-//               }}
-//             />
-//             <DrawerItem
-//               icon={({color, size}) => (
-//                 <Icon name="bookmark-outline" color={color} size={size} />
-//               )}
-//               label="Bookmarks"
-//             />
+  const storeProfile = async () => {
+    const id = await authStorage.getUserid();
 
-//             <DrawerItem
-//               icon={({color, size}) => (
-//                 <Icon name="account-check-outline" color={color} size={size} />
-//               )}
-//               label="Support"
-//               // onPress={() => {props.navigation.navigate('SupportScreen')}}
-//             />
-//           </Drawer.Section>
-//           {/* <Drawer.Section title="Preferences">
+    try {
+      const data = await getUser(id);
 
-//                     </Drawer.Section> */}
-//         </View>
-//       </DrawerContentScrollView>
-//     </View>
-//   );
-// }
+      context.setProfile(data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  React.useEffect(() => {
+    storeProfile();
+  }, []);
 
-// const styles = StyleSheet.create({
-//   drawerContent: {
-//     flex: 1,
-//   },
-//   userInfoSection: {
-//     paddingLeft: 20,
-//   },
-//   title: {
-//     fontSize: 16,
-//     marginTop: 3,
-//     fontWeight: 'bold',
-//   },
-//   caption: {
-//     fontSize: 14,
-//     lineHeight: 14,
-//   },
-//   row: {
-//     marginTop: 20,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   section: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginRight: 15,
-//   },
-//   paragraph: {
-//     fontWeight: 'bold',
-//     marginRight: 3,
-//   },
-//   drawerSection: {
-//     marginTop: 15,
-//   },
-//   bottomDrawerSection: {
-//     marginBottom: 15,
-//     borderTopColor: '#f4f4f4',
-//     borderTopWidth: 1,
-//   },
-//   preference: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     paddingVertical: 12,
-//     paddingHorizontal: 16,
-//   },
-// });
+  const navigation = useNavigation();
+
+  const signOut = () => {
+    authStorage.removeValue();
+    context.setUser('');
+
+    context.setUserID('');
+    context.setIsverified('false');
+  };
+  const {colors} = useTheme();
+
+  const handlePress = async url => {
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: 'white',
+        // justifyContent: 'space-between',
+      }}>
+      {/* <View> */}
+      {/* <StatusBar backgroundColor={colors.profileBcackGround} /> */}
+      <View
+        style={{
+          height: '30%',
+          justifyContent: 'center',
+          backgroundColor: colors.profileBcackGround,
+        }}>
+        <View style={styles.imageBackground}>
+          <Image
+            style={{
+              height: 60,
+              width: 60,
+              resizeMode: 'cover',
+              borderRadius: 45,
+            }}
+            source={{uri: URL.IMAGE_URL + context?.profile?.profilePhoto}}
+          />
+        </View>
+        <View style={{marginLeft: 20}}>
+          <Text style={styles.user}>{context?.profile?.fullName}</Text>
+          <Text
+            onPress={() =>
+              navigation.navigate('profileStack', {screen: 'profile'})
+            }
+            style={styles.profile}>
+            View profile
+          </Text>
+        </View>
+      </View>
+      {/* <DrawerContentScrollView style={{height: 200}} {...props}> */}
+      <View
+        style={{
+          height: '70%',
+          // backgroundColor: 'pink',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{}}>
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => <OrderIcon />}
+              label="My Orders"
+              onPress={() =>
+                navigation.navigate('orderStack', {screen: 'Order'})
+              }
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => (
+                <Icon
+                  name="cart-outline"
+                  color={colors.placeholder}
+                  size={size}
+                />
+              )}
+              label="My Cart"
+              onPress={() =>
+                navigation.navigate('homeStack', {screen: 'ShippingCart'})
+              }
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => (
+                <SimpleLineIcons
+                  name="handbag"
+                  color={colors.placeholder}
+                  size={size}
+                />
+              )}
+              onPress={() =>
+                navigation.navigate('savedStack', {screen: 'Saved'})
+              }
+              label="Saved Items"
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => (
+                <Icon
+                  name="help-circle-outline"
+                  color={colors.placeholder}
+                  size={size}
+                />
+              )}
+              label="Help and Support"
+              // onPress={() => {props.navigation.navigate('SupportScreen')}}
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => (
+                // <Icon
+                //   name="account-check-outline"
+                //   color={colors.placeholder}
+                //   size={size}
+                // />
+                <TermsIcon />
+              )}
+              label="Terms and Condition"
+              onPress={() => handlePress('https://google.com')}
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => (
+                <Icon
+                  name="content-copy"
+                  color={colors.placeholder}
+                  size={size}
+                />
+              )}
+              label="Privcy and Policy"
+              // onPress={() => {props.navigation.navigate('SupportScreen')}}
+            />
+          </Drawer.Section>
+          {/* <View style={{backgroundColor: 'yellow'}}>
+          <Button onPress={() => signOut()} color="red">
+            Sign out
+          </Button>
+          <View style={{position: 'absolute', left: 70, top: 5}}>
+            <FeatherIcon
+              name="log-out"
+              // onPress={() => signOut()}
+              style={{color: 'red', fontSize: 25}}
+            />
+          </View>
+        </View> */}
+        </View>
+        {/* </View> */}
+        <View style={{marginBottom: 10}}>
+          <Button onPress={() => signOut()} color="red">
+            Sign out
+          </Button>
+          <View style={{position: 'absolute', left: 70, top: 5}}>
+            <FeatherIcon
+              name="log-out"
+              // onPress={() => signOut()}
+              style={{color: 'red', fontSize: 25}}
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  drawerContent: {
+    // flex: 1,
+    // marginTop: -5,
+  },
+
+  imageBackground: {
+    height: 64,
+    width: 64,
+    marginTop: 40,
+    marginLeft: 20,
+
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    borderColor: 'white',
+    borderWidth: 3,
+    // backgroundColor: 'reds',
+  },
+  user: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: 'white',
+    marginVertical: 8,
+  },
+  profile: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'white',
+    // marginTop: 3,
+  },
+  section: {
+    // height: 50,
+  },
+});

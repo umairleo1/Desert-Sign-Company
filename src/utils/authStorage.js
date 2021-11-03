@@ -47,9 +47,9 @@ const getIsVerified = async () => {
 const getToken = async () => {
   try {
     const value = await AsyncStorage.getItem('authToken');
-    console.log('====================================');
-    console.log(value, 'token');
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log(value, 'token');
+    // console.log('====================================');
     return value != null ? JSON.parse(value) : null;
   } catch (e) {
     console.log('Error getting the authh token', e);

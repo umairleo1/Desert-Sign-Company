@@ -2,25 +2,39 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
-import AppIcon from '../../../svgs/AppIcon';
+import AppIcon from '../../../assets/svgs/AppIcon';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation, useTheme} from '@react-navigation/native';
-import {Button} from 'react-native-paper';
+import {Button, ActivityIndicator} from 'react-native-paper';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
-import {verifyOTP, resendOTP, updatePassword} from '../../service/auth.service';
+import {
+  verifyOTP,
+  resendOTPReset,
+  updatePassword,
+} from '../../service/auth.service';
 import authStorage from '../../utils/authStorage';
 
 export default function Otp() {
   const [otp, setOtp] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   const [id, setId] = React.useState();
   const [password, setPassword] = useState();
+  const [matchPassword, setMatchPassword] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = useState();
+  const [isFocus, setIsFoucus] = React.useState('');
   const {colors} = useTheme();
   const navigation = useNavigation();
+  const verifyConfirmPass = () => {
+    if (confirmPassword != password) {
+      setMatchPassword(true);
+    } else {
+      setMatchPassword(false);
+    }
+  };
   const getID = async () => {
     const id_ = await authStorage.getUserid();
-    console.log(id_), 'idddd';
+    // console.log(id_), 'idddd';
     setId(id_);
   };
   React.useEffect(() => {
@@ -29,6 +43,7 @@ export default function Otp() {
   });
   const hadleVerify = async () => {
     try {
+      setLoading(true);
       const result = await updatePassword(otp, id, password);
       console.log(result);
       if (result.status == 200) {
@@ -36,10 +51,12 @@ export default function Otp() {
           message: 'Password Updated',
           type: 'success',
         });
+        setLoading(false);
         navigation.navigate('Login');
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
+      setLoading(false);
       showMessage({
         message: e.errMsg,
         type: 'warning',
@@ -48,7 +65,7 @@ export default function Otp() {
   };
   const resend = async () => {
     try {
-      const result = await resendOTP();
+      const result = await resendOTPReset(id);
       showMessage({
         message: result.message,
         type: 'success',
@@ -62,8 +79,24 @@ export default function Otp() {
       });
     }
   };
+  const handleonFocus = id => {
+    switch (id) {
+      case '1':
+        // setEnableShift(false);
+        setIsFoucus('1');
+
+        break;
+      case '2':
+        // setEnableShift(false);
+        setIsFoucus('2');
+        break;
+
+      default:
+      // code block
+    }
+  };
   return (
-    <SafeAreaView style={{paddingHorizontal: 10}}>
+    <SafeAreaView style={{paddingHorizontal: 15}}>
       <View style={{paddingVertical: 10}}>
         <AppIcon />
       </View>
@@ -92,20 +125,21 @@ export default function Otp() {
       <View style={styles.testHolder}>
         <Text style={{fontSize: 16}}>Password</Text>
         <TextInput
-          style={styles.input}
+          style={[isFocus == '1' ? styles.focusInput : styles.input]}
           onChangeText={text => setPassword(text)}
           value={password}
           placeholder="Enter your new password"
           //   keyboardType="numeric"
           placeholderTextColor="gray"
           secureTextEntry={true}
+          onFocus={() => handleonFocus('1')}
         />
       </View>
       <View style={styles.testHolder}>
         <Text style={{fontSize: 16}}>Confirm Password</Text>
 
         <TextInput
-          style={styles.input}
+          style={[isFocus == '2' ? styles.focusInput : styles.input]}
           onChangeText={text => {
             setConfirmPassword(text);
           }}
@@ -114,16 +148,36 @@ export default function Otp() {
           //   keyboardType="numeric"
           placeholderTextColor="gray"
           secureTextEntry={true}
+          onFocus={() => handleonFocus('2')}
+          onBlur={() => verifyConfirmPass()}
         />
+
+        {matchPassword && (
+          <Text style={{color: 'red', padding: 5, paddingTop: 0}}>
+            Password not match
+          </Text>
+        )}
       </View>
-      <Button
-        color={colors.button}
-        onPress={() => hadleVerify()}
-        style={{marginTop: 20, padding: 10}}
-        labelStyle={{color: colors.background}}
-        mode="contained">
-        submit
-      </Button>
+      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+        <View style={{zIndex: -1, width: '100%'}}>
+          <Button
+            color={colors.button}
+            onPress={() => hadleVerify()}
+            style={styles.button}
+            labelStyle={{color: colors.background}}
+            mode="contained">
+            submit
+          </Button>
+          {loading && (
+            <ActivityIndicator
+              animating={true}
+              color={'white'}
+              style={{position: 'absolute', top: 35, left: 100}}
+            />
+          )}
+        </View>
+      </View>
+
       <View style={{marginTop: 10}}>
         <Button onPress={() => resend()} color={colors.signupButton}>
           Resend OTP
@@ -135,7 +189,7 @@ export default function Otp() {
 
 const styles = StyleSheet.create({
   borderStyleBase: {
-    width: 30,
+    width: 40,
     height: 45,
   },
 
@@ -144,7 +198,7 @@ const styles = StyleSheet.create({
   },
 
   underlineStyleBase: {
-    width: 30,
+    width: 40,
     height: 45,
     borderWidth: 1,
     borderBottomWidth: 1,
@@ -152,20 +206,41 @@ const styles = StyleSheet.create({
   },
 
   underlineStyleHighLighted: {
-    borderColor: '#000',
+    borderColor: '#7EC043',
   },
   title: {
     fontSize: 32,
     marginTop: 15,
   },
   input: {
-    height: 50,
-    margin: 12,
+    height: 45,
+    marginVertical: 10,
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
   },
   testHolder: {
     marginTop: 10,
+  },
+  focusInput: {
+    borderColor: '#7EC043',
+    height: 45,
+    marginVertical: 10,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
+  },
+  button: {
+    marginTop: 20,
+    padding: 10,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
 });

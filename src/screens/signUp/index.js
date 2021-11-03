@@ -10,38 +10,55 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Dimensions,
+  Keyboard,
 } from 'react-native';
-import {Checkbox} from 'react-native-paper';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Button} from 'react-native-paper';
+import {Button, ActivityIndicator} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import jwtDecode from 'jwt-decode';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
-import AppIcon from '../../../svgs/AppIcon';
+import AppIcon from '../../../assets/svgs/AppIcon';
 import {signup, valideteUserName} from '../../service/auth.service';
 import AuthContext from '../../utils/authContext';
 import authStorage from '../../utils/authStorage';
 import react from 'react';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 export default function index() {
+  const [secure, setSecure] = React.useState(true);
+  const [secure2, setSecure2] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [enableShift, setEnableShift] = React.useState(false);
   const [isAvailable, setIsAvailable] = React.useState('');
   const [userName, setUserName] = React.useState('');
   const [fullName, setFullName] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isFocus, setIsFoucus] = React.useState('');
   const [matchPassword, setMatchPassword] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [companyName, setCompanyName] = React.useState('');
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     {label: 'Lahore', value: 'lahore'},
     {label: 'Krachi', value: 'krachi'},
+    {label: 'Dubai', value: 'dubai'},
+    {label: 'NEWYORK', value: 'newyork'},
+  ]);
+  const [open1, setOpen1] = useState(false);
+  const [value1, setValue1] = useState('l');
+  const [items1, setItems1] = useState([
+    {label: 'Pakitan', value: 'pakistan'},
+    {label: 'Uk', value: 'uk'},
+    {label: 'USA', value: 'usa'},
+    {label: 'UAE', value: 'uae'},
   ]);
   const {colors} = useTheme();
   const navigation = useNavigation();
@@ -98,6 +115,7 @@ export default function index() {
   //functions
   const handleSignup = async () => {
     try {
+      setLoading(true);
       const result = await signup(
         userName,
         fullName,
@@ -107,12 +125,14 @@ export default function index() {
         value,
         'fcm9987',
         '1234',
+        value1,
+        companyName,
       );
       if (result?.status === 200) {
-        console.log(result.data.token, 'token after sign up');
+        // console.log(result.data.token, 'token after sign up');
         authStorage.storeUserid(result?.data?._id);
         const token = jwtDecode(result?.data?.token);
-        console.log(result.data.token, 'token after sign up after decode');
+        // console.log(result.data.token, 'token after sign up after decode');
         context.setUser(token);
 
         authStorage.storeToken(token);
@@ -120,6 +140,16 @@ export default function index() {
           message: result.message,
           type: 'success',
         });
+        setLoading(false);
+        setFullName('');
+        setEmail('');
+        setUserName('');
+        setPassword('');
+        setConfirmPassword('');
+        setPhoneNumber('');
+        setValue('');
+        setCompanyName('');
+        setValue1('');
         navigation.navigate('Otp');
       }
     } catch (err) {
@@ -128,183 +158,348 @@ export default function index() {
         message: err.errMsg,
         type: 'warning',
       });
+      setLoading(false);
     }
+  };
+  const handleonFocus = id => {
+    switch (id) {
+      case '1':
+        setEnableShift(false);
+        setIsFoucus('1');
 
-    // console.log('res', result);
-    // const result = await LoginService.login(userName, password);
-    // if (!result.ok)
-    // return console.log(result.data.data.token);
-    // const token = jwtDecode(result?.data?.token);
-    // authContext.setUser(token);
-    // authstorage.storeToken(result?.data?.token);
+        break;
+      case '2':
+        setEnableShift(false);
+        setIsFoucus('2');
+        break;
+      case '3':
+        setEnableShift(false);
+        setIsFoucus('3');
+        break;
+      case '4':
+        // setEnableShift(true);
+        setIsFoucus('4');
+        break;
+      case '5':
+        // setEnableShift(true);
+        setIsFoucus('5');
+        break;
+      case '6':
+        // setEnableShift(true);
+        setIsFoucus('6');
+        break;
+      case '7':
+        setIsFoucus('7');
+        break;
+      case '8':
+        setIsFoucus('8');
+        break;
+      case '9':
+        setIsFoucus('9');
+        break;
+      default:
+      // code block
+    }
   };
 
   return (
     <SafeAreaView
-      style={{paddingHorizontal: 15, height: height}}
+      style={{paddingHorizontal: 15, maxHeight: height}}
       edges={['top', 'left']}>
-      <View style={{paddingVertical: 5}}>
-        <AppIcon />
-      </View>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View>
+          <View style={{paddingVertical: 5}}>
+            <AppIcon />
+          </View>
 
-      <Text style={[styles.title, {color: colors.secondary}]}>Sign up</Text>
-      <ScrollView onPress={() => Keyboard.dismiss()}>
-        <KeyboardAvoidingView
-          keyboardShouldPersistTaps={true}
+          <Text style={[styles.title, {color: colors.secondary}]}>Sign up</Text>
+        </View>
+      </TouchableWithoutFeedback>
+      <ScrollView
+        keyboardShouldPersistTaps={'handled'}
+        showsVerticalScrollIndicator={false}>
+        {/* <KeyboardAvoidingView */}
+        {/* keyboardShouldPersistTaps={true}
           enabled={enableShift}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
-          {/* <DismissKeyboard> */}
+          behavior={Platform.OS === 'ios' ? 'position' : 'position'}> */}
+        {/* <DismissKeyboard> */}
 
-          <View style={styles.testHolder}>
-            <Text style={{fontSize: 16}}>Full Name</Text>
+        <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Full Name</Text>
+          <TextInput
+            style={[isFocus == '1' ? styles.focusInput : styles.input]}
+            onChangeText={text => setFullName(text)}
+            value={fullName}
+            placeholder="Enter your full name"
+            onFocus={() => handleonFocus('1')}
+            placeholderTextColor={'gray'}
+            onBlur={() => setIsFoucus(false)}
+          />
+        </View>
+        <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Email</Text>
+          <TextInput
+            style={[isFocus == '2' ? styles.focusInput : styles.input]}
+            onChangeText={text => setEmail(text)}
+            value={email}
+            placeholder="Enter your email address"
+            onFocus={() => handleonFocus('2')}
+            placeholderTextColor={'gray'}
+            autoCapitalize="none"
+          />
+        </View>
+        <View style={[styles.testHolder]}>
+          <Text style={{fontSize: 16}}>User Name</Text>
+          <View style={{flexDirection: 'row'}}>
             <TextInput
-              style={styles.input}
-              onChangeText={text => setFullName(text)}
-              value={fullName}
-              placeholder="Enter your full name"
-              onFocus={() => setEnableShift(false)}
+              style={[
+                isFocus == '3' ? styles.focusInput : styles.input,
+                {flex: 1},
+              ]}
+              onChangeText={text => validateNmae(text)}
+              value={userName}
+              placeholder="Enter your username"
+              onFocus={() => handleonFocus('3')}
               placeholderTextColor={'gray'}
             />
-          </View>
-          <View style={styles.testHolder}>
-            <Text style={{fontSize: 16}}>Email</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={text => setEmail(text)}
-              value={email}
-              placeholder="Enter your email address"
-              onFocus={() => setEnableShift(false)}
-              placeholderTextColor={'gray'}
-            />
-          </View>
-          <View style={[styles.testHolder]}>
-            <Text style={{fontSize: 16}}>User Name</Text>
-            <View style={{flexDirection: 'row'}}>
-              <TextInput
-                style={[styles.input, {flex: 1}]}
-                onChangeText={text => validateNmae(text)}
-                value={userName}
-                placeholder="Enter your username"
-                onFocus={() => setEnableShift(false)}
-                placeholderTextColor={'gray'}
+            {isAvailable === true && (
+              <Ionicons
+                style={{
+                  position: 'absolute',
+                  left: '90%',
+                  top: 23,
+                  fontSize: 18,
+                  color: 'green',
+                }}
+                name="checkmark-circle-outline"
               />
-              {isAvailable === true && (
-                <Ionicons
-                  style={{
-                    position: 'absolute',
-                    left: '90%',
-                    top: 15,
-                    fontSize: 18,
-                    color: 'green',
-                  }}
-                  name="checkmark-circle-outline"
-                />
-              )}
-              {isAvailable === false && (
-                <Entypo
-                  style={{
-                    position: 'absolute',
-                    left: '90%',
-                    top: 15,
-                    fontSize: 18,
-                    color: 'red',
-                  }}
-                  name="circle-with-cross"
-                />
-              )}
-            </View>
+            )}
+            {isAvailable === false && (
+              <Entypo
+                style={{
+                  position: 'absolute',
+                  left: '90%',
+                  top: 23,
+                  fontSize: 18,
+                  color: 'red',
+                }}
+                name="circle-with-cross"
+              />
+            )}
           </View>
-          <View style={styles.testHolder}>
-            <Text style={{fontSize: 16}}>Password</Text>
+        </View>
+        <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Password</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TextInput
-              style={styles.input}
+              autoCapitalize="none"
+              style={[
+                isFocus == '4' ? styles.focusInput : styles.input,
+                {flex: 1},
+              ]}
               onChangeText={text => setPassword(text)}
               value={password}
               placeholder="Enter your password"
-              secureTextEntry={true}
-              onFocus={() => setEnableShift(true)}
+              secureTextEntry={secure}
+              onFocus={() => handleonFocus('4')}
               placeholderTextColor={'gray'}
             />
+            <Icon
+              onPress={() => (secure ? setSecure(false) : setSecure(true))}
+              style={{position: 'absolute', right: 15, fontSize: 20}}
+              name={secure ? 'eye-off-outline' : 'eye-outline'}
+            />
           </View>
-          <View style={styles.testHolder}>
-            <Text style={{fontSize: 16}}>Confirm Password</Text>
+        </View>
+        <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Confirm Password</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TextInput
-              style={styles.input}
+              autoCapitalize="none"
+              style={[
+                isFocus == '5' ? styles.focusInput : styles.input,
+                {flex: 1},
+              ]}
               onChangeText={text => setConfirmPassword(text)}
               value={confirmPassword}
               placeholder="Renter Your Password"
-              secureTextEntry={true}
-              onFocus={() => setEnableShift(true)}
+              secureTextEntry={secure2}
+              onFocus={() => handleonFocus('5')}
               placeholderTextColor={'gray'}
               onBlur={() => verifyConfirmPass()}
             />
-            {matchPassword && (
-              <Text style={{color: 'red', padding: 5, paddingTop: 0}}>
-                Password not match
-              </Text>
-            )}
-          </View>
-          <View style={styles.testHolder}>
-            <Text style={{fontSize: 16}}>Phone Number</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={text => setPhoneNumber(text)}
-              value={phoneNumber}
-              placeholder="Phone number"
-              keyboardType="numeric"
-              placeholderTextColor={'gray'}
-              onFocus={() => setEnableShift(true)}
+            <Icon
+              onPress={() => (secure2 ? setSecure2(false) : setSecure2(true))}
+              style={{position: 'absolute', right: 15, fontSize: 20}}
+              name={secure2 ? 'eye-off-outline' : 'eye-outline'}
             />
           </View>
-          <View style={styles.testHolder}>
-            <Text style={{fontSize: 16}}>Location</Text>
-            <View
-              style={{
-                marginHorizontal: 6,
-                marginVertical: 5,
-
-                // borderRadius: 10,
-                // zIndex: 200,
-                // paddingBottom: 50,
-              }}>
-              <DropDownPicker
-                style={{height: 45}}
-                labelStyle={{}}
-                // maxHeight={80}
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="Select Location"
-                placeholderStyle={{color: 'gray'}}
-              />
-            </View>
-          </View>
-
-          {/* </DismissKeyboard> */}
-        </KeyboardAvoidingView>
-      </ScrollView>
-      <View style={{zIndex: -1}}>
-        <View style={{zIndex: -1}}>
-          <Button
-            color={colors.button}
-            onPress={() => handleSignup()}
-            style={{padding: 5, borderRadius: 10}}
-            labelStyle={{color: colors.background}}
-            mode="contained">
-            Sign up
-          </Button>
+          {matchPassword && (
+            <Text style={{color: 'red', padding: 5, paddingTop: 0}}>
+              Password do not match
+            </Text>
+          )}
         </View>
-        <View style={styles.createAccount}>
-          <Text>Already have an account?</Text>
-          <Button
-            style={{}}
-            onPress={() => navigation.navigate('Login')}
-            color={colors.signupButton}>
-            Sign in
-          </Button>
+        <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Phone Number</Text>
+          <TextInput
+            style={[isFocus == '6' ? styles.focusInput : styles.input]}
+            onChangeText={text => setPhoneNumber(text)}
+            value={phoneNumber}
+            placeholder="Phone number"
+            keyboardType="numeric"
+            placeholderTextColor={'gray'}
+            onFocus={() => handleonFocus('6')}
+          />
+        </View>
+        <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Company Name</Text>
+          <TextInput
+            style={[isFocus == '8' ? styles.focusInput : styles.input]}
+            onChangeText={text => setCompanyName(text)}
+            value={companyName}
+            placeholder="Company Name"
+            placeholderTextColor={'gray'}
+            onFocus={() => handleonFocus('8')}
+          />
+        </View>
+        <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Location</Text>
+          <View
+            style={{
+              marginHorizontal: 4,
+              marginVertical: 5,
+            }}>
+            {/* <DropDownPicker
+              style={[
+                isFocus == '7'
+                  ? {borderColor: '#7EC043', height: 45}
+                  : {height: 45},
+              ]}
+              labelStyle={{}}
+              open={open}
+              value={value}
+              items={items}
+              zIndex={5000}
+              zIndexInverse={4000}
+              dropDownDirection={'TOP'}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              placeholder="Select Location"
+              placeholderStyle={{color: 'gray'}}
+              onPress={() => handleonFocus('7')}
+              onClose={() => setIsFoucus('')}
+              dropDownContainerStyle={[
+                isFocus == '7'
+                  ? {borderColor: '#7EC043'}
+                  : {borderColor: '#000'},
+              ]}
+            /> */}
+            <GooglePlacesAutocomplete
+              styles={{
+                listView: {},
+                textInput: {
+                  borderColor: isFocus == '9' ? colors.secondary : null,
+                  borderWidth: 1,
+                },
+              }}
+              // onFail={err => console.log(err, 'fuck')}
+              textInputProps={{
+                textAlign: 'left',
+                onFocus: () => handleonFocus('9'),
+              }}
+              placeholder={'Location'}
+              onPress={(data, details = null) => {
+                // handleonFocus('3');
+
+                // console.log(data, details, 'here is');
+                setValue(data?.description);
+                // handleonFocus('3');
+              }}
+              query={{
+                key: 'AIzaSyDDANw8GBVlla0rxNNegrBFhxjQizW6ZjE',
+                language: 'en',
+              }}
+            />
+          </View>
+        </View>
+        {/* <View style={styles.testHolder}>
+          <Text style={{fontSize: 16}}>Country</Text>
+          <View
+            style={{
+              marginHorizontal: 4,
+              marginVertical: 5,
+            }}>
+            <DropDownPicker
+              style={[
+                isFocus == '9'
+                  ? {borderColor: '#7EC043', height: 45}
+                  : {height: 45},
+              ]}
+              labelStyle={{}}
+              // maxHeight={80}
+              open={open1}
+              value={value1}
+              items={items1}
+              zIndex={6000}
+              zIndexInverse={5000}
+              setOpen={setOpen1}
+              setValue={setValue1}
+              setItems={setItems1}
+              placeholder="Select Countary"
+              placeholderStyle={{color: 'gray'}}
+              onPress={() => handleonFocus('9')}
+              onClose={() => setIsFoucus('')}
+              dropDownContainerStyle={[
+                isFocus == '9'
+                  ? {borderColor: '#7EC043'}
+                  : {borderColor: '#000'},
+              ]}
+            />
+          </View>
+        </View> */}
+      </ScrollView>
+
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            zIndex: -1,
+            height: 130,
+            // justifyContent: 'center',
+
+            width: '100%',
+          }}>
+          <View style={{zIndex: -1, width: '100%'}}>
+            <Button
+              color={colors.button}
+              onPress={() => handleSignup()}
+              style={styles.button}
+              labelStyle={{color: colors.background}}
+              mode="contained"
+              disabled={loading}>
+              Sign up
+            </Button>
+          </View>
+          {loading && (
+            <ActivityIndicator
+              animating={true}
+              color={'white'}
+              style={{position: 'absolute', top: 15, left: 100}}
+            />
+          )}
+          <View style={styles.createAccount}>
+            <Text style={{textDecorationLine: 'underline', color: 'gray'}}>
+              Already have an account?
+            </Text>
+            <Button
+              uppercase={false}
+              style={{textDecorationLine: 'underline'}}
+              onPress={() => navigation.navigate('Login')}
+              color={colors.signupButton}>
+              Sign in
+            </Button>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -314,7 +509,7 @@ export default function index() {
 const styles = StyleSheet.create({
   title: {
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginVertical: 10,
   },
   input: {
@@ -336,9 +531,31 @@ const styles = StyleSheet.create({
   },
   createAccount: {
     flexDirection: 'row',
-    paddingBottom: 10,
+    // paddingBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: 5,
+  },
+  focusInput: {
+    borderColor: '#7EC043',
+    height: 45,
+    marginVertical: 10,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
+  },
+  button: {
+    // marginTop: 20,
+    padding: 10,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
+    // width: '100%',
   },
 });

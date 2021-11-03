@@ -13,6 +13,8 @@ export const signup = async (
   location,
   fCMToken,
   creditLimit,
+  country,
+  companyName,
 ) => {
   return client.post(URL.SIGNUP_URL, {
     userName,
@@ -23,18 +25,20 @@ export const signup = async (
     location,
     fCMToken,
     creditLimit,
+    country,
+    companyName,
   });
 };
 
 export const verifyOTP = async (verificationCode, id) => {
-  console.log(URL.VERIFY_OTP_URL + `/${id}`, verificationCode);
+  // console.log(URL.VERIFY_OTP_URL + `/${id}`, verificationCode);
   return client.patch(URL.VERIFY_OTP_URL + `/${id}`, {
     verificationCode,
   });
 };
 
 export const updatePassword = async (resetPasswordCode, id, password) => {
-  console.log(URL.UPDATE_PASSWORD_URL + `/${id}`, resetPasswordCode), password;
+  // console.log(URL.UPDATE_PASSWORD_URL + `/${id}`, resetPasswordCode), password;
   return client.patch(URL.UPDATE_PASSWORD_URL + `/${id}`, {
     resetPasswordCode,
     password,
@@ -48,6 +52,7 @@ export const forgetPassword = async email => {
 export const resendOTP = async id => {
   // const id = jsonID?._W;
   // console.log(id, 'id');
+  // console.log(id, 'id=======');
   return client.post(URL.RESEND_OTP_URL_VERIFY, {id});
 };
 export const resendOTPReset = async id => {
@@ -56,8 +61,8 @@ export const resendOTPReset = async id => {
   return client.post(URL.RESEND_OTP_URL_RESET, {id});
 };
 
-export const logIn = async (email, password, fCMToken, type) => {
-  return client.post(URL.SIGNIN_URL, {email, password, fCMToken, type});
+export const logIn = async (userName, password, fCMToken, type) => {
+  return client.post(URL.SIGNIN_URL, {userName, password, fCMToken, type});
 };
 export const valideteUserName = async userName => {
   return client.patch(URL.VERIFY_UNSERNAME_URL, {userName});

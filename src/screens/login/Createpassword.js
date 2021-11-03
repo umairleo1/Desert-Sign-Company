@@ -5,7 +5,7 @@ import {Checkbox} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button} from 'react-native-paper';
 
-import AppIcon from '../../../svgs/AppIcon';
+import AppIcon from '../../../assets/svgs/AppIcon';
 
 export default function index() {
   const {colors} = useTheme();
