@@ -153,9 +153,9 @@ export default function index() {
           password,
           value,
           'fcm9987',
-          'Android',
           '1234',
           'value1',
+          'Android',
           companyName,
         );
         if (result?.status === 200) {
@@ -581,7 +581,13 @@ export default function index() {
             />
           )}
           <View style={styles.createAccount}>
-            <Text style={{textDecorationLine: 'underline', color: 'gray'}}>
+            <Text
+              style={{
+                textDecorationLine: 'underline',
+                color: 'gray',
+                fontFamily: 'Proxima Nova Font',
+                fontSize: 15,
+              }}>
               Already have an account?
             </Text>
             <Button

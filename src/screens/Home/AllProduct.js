@@ -16,25 +16,50 @@ import {getProducts} from '../../service/app.service';
 export default function FeaturedProduct() {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
-  const [products, setProducts] = React.useState();
+  const [products, setProducts] = React.useState([
+    {
+      id: 1,
+      consignmentNo: 'ED123553DD4335',
+      driverName: 'Amir',
+      shippingStatus: 'Shipping',
+    },
+    {
+      id: 2,
+      consignmentNo: 'ABC423444V4445',
+      driverName: 'Adnan',
+      shippingStatus: 'Shipping',
+    },
+    {
+      id: 3,
+      consignmentNo: 'VBD335VV665556',
+      driverName: 'Talha',
+      shippingStatus: 'Shipping',
+    },
+    {
+      id: 4,
+      consignmentNo: 'ASOH676BB55555',
+      driverName: 'Ahmed',
+      shippingStatus: 'Shipping',
+    },
+  ]);
   const [refreshing, setRefreshing] = React.useState(false);
   const render = ({item}) => {
     return <RenderItem item={item} />;
   };
-  React.useEffect(async () => {
-    // setActivityIndicator(true);
-    const data = await getProducts();
-    setProducts(data.data);
-    // console.log('products');
-    // setActivityIndicator(false);
-  }, [isFocused]);
+  // React.useEffect(async () => {
+  //   // setActivityIndicator(true);
+  //   const data = await getProducts();
+  //   setProducts(data.data);
+  //   // console.log('products');
+  //   // setActivityIndicator(false);
+  // }, [isFocused]);
 
   const onRefresh = async () => {
     try {
       setRefreshing(true);
-      const data = await getProducts();
+      // const data = await getProducts();
 
-      setProducts(data.data);
+      // setProducts(data.data);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);
@@ -64,6 +89,7 @@ export default function FeaturedProduct() {
       <View style={{marginTop: 10, flex: 1}}>
         {/* <ScrollView>*/}
         <FlatList
+          keyExtractor={item => item?.id}
           data={products}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}

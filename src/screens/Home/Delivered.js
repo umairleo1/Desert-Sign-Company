@@ -11,32 +11,32 @@ import {
 import RenderItem from './renderItem';
 import mockData from '../../../mock/data.json';
 
-export default function Services() {
+export default function Delivered() {
   const {colors} = useTheme();
   const [products, setProducts] = React.useState([
     {
       id: 1,
       consignmentNo: 'ED123553DD4335',
       driverName: 'Amir',
-      shippingStatus: 'To be Shipped',
+      shippingStatus: 'Delivered',
     },
     {
       id: 2,
       consignmentNo: 'ABC423444V4445',
       driverName: 'Adnan',
-      shippingStatus: 'To be Shipped',
+      shippingStatus: 'Delivered',
     },
     {
       id: 3,
       consignmentNo: 'VBD335VV665556',
       driverName: 'Talha',
-      shippingStatus: 'To be Shipped',
+      shippingStatus: 'Delivered',
     },
     {
       id: 4,
       consignmentNo: 'ASOH676BB55555',
       driverName: 'Ahmed',
-      shippingStatus: 'To be Shipped',
+      shippingStatus: 'Delivered',
     },
   ]);
   const [refreshing, setRefreshing] = React.useState(false);

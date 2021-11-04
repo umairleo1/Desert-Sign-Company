@@ -116,58 +116,11 @@ export function DrawerContent(props) {
             <DrawerItem
               labelStyle={{color: colors.placeholder}}
               icon={({color, size}) => <OrderIcon />}
-              label="My Orders"
-              onPress={() =>
-                navigation.navigate('orderStack', {screen: 'Order'})
-              }
+              label="Shipments"
+              // onPress={() => navigation.navigate('profileStack')}
             />
           </Drawer.Section>
-          <Drawer.Section style={styles.section}>
-            <DrawerItem
-              labelStyle={{color: colors.placeholder}}
-              icon={({color, size}) => (
-                <Icon
-                  name="cart-outline"
-                  color={colors.placeholder}
-                  size={size}
-                />
-              )}
-              label="My Cart"
-              onPress={() =>
-                navigation.navigate('homeStack', {screen: 'ShippingCart'})
-              }
-            />
-          </Drawer.Section>
-          <Drawer.Section style={styles.section}>
-            <DrawerItem
-              labelStyle={{color: colors.placeholder}}
-              icon={({color, size}) => (
-                <SimpleLineIcons
-                  name="handbag"
-                  color={colors.placeholder}
-                  size={size}
-                />
-              )}
-              onPress={() =>
-                navigation.navigate('savedStack', {screen: 'Saved'})
-              }
-              label="Saved Items"
-            />
-          </Drawer.Section>
-          <Drawer.Section style={styles.section}>
-            <DrawerItem
-              labelStyle={{color: colors.placeholder}}
-              icon={({color, size}) => (
-                <Icon
-                  name="help-circle-outline"
-                  color={colors.placeholder}
-                  size={size}
-                />
-              )}
-              label="Help and Support"
-              // onPress={() => {props.navigation.navigate('SupportScreen')}}
-            />
-          </Drawer.Section>
+
           <Drawer.Section style={styles.section}>
             <DrawerItem
               labelStyle={{color: colors.placeholder}}
@@ -179,24 +132,11 @@ export function DrawerContent(props) {
                 // />
                 <TermsIcon />
               )}
-              label="Terms and Condition"
+              label="Drivers"
               onPress={() => handlePress('https://google.com')}
             />
           </Drawer.Section>
-          <Drawer.Section style={styles.section}>
-            <DrawerItem
-              labelStyle={{color: colors.placeholder}}
-              icon={({color, size}) => (
-                <Icon
-                  name="content-copy"
-                  color={colors.placeholder}
-                  size={size}
-                />
-              )}
-              label="Privcy and Policy"
-              // onPress={() => {props.navigation.navigate('SupportScreen')}}
-            />
-          </Drawer.Section>
+
           {/* <View style={{backgroundColor: 'yellow'}}>
           <Button onPress={() => signOut()} color="red">
             Sign out

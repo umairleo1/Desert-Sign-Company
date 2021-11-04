@@ -14,9 +14,11 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch, connect} from 'react-redux';
 
 import Header from './Header';
-import Product from './Product';
-import AllProduct from './AllProduct';
+import AllOrders from './Product';
+import Shipping from './AllProduct';
+import TobeShipped from './Services';
 import Services from './Services';
+import Delivered from './Delivered';
 
 export default function index() {
   const layout = useWindowDimensions();
@@ -31,15 +33,17 @@ export default function index() {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'Featured Product'},
-    {key: 'second', title: 'All Products'},
-    {key: 'third', title: 'All Services'},
+    {key: 'first', title: 'All Orders'},
+    {key: 'second', title: 'Shipping'},
+    {key: 'third', title: 'To be Shipped'},
+    {key: 'four', title: 'Delivered'},
   ]);
 
   const renderScene = SceneMap({
-    first: Product,
-    second: AllProduct,
-    third: Services,
+    first: AllOrders,
+    second: Shipping,
+    third: TobeShipped,
+    four: Delivered,
   });
   const renderHeader = props => <TabBar style={{elevation: 0}} {...props} />;
 
@@ -47,15 +51,18 @@ export default function index() {
     <TabBar
       {...props}
       indicatorStyle={{backgroundColor: colors.primary}}
-      style={{backgroundColor: 'white', elevation: 0}}
-      labelStyle={{color: 'gray', fontSize: 10}}
+      style={{backgroundColor: '#fff', elevation: 0}}
+      labelStyle={{
+        color: 'gray',
+        fontSize: 10,
+        fontFamily: 'Proxima Nova Font',
+        fontWeight: '400',
+      }}
       activeColor={colors.primary}
     />
   );
 
   return (
-    // <>
-    //   <StatusBar barStyle="dark-content" backgroundColor="white" />
     <SafeAreaView style={{paddingHorizontal: 15, flex: 1}}>
       {isFocused && (
         <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -69,6 +76,7 @@ export default function index() {
         onIndexChange={setIndex}
         initialLayout={{width: layout.width}}
         renderTabBar={renderTabBar}
+        style={{marginBottom: 5}}
         // renderHeader={renderHeader}
       />
     </SafeAreaView>

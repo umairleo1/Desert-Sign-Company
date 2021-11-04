@@ -66,7 +66,9 @@ export default function index() {
         </Text>
       </View>
       <View style={{width: '70%', marginTop: 5}}>
-        <Text onPress={() => ExampleSend()} style={styles.description}>
+        <Text
+          onPress={() => ExampleSend()}
+          style={[styles.description, {color: '#000000'}]}>
           Improve your productivity and save more time by on boarding all
           consignments
         </Text>
@@ -87,7 +89,14 @@ export default function index() {
           justifyContent: 'center',
           marginBottom: 20,
         }}>
-        <Text style={{color: 'gray'}}>Don't have an account?</Text>
+        <Text
+          style={{
+            color: 'gray',
+            fontFamily: 'Proxima Nova Font',
+            fontSize: 15,
+          }}>
+          Don't have an account?
+        </Text>
         <Button
           uppercase={false}
           onPress={() => navigation.navigate('SignUp')}
@@ -102,12 +111,15 @@ export default function index() {
 
 const styles = StyleSheet.create({
   heading: {
+    fontFamily: 'Proxima Nova Font',
     fontSize: 32,
     fontWeight: '700',
   },
   description: {
+    fontFamily: 'Proxima Nova Font',
     fontSize: 18,
-
+    lineHeight: 22,
+    textAlign: 'justify',
     // fontWeight: 'normal',
     // fontFamily: 'Proxima Nova Alt Condensed Light',
   },

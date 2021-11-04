@@ -27,6 +27,7 @@ export default function index() {
           // onChangeText={onChangeNumber}
           // value={number}
           placeholder="Enter your new password"
+          autoCapitalize="none"
           //   keyboardType="numeric"
           placeholderTextColor="gray"
         />
@@ -39,6 +40,7 @@ export default function index() {
           // onChangeText={onChangeNumber}
           // value={number}
           placeholder="Confirm your Password"
+          autoCapitalize="none"
           //   keyboardType="numeric"
           placeholderTextColor="gray"
         />

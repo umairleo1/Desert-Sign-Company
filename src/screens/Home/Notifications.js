@@ -47,7 +47,7 @@ export default function Notifications() {
 
   return (
     <SafeAreaView style={{marginHorizontal: 15}}>
-      <SecondaryHeader title={'Notifications'} iconName={'arrowleft'} />
+      <SecondaryHeader title={'Notifications'} />
       <View style={styles.notificationBar}>
         <Text style={styles.notificationTitle}>Recent Notifications</Text>
         <EvilIcons style={styles.Icon} name="bell" />

@@ -15,7 +15,9 @@ export const signup = async (
   creditLimit,
   country,
   companyName,
+  deviceType,
 ) => {
+  console.log('xxxxxxx ', creditLimit);
   return client.post(URL.SIGNUP_URL, {
     userName,
     fullName,
@@ -27,6 +29,7 @@ export const signup = async (
     creditLimit,
     country,
     companyName,
+    deviceType,
   });
 };
 
