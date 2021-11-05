@@ -19,14 +19,16 @@ export default function SecondaryHeader(props) {
         </View>
         <View style={styles.headingSection}>
           <Text style={styles.heading}>{props?.title}</Text>
-          <Text
-            style={{
-              fontFamily: 'Proxima Nova Font',
-              fontSize: 11,
-              color: 'grey',
-            }}>
-            #{props?.consignmentNumber}
-          </Text>
+          {props.consignmentNumber && (
+            <Text
+              style={{
+                fontFamily: 'Proxima Nova Font',
+                fontSize: 11,
+                color: 'grey',
+              }}>
+              #{props?.consignmentNumber}
+            </Text>
+          )}
         </View>
       </View>
       <View style={{position: 'absolute', right: 5}}>
@@ -52,7 +54,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: 'center',
   },
-  iconSection: {width: '8%', justifyContent: 'center'},
+  iconSection: {
+    width: '8%',
+    justifyContent: 'center',
+    // backgroundColor: 'red',
+    // marginLeft: -10,
+    // paddingLeft: 10,
+  },
   header: {
     height: 50,
     justifyContent: 'center',

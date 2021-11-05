@@ -27,6 +27,7 @@ import DetailedImage from '../screens/Home/DetailedImage';
 import Saved from '../screens/savedItem/';
 
 import Order from '../screens/order/index';
+import UpdateConsignment from '../screens/order/updateConsignment';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -85,6 +86,7 @@ const homeStack = () => (
       // options={{unmountOnBlur: true}}
     />
     <Stack.Screen name="ConsignmentDetails" component={Order} />
+    <Stack.Screen name="UpdateConsignment" component={UpdateConsignment} />
     <Stack.Screen name="Notification" component={Notifications} />
     <Stack.Screen name="Search" component={Search} />
 

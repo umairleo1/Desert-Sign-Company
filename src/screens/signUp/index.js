@@ -617,6 +617,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
+  focusInput: {
+    borderColor: '#7EC043',
+    height: 45,
+    marginVertical: 10,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
+  },
   testHolder: {
     marginTop: 3,
   },
@@ -634,14 +642,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 5,
   },
-  focusInput: {
-    borderColor: '#7EC043',
-    height: 45,
-    marginVertical: 10,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5,
-  },
+
   button: {
     // marginTop: 20,
     padding: 10,

@@ -155,7 +155,13 @@ export default function index() {
             <Text style={styles.popupText}>Share</Text>
           </TouchableOpacity>
           <View style={styles.divider} />
-          <TouchableOpacity onPress={() => setShowPopup(!showPopup)}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowPopup(!showPopup),
+                navigation.navigate('UpdateConsignment', {
+                  consignmentNumber: route?.params?.consignment?.consignmentNo,
+                });
+            }}>
             <Text style={styles.popupText}>Update</Text>
           </TouchableOpacity>
           <View style={styles.divider} />
