@@ -39,7 +39,7 @@ const renderItem = item => {
         <View style={styles.contentView}>
           <Text
             style={{
-              fontFamily: 'Proxima Nova Font',
+              fontFamily: 'SourceSansPro-Regular',
               fontSize: 15,
               fontWeight: '600',
               color: '#060F2F',
@@ -49,7 +49,7 @@ const renderItem = item => {
           </Text>
           <Text
             style={{
-              fontFamily: 'Proxima Nova Font',
+              fontFamily: 'SourceSansPro-Regular',
               fontSize: 14,
               fontWeight: '400',
               color: '#6B7280',
@@ -59,7 +59,7 @@ const renderItem = item => {
           </Text>
           <Text
             style={{
-              fontFamily: 'Proxima Nova Font',
+              fontFamily: 'SourceSansPro-Regular',
               fontSize: 14,
               fontWeight: '600',
               color: '#0B0287',

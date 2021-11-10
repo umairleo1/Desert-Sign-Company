@@ -11,8 +11,7 @@ import {
 import {Button, Drawer} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import AuthContext from '../utils/authContext';
@@ -25,42 +24,36 @@ import OrderIcon from '../../assets/svgs/OrderIcon';
 import TermsIcon from '../../assets/svgs/TermsIcon';
 
 export function DrawerContent(props) {
-  const [data, setData] = React.useState();
-  // const [profile, setProfile] = React.useState();
+  const navigation = useNavigation();
+  const {colors} = useTheme();
+
+  const [showAlertSignOut, setShowAlertSignOut] = React.useState(false);
   const context = React.useContext(AuthContext);
+
+  React.useEffect(() => {
+    storeProfile();
+  }, []);
 
   const storeProfile = async () => {
     const id = await authStorage.getUserid();
-
     try {
       const data = await getUser(id);
-
       context.setProfile(data.data);
     } catch (e) {
       console.log(e);
     }
   };
-  React.useEffect(() => {
-    storeProfile();
-  }, []);
-
-  const navigation = useNavigation();
 
   const signOut = () => {
     authStorage.removeValue();
     context.setUser('');
-
     context.setUserID('');
     context.setIsverified('false');
   };
-  const {colors} = useTheme();
 
   const handlePress = async url => {
     const supported = await Linking.canOpenURL(url);
-
     if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
       await Linking.openURL(url);
     } else {
       Alert.alert(`Don't know how to open this URL: ${url}`);
@@ -72,10 +65,7 @@ export function DrawerContent(props) {
       style={{
         flex: 1,
         backgroundColor: 'white',
-        // justifyContent: 'space-between',
       }}>
-      {/* <View> */}
-      {/* <StatusBar backgroundColor={colors.profileBcackGround} /> */}
       <View
         style={{
           height: '30%',
@@ -104,89 +94,112 @@ export function DrawerContent(props) {
           </Text>
         </View>
       </View>
-      {/* <DrawerContentScrollView style={{height: 200}} {...props}> */}
+
       <View
         style={{
           height: '70%',
-          // backgroundColor: 'pink',
           justifyContent: 'space-between',
         }}>
-        <View style={{}}>
+        <View>
           <Drawer.Section style={styles.section}>
             <DrawerItem
               labelStyle={{color: colors.placeholder}}
               icon={({color, size}) => <OrderIcon />}
-              label="Shipments"
-              // onPress={() => navigation.navigate('profileStack')}
+              label="Orders"
+              onPress={() => navigation.navigate('homeStack')}
             />
           </Drawer.Section>
-
           <Drawer.Section style={styles.section}>
             <DrawerItem
               labelStyle={{color: colors.placeholder}}
-              icon={({color, size}) => (
-                // <Icon
-                //   name="account-check-outline"
-                //   color={colors.placeholder}
-                //   size={size}
-                // />
-                <TermsIcon />
-              )}
-              label="Drivers"
+              icon={({color, size}) => <TermsIcon />}
+              label="Consignments"
               onPress={() => handlePress('https://google.com')}
             />
           </Drawer.Section>
-
-          {/* <View style={{backgroundColor: 'yellow'}}>
-          <Button onPress={() => signOut()} color="red">
-            Sign out
-          </Button>
-          <View style={{position: 'absolute', left: 70, top: 5}}>
-            <FeatherIcon
-              name="log-out"
-              // onPress={() => signOut()}
-              style={{color: 'red', fontSize: 25}}
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => <TermsIcon />}
+              label="Vehicles"
+              onPress={() => handlePress('https://google.com')}
             />
-          </View>
-        </View> */}
+          </Drawer.Section>
         </View>
-        {/* </View> */}
-        <View style={{marginBottom: 10}}>
-          <Button onPress={() => signOut()} color="red">
+
+        <View style={{marginBottom: 20}}>
+          <Button onPress={() => setShowAlertSignOut(true)} color="#FF523F">
             Sign out
           </Button>
           <View style={{position: 'absolute', left: 70, top: 5}}>
             <FeatherIcon
               name="log-out"
-              // onPress={() => signOut()}
-              style={{color: 'red', fontSize: 25}}
+              style={{color: '#FF523F', fontSize: 25}}
             />
           </View>
         </View>
       </View>
+      <AwesomeAlert
+        show={showAlertSignOut}
+        showProgress={false}
+        title="Sign out"
+        message="Are you sure you want to Sign out?"
+        closeOnTouchOutside={false}
+        showCancelButton={true}
+        showConfirmButton={true}
+        cancelText="No"
+        confirmText="Yes"
+        confirmButtonColor="#DD6B55"
+        onCancelPressed={() => setShowAlertSignOut(false)}
+        onConfirmPressed={signOut}
+        contentContainerStyle={{
+          borderRadius: 20,
+          width: '100%',
+          paddingHorizontal: 0,
+        }}
+        titleStyle={{
+          fontFamily: 'SourceSansPro-Regular',
+          fontSize: 16,
+          color: '#3D3D3D',
+          opacity: 0.5,
+        }}
+        messageStyle={{
+          fontFamily: 'SourceSansPro-Regular',
+          fontSize: 14,
+          color: '#3D3D3D',
+          opacity: 1,
+        }}
+        cancelButtonStyle={{
+          height: 34,
+          width: 109,
+          alignItems: 'center',
+          backgroundColor: '#ffffff',
+          borderWidth: 1,
+          borderColor: '#FF523F',
+        }}
+        cancelButtonTextStyle={{color: '#FF523F'}}
+        confirmButtonStyle={{
+          height: 34,
+          width: 109,
+          alignItems: 'center',
+          backgroundColor: '#FF523F',
+        }}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  drawerContent: {
-    // flex: 1,
-    // marginTop: -5,
-  },
-
   imageBackground: {
     height: 64,
     width: 64,
     marginTop: 40,
     marginLeft: 20,
-
     borderRadius: 60,
     alignItems: 'center',
     justifyContent: 'center',
-
     borderColor: 'white',
     borderWidth: 3,
-    // backgroundColor: 'reds',
   },
   user: {
     fontSize: 16,
@@ -198,9 +211,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: 'white',
-    // marginTop: 3,
-  },
-  section: {
-    // height: 50,
   },
 });

@@ -585,7 +585,7 @@ export default function index() {
               style={{
                 textDecorationLine: 'underline',
                 color: 'gray',
-                fontFamily: 'Proxima Nova Font',
+                fontFamily: 'SourceSansPro-Regular',
                 fontSize: 15,
               }}>
               Already have an account?

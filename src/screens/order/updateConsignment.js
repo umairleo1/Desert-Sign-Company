@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, ScrollView, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme, useNavigation, useRoute} from '@react-navigation/native';
 import {Button, ActivityIndicator} from 'react-native-paper';
@@ -54,10 +61,8 @@ export default function updateConsignment() {
         keyboardShouldPersistTaps={'handled'}
         style={{flex: 1, paddingTop: 10}}
         showsVerticalScrollIndicator={false}>
-        <KeyboardAwareScrollView
-          style={{paddingBottom: 10}}
-          keyboardShouldPersistTaps={'handled'}
-          extraScrollHeight={175}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <View style={styles.testHolder}>
             <Text style={styles.textInputTitle}>Consignment Name</Text>
             <TextInput
@@ -106,7 +111,7 @@ export default function updateConsignment() {
               onBlur={() => setIsFoucus(false)}
             />
           </View>
-        </KeyboardAwareScrollView>
+        </KeyboardAvoidingView>
       </ScrollView>
       <View style={{zIndex: -1, width: '100%', marginBottom: 5}}>
         <Button
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   textInputTitle: {
-    fontFamily: 'Proxima Nova Font',
+    fontFamily: 'SourceSansPro-Regular',
     fontSize: 16,
     fontWeight: '600',
     color: '#060F2F',

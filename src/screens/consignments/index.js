@@ -13,7 +13,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch, connect} from 'react-redux';
 
-import Header from '../../common/Header';
+import Header from './Header';
 import AllOrders from './Product';
 import Shipping from './AllProduct';
 import TobeShipped from './Services';
@@ -67,7 +67,7 @@ export default function index() {
         <StatusBar barStyle="dark-content" backgroundColor="white" />
       )}
       <View style={{paddingVertical: 10}}>
-        <Header title="Shipments" />
+        <Header />
       </View>
       <TabView
         navigationState={{index, routes}}

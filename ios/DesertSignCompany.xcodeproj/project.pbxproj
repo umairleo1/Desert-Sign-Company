@@ -14,9 +14,11 @@
 		61C6BEDA9D25209BDE08B899 /* libPods-DesertSignCompany.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECEABB0C11BE86C77E599194 /* libPods-DesertSignCompany.a */; };
 		7934E0AE81CBC9321CFB81D4 /* libPods-DesertSignCompany-DesertSignCompanyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3F483AF4CFB4AF946EC8A1 /* libPods-DesertSignCompany-DesertSignCompanyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		93EBB24E273927B200D8505E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93EBB24D273927B200D8505E /* GoogleService-Info.plist */; };
 		DF214EDD26F1E6D900BC480E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF214EDC26F1E6D900BC480E /* File.swift */; };
 		DF633BE126D65F6A00447E06 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF633BE026D65F6A00447E06 /* libRNSVG.a */; };
-		DFB9F8742722EED000C4B7D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DFB9F8732722EED000C4B7D6 /* GoogleService-Info.plist */; };
+		EAAEF99416694453A9E03592 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35FAC54A7F264995BC8BAC37 /* Poppins-Regular.ttf */; };
+		ED6ED06129474B229C943FE3 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 299A545A228C466DB4513548 /* SourceSansPro-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		1725A67D1B7C4A358A827D15 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		18474B0BF97B42048E7CBAF2 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		26B2A5DC127B579C65A691A8 /* Pods-DesertSignCompany.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DesertSignCompany.release.xcconfig"; path = "Target Support Files/Pods-DesertSignCompany/Pods-DesertSignCompany.release.xcconfig"; sourceTree = "<group>"; };
+		299A545A228C466DB4513548 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
+		35FAC54A7F264995BC8BAC37 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		3C3F483AF4CFB4AF946EC8A1 /* libPods-DesertSignCompany-DesertSignCompanyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DesertSignCompany-DesertSignCompanyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DFA2E68784046A3B89BA8FB /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		512EF558A4754EF6BBC8E90F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -51,6 +55,7 @@
 		7E7BF94B599B4ACCB658196D /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		80DEDCEDA6F9485FA916AE30 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DesertSignCompany/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		93EBB24D273927B200D8505E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9B91312AF4224981BDE9D4A9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		9C9FA8777EFDB989BC133BB6 /* Pods-DesertSignCompany-DesertSignCompanyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DesertSignCompany-DesertSignCompanyTests.release.xcconfig"; path = "Target Support Files/Pods-DesertSignCompany-DesertSignCompanyTests/Pods-DesertSignCompany-DesertSignCompanyTests.release.xcconfig"; sourceTree = "<group>"; };
 		BAFD2B50243E4BCA82FBF0A1 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -63,7 +68,6 @@
 		DF214EDB26F1E6D900BC480E /* DesertSignCompany-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DesertSignCompany-Bridging-Header.h"; sourceTree = "<group>"; };
 		DF214EDC26F1E6D900BC480E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		DF633BE026D65F6A00447E06 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNSVG.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		DFB9F8732722EED000C4B7D6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E3B4CA528B2D4D9A8C6650A8 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		E3B74A7C5192464B899704D5 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		E6A90E07446B4E5DA57143A7 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 				512EF558A4754EF6BBC8E90F /* SimpleLineIcons.ttf */,
 				C08C46F056CF4B3CB1EDFDF2 /* Zocial.ttf */,
 				D5242ED83B27464CA84C65A6 /* Proxima Nova Font.otf */,
+				35FAC54A7F264995BC8BAC37 /* Poppins-Regular.ttf */,
+				299A545A228C466DB4513548 /* SourceSansPro-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -168,7 +174,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				DFB9F8732722EED000C4B7D6 /* GoogleService-Info.plist */,
+				93EBB24D273927B200D8505E /* GoogleService-Info.plist */,
 				DF214EDC26F1E6D900BC480E /* File.swift */,
 				13B07FAE1A68108700A75B9A /* DesertSignCompany */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -301,7 +307,9 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				DFB9F8742722EED000C4B7D6 /* GoogleService-Info.plist in Resources */,
+				EAAEF99416694453A9E03592 /* Poppins-Regular.ttf in Resources */,
+				ED6ED06129474B229C943FE3 /* SourceSansPro-Regular.ttf in Resources */,
+				93EBB24E273927B200D8505E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,24 +565,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = DesertSignCompany/DesertSignCompany.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 429M76C253;
+				DEVELOPMENT_TEAM = SUP7FGWM77;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DesertSignCompany/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.desert-sign-company";
+				PRODUCT_BUNDLE_IDENTIFIER = com.desertSignCcompany;
 				PRODUCT_NAME = DesertSignCompany;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DesertSignCompany-Bridging-Header.h";
@@ -590,23 +598,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = DesertSignCompany/DesertSignCompany.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 429M76C253;
+				DEVELOPMENT_TEAM = SUP7FGWM77;
 				INFOPLIST_FILE = DesertSignCompany/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.desert-sign-company";
+				PRODUCT_BUNDLE_IDENTIFIER = com.desertSignCcompany;
 				PRODUCT_NAME = DesertSignCompany;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DesertSignCompany-Bridging-Header.h";

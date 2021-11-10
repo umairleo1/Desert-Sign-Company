@@ -32,9 +32,11 @@ export default function index() {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const context = React.useContext(AuthContext);
+
   const handleLogIn = async () => {
     try {
       setLoading(true);
+      Keyboard.dismiss();
       const result = await logIn(email, password, '3232', 'Customer');
       // console.log('response    == ', result);
 
@@ -159,7 +161,7 @@ export default function index() {
             </View> */}
               {/* <Text style={{marginRight: 5}}>Remember me</Text> */}
               {/* </View> */}
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
@@ -171,7 +173,7 @@ export default function index() {
                   onPress={() => navigation.navigate('ForgotPass')}>
                   Forgot password?
                 </Text>
-              </View>
+              </View> */}
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={{zIndex: -1, width: '100%'}}>
@@ -194,7 +196,7 @@ export default function index() {
               )}
             </View>
 
-            <View style={styles.createAccount}>
+            {/* <View style={styles.createAccount}>
               <Text style={{color: 'gray', fontSize: 15}}>
                 Dont have an account?
               </Text>
@@ -206,7 +208,7 @@ export default function index() {
                 ]}>
                 Create account
               </Text>
-            </View>
+            </View> */}
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

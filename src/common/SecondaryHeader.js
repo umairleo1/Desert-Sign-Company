@@ -13,7 +13,12 @@ export default function SecondaryHeader(props) {
     <View style={[styles.header, {borderBottomColor: colors.headerBottom}]}>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.iconSection}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            style={{
+              height: '100%',
+              justifyContent: 'center',
+            }}
+            onPress={() => navigation.goBack()}>
             <ArrowRight />
           </TouchableOpacity>
         </View>
@@ -22,7 +27,7 @@ export default function SecondaryHeader(props) {
           {props.consignmentNumber && (
             <Text
               style={{
-                fontFamily: 'Proxima Nova Font',
+                fontFamily: 'SourceSansPro-Regular',
                 fontSize: 11,
                 color: 'grey',
               }}>
@@ -44,7 +49,7 @@ export default function SecondaryHeader(props) {
 
 const styles = StyleSheet.create({
   heading: {
-    fontFamily: 'Proxima Nova Font',
+    fontFamily: 'SourceSansPro-Regular',
     fontSize: 17,
     fontWeight: '600',
     color: '#1F2937',

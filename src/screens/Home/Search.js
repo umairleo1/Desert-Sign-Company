@@ -25,13 +25,14 @@ export default function Search() {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const {height, width} = useWindowDimensions();
+
   React.useEffect(() => {
     products?.length <= 0 ? setFound(false) : setFound(true);
     // search == '' ? setFound(false) : setFound(true);
   }, [products, found]);
+
   const handleSearch = async val => {
     setSearch(val);
-
     try {
       const data = await getSpecificProduct(val);
       data.data ? setProducts(data?.data) : setFound(false);
@@ -40,6 +41,7 @@ export default function Search() {
     }
     // setSearch(val);
   };
+
   const render = ({item}) => {
     return <RenderItem item={item} />;
   };
@@ -52,6 +54,7 @@ export default function Search() {
       />
     );
   };
+
   return (
     <SafeAreaView>
       <View onPress={() => Keyboard.dismiss()} style={{}}>

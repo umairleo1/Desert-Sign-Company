@@ -70,8 +70,8 @@ export default function index() {
       />
 
       <View style={{flex: 1}}>
-        <TouchableWithoutFeedback onPress={() => setShowPopup(false)}>
-          <ScrollView>
+        <ScrollView>
+          <TouchableWithoutFeedback onPress={() => setShowPopup(false)}>
             <Text style={styles.heading}>
               Awaiting: Your Consignment is about to get Ready
             </Text>
@@ -121,7 +121,7 @@ export default function index() {
                 <Text style={styles.formLeftText}>Tax</Text>
               </View>
               <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-                <Text style={styles.formRightText}>$ 20</Text>
+                <Text style={styles.formRightText}>AED 20</Text>
               </View>
             </View>
             <View style={{flexDirection: 'row', marginBottom: 5}}>
@@ -129,7 +129,7 @@ export default function index() {
                 <Text style={styles.formLeftText}>Summary</Text>
               </View>
               <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-                <Text style={styles.formRightText}>$ 40</Text>
+                <Text style={styles.formRightText}>AED 40</Text>
               </View>
             </View>
             <View style={{flexDirection: 'row', marginBottom: 5}}>
@@ -142,12 +142,12 @@ export default function index() {
                     styles.formRightText,
                     {fontSize: 16, fontWeight: '600'},
                   ]}>
-                  $ 1440
+                  AED 1440
                 </Text>
               </View>
             </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </ScrollView>
       </View>
       {showPopup && (
         <View style={styles.popup}>
@@ -176,7 +176,7 @@ export default function index() {
 
 const styles = StyleSheet.create({
   heading: {
-    fontFamily: 'Proxima Nova Font',
+    fontFamily: 'SourceSansPro-Regular',
     fontSize: 16,
     fontWeight: '600',
     color: '#060F2F',
@@ -185,16 +185,16 @@ const styles = StyleSheet.create({
     // textAlign: 'center',
   },
   subHeadingText: {
-    fontFamily: 'Proxima Nova Font',
+    fontFamily: 'SourceSansPro-Regular',
     fontSize: 14,
-    fontWeight: '400',
+    // fontWeight: '400',
     color: '#6B7280',
     lineHeight: 22,
     textAlign: 'justify',
   },
   formLeftText: {
     color: '#1F2937',
-    fontFamily: 'Proxima Nova Font',
+    fontFamily: 'SourceSansPro-Regular',
     fontSize: 15,
     fontWeight: '600',
     textAlign: 'justify',
@@ -202,9 +202,9 @@ const styles = StyleSheet.create({
 
   formRightText: {
     color: '#1F2937',
-    fontFamily: 'Proxima Nova Font',
+    fontFamily: 'SourceSansPro-Regular',
     fontSize: 14,
-    fontWeight: '400',
+    // fontWeight: '400',
     // textAlign: 'justify',
   },
   popup: {
@@ -233,9 +233,9 @@ const styles = StyleSheet.create({
   },
   popupText: {
     textAlign: 'center',
-    fontFamily: 'Proxima Nova Font',
+    fontFamily: 'SourceSansPro-Regular',
     fontSize: 14,
-    fontWeight: '400',
+    // fontWeight: '400',
     color: '#060F2F',
   },
 });
