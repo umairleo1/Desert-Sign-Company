@@ -14,9 +14,9 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch, connect} from 'react-redux';
 
 import Header from '../../common/Header';
-import AllOrders from './Product';
-import Shipping from './AllProduct';
-import TobeShipped from './Services';
+import Placed from './Placed';
+import InProgress from './Inprogress';
+import Dispatched from './Dispatched';
 import Delivered from './Delivered';
 
 export default function index() {
@@ -32,16 +32,16 @@ export default function index() {
   const savedItem = useSelector(state => state.savedItem.data);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'All Orders'},
-    {key: 'second', title: 'Shipping'},
-    {key: 'third', title: 'To be Shipped'},
+    {key: 'first', title: 'Placed'},
+    {key: 'second', title: 'In Progress'},
+    {key: 'third', title: 'Dispatched'},
     {key: 'four', title: 'Delivered'},
   ]);
 
   const renderScene = SceneMap({
-    first: AllOrders,
-    second: Shipping,
-    third: TobeShipped,
+    first: Placed,
+    second: InProgress,
+    third: Dispatched,
     four: Delivered,
   });
   const renderHeader = props => <TabBar style={{elevation: 0}} {...props} />;
@@ -67,7 +67,7 @@ export default function index() {
         <StatusBar barStyle="dark-content" backgroundColor="white" />
       )}
       <View style={{paddingVertical: 10}}>
-        <Header title="Shipments" />
+        <Header title="Orders" />
       </View>
       <TabView
         navigationState={{index, routes}}

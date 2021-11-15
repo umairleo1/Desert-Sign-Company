@@ -7,7 +7,6 @@ import PushNotification, {Importance} from 'react-native-push-notification';
 
 import AppIcon from '../../../assets/svgs/AppIcon';
 import Delivery from '../../../assets/svgs/Delivery';
-import Notifications from '../Home/Notifications';
 
 export default function index() {
   const {colors} = useTheme();

@@ -13,33 +13,33 @@ import RenderItem from './renderItem';
 import mockData from '../../../mock/data.json';
 import {getProducts} from '../../service/app.service';
 
-export default function FeaturedProduct() {
+export default function Dispatched() {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
   const [products, setProducts] = React.useState([
     {
       id: 1,
-      consignmentNo: 'ED123553DD4335',
-      driverName: 'Amir',
-      shippingStatus: 'Shipping',
+      orderNo: 'ED123553DD4335',
+      orderPrice: 'AED 435',
+      date: 'Nov 11 2021',
     },
     {
       id: 2,
-      consignmentNo: 'ABC423444V4445',
-      driverName: 'Adnan',
-      shippingStatus: 'Shipping',
+      orderNo: 'ABC423444V4445',
+      orderPrice: 'AED 765',
+      date: 'Nov 10 2021',
     },
     {
       id: 3,
-      consignmentNo: 'VBD335VV665556',
-      driverName: 'Talha',
-      shippingStatus: 'Shipping',
+      orderNo: 'VBD335VV665556',
+      orderPrice: 'AED 986',
+      date: 'Nov 10 2021',
     },
     {
       id: 4,
-      consignmentNo: 'ASOH676BB55555',
-      driverName: 'Ahmed',
-      shippingStatus: 'Shipping',
+      orderNo: 'ASOH676BB55555',
+      orderPrice: 'AED 12',
+      date: 'Nov 10 2021',
     },
   ]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -79,12 +79,6 @@ export default function FeaturedProduct() {
   };
   return (
     <View style={{flex: 1}}>
-      <View style={styles.featureView}>
-        <Text style={[{color: colors.primary}, styles.coreFeature]}>
-          Core Features
-        </Text>
-        {/* <Text style={[styles.seeMore, {color: 'gray'}]}>see more</Text> */}
-      </View>
       <View style={[styles.divider, {backgroundColor: colors.divider}]} />
       <View style={{marginTop: 10, flex: 1}}>
         {/* <ScrollView>*/}

@@ -8,51 +8,52 @@ import {
   View,
   RefreshControl,
 } from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 import RenderItem from './renderItem';
 import mockData from '../../../mock/data.json';
+import {getProducts} from '../../service/app.service';
 
-export default function Delivered() {
+export default function InProgress() {
   const {colors} = useTheme();
+  const isFocused = useIsFocused();
   const [products, setProducts] = React.useState([
     {
       id: 1,
-      consignmentNo: 'ED123553DD4335',
-      driverName: 'Amir',
-      shippingStatus: 'Delivered',
+      orderNo: 'ED123553DD4335',
+      orderPrice: 'AED 699',
+      date: 'Nov 10 2021',
     },
     {
       id: 2,
-      consignmentNo: 'ABC423444V4445',
-      driverName: 'Adnan',
-      shippingStatus: 'Delivered',
+      orderNo: 'ABC423444V4445',
+      orderPrice: 'AED 121',
+      date: 'Nov 10 2021',
     },
     {
       id: 3,
-      consignmentNo: 'VBD335VV665556',
-      driverName: 'Talha',
-      shippingStatus: 'Delivered',
+      orderNo: 'VBD335VV665556',
+      orderPrice: 'AED 987',
+      date: 'Nov 9 2021',
     },
     {
       id: 4,
-      consignmentNo: 'ASOH676BB55555',
-      driverName: 'Ahmed',
-      shippingStatus: 'Delivered',
+      orderNo: 'ASOH676BB55555',
+      orderPrice: 'AED 432',
+      date: 'Nov 9 2021',
     },
   ]);
   const [refreshing, setRefreshing] = React.useState(false);
   const render = ({item}) => {
     return <RenderItem item={item} />;
   };
-  const itemSeperator = () => {
-    return (
-      <View
-        style={[
-          // styles.divider,
-          {backgroundColor: colors.divider, marginVertical: 10, height: 1},
-        ]}
-      />
-    );
-  };
+  // React.useEffect(async () => {
+  //   // setActivityIndicator(true);
+  //   const data = await getProducts();
+  //   setProducts(data.data);
+  //   // console.log('products');
+  //   // setActivityIndicator(false);
+  // }, [isFocused]);
+
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -65,10 +66,22 @@ export default function Delivered() {
       console.warn(e);
     }
   };
+
+  const itemSeperator = () => {
+    return (
+      <View
+        style={[
+          // styles.divider,
+          {backgroundColor: colors.divider, marginVertical: 10, height: 1},
+        ]}
+      />
+    );
+  };
   return (
     <View style={{flex: 1}}>
       <View style={[styles.divider, {backgroundColor: colors.divider}]} />
       <View style={{marginTop: 10, flex: 1}}>
+        {/* <ScrollView>*/}
         <FlatList
           keyExtractor={item => item?.id}
           data={products}
@@ -78,6 +91,8 @@ export default function Delivered() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
+        {/* <View style={{height: 20}} /> */}
+        {/* </ScrollView> */}
       </View>
     </View>
   );

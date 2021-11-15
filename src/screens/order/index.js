@@ -17,7 +17,8 @@ import {useIsFocused} from '@react-navigation/native';
 
 import SecondaryHeader from '../../common/SecondaryHeader';
 import Dots from '../../../assets/svgs/Dots';
-import * as Progress from 'react-native-progress';
+import StepIndicator from 'react-native-step-indicator';
+import RenderItem from '../consignments/DetailedOrderRender';
 import {
   ScrollView,
   TouchableOpacity,
@@ -28,20 +29,62 @@ export default function index() {
   const navigation = useNavigation();
   const route = useRoute();
   const {colors} = useTheme();
-  const [data, setData] = React.useState();
+
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const [showPopup, setShowPopup] = React.useState(false);
+  const [currentPosition, setCurrentPosition] = React.useState(1);
 
-  // useEffect(async () => {
-  //   try {
-  //     const id = await authStorage.getUserid();
-  //     const result = await getOrderHistory(id);
-  //     setData(result?.data);
-  //   } catch (e) {
-  //     console.warn(e);
-  //   }
-  // });
+  const labels = ['Ready', 'Dispatch', 'Delivered'];
+  const customStyles = {
+    stepIndicatorSize: 25,
+    currentStepIndicatorSize: 30,
+    separatorStrokeWidth: 2,
+    currentStepStrokeWidth: 3,
+    stepStrokeCurrentColor: '#1FA1DA',
+    stepStrokeWidth: 3,
+    stepStrokeFinishedColor: '#1FA1DA',
+    stepStrokeUnFinishedColor: '#aaaaaa',
+    separatorFinishedColor: '#1FA1DA',
+    separatorUnFinishedColor: '#aaaaaa',
+    stepIndicatorFinishedColor: '#1FA1DA',
+    stepIndicatorUnFinishedColor: '#ffffff',
+    stepIndicatorCurrentColor: '#ffffff',
+    stepIndicatorLabelFontSize: 13,
+    currentStepIndicatorLabelFontSize: 13,
+    stepIndicatorLabelCurrentColor: '#1FA1DA',
+    stepIndicatorLabelFinishedColor: '#ffffff',
+    stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+    labelColor: '#999999',
+    labelSize: 13,
+    currentStepLabelColor: '#1FA1DA',
+  };
+  const [orders, setOrders] = React.useState([
+    {
+      id: 1,
+      orderNo: 'ED123553DD4335',
+      orderPrice: 'AED 123',
+      date: 'Nov 12 2021',
+    },
+    {
+      id: 2,
+      orderNo: 'ABC423444V4445',
+      orderPrice: 'AED 989',
+      date: 'Nov 12 2021',
+    },
+    {
+      id: 3,
+      orderNo: 'VBD335VV665556',
+      orderPrice: 'AED 143',
+      date: 'Nov 12 2021',
+    },
+    {
+      id: 4,
+      orderNo: 'ASOH676BB55555',
+      orderPrice: 'AED 453',
+      date: 'Nov 12 2021',
+    },
+  ]);
 
   const onRefresh = async () => {
     try {
@@ -54,6 +97,21 @@ export default function index() {
       setRefreshing(false);
       console.warn(e);
     }
+  };
+
+  const render = ({item}) => {
+    return <RenderItem item={item} />;
+  };
+
+  const itemSeperator = () => {
+    return (
+      <View
+        style={[
+          // styles.divider,
+          {backgroundColor: colors.divider, marginVertical: 10, height: 1},
+        ]}
+      />
+    );
   };
 
   return (
@@ -80,13 +138,15 @@ export default function index() {
               customer support if you have any query or problem regarding this
               consignment.
             </Text>
-            <Progress.Bar
-              style={{marginTop: 10, backgroundColor: '#EDEDF9'}}
-              borderWidth={0}
-              progress={0.3}
-              width={null}
-              color={'#1FA1DA'}
-            />
+
+            <View style={{marginTop: 10}}>
+              <StepIndicator
+                customStyles={customStyles}
+                currentPosition={currentPosition}
+                labels={labels}
+                stepCount={3}
+              />
+            </View>
             <View style={{alignItems: 'center', marginVertical: 10}}>
               <Text style={[styles.subHeadingText, {color: '#060F2F'}]}>
                 Consignment under progress
@@ -146,6 +206,17 @@ export default function index() {
                 </Text>
               </View>
             </View>
+            <View style={[styles.divider, {backgroundColor: colors.divider}]} />
+
+            <FlatList
+              keyExtractor={item => item?.id}
+              data={orders}
+              renderItem={render}
+              ItemSeparatorComponent={itemSeperator}
+              // refreshControl={
+              //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              // }
+            />
           </TouchableWithoutFeedback>
         </ScrollView>
       </View>
@@ -237,5 +308,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // fontWeight: '400',
     color: '#060F2F',
+  },
+  divider: {
+    height: 2,
+    marginTop: 5,
   },
 });

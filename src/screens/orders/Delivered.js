@@ -13,44 +13,53 @@ import RenderItem from './renderItem';
 import mockData from '../../../mock/data.json';
 import {getProducts} from '../../service/app.service';
 
-export default function Ready() {
+export default function Delivered() {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [consignments, setConsignments] = React.useState([
+  const [products, setProducts] = React.useState([
     {
       id: 1,
-      consignmentNo: 'ED123553DD4335',
-      driverName: 'Amir',
-      shippingStatus: 'Ready',
+      orderNo: 'ED123553DD4335',
+      orderPrice: 'AED 123',
+      date: 'Nov 12 2021',
     },
     {
       id: 2,
-      consignmentNo: 'ABC423444V4445',
-      driverName: 'Adnan',
-      shippingStatus: 'Ready',
+      orderNo: 'ABC423444V4445',
+      orderPrice: 'AED 989',
+      date: 'Nov 12 2021',
     },
     {
       id: 3,
-      consignmentNo: 'VBD335VV665556',
-      driverName: 'Talha',
-      shippingStatus: 'Ready',
+      orderNo: 'VBD335VV665556',
+      orderPrice: 'AED 143',
+      date: 'Nov 12 2021',
     },
     {
       id: 4,
-      consignmentNo: 'ASOH676BB55555',
-      driverName: 'Ahmed',
-      shippingStatus: 'Ready',
+      orderNo: 'ASOH676BB55555',
+      orderPrice: 'AED 453',
+      date: 'Nov 12 2021',
     },
   ]);
-
+  const [refreshing, setRefreshing] = React.useState(false);
   const render = ({item}) => {
     return <RenderItem item={item} />;
   };
+  // React.useEffect(async () => {
+  //   // setActivityIndicator(true);
+  //   const data = await getProducts();
+  //   setProducts(data.data);
+  //   // console.log('products');
+  //   // setActivityIndicator(false);
+  // }, [isFocused]);
 
   const onRefresh = async () => {
     try {
       setRefreshing(true);
+      // const data = await getProducts();
+
+      // setProducts(data.data);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);
@@ -62,6 +71,7 @@ export default function Ready() {
     return (
       <View
         style={[
+          // styles.divider,
           {backgroundColor: colors.divider, marginVertical: 10, height: 1},
         ]}
       />
@@ -71,15 +81,18 @@ export default function Ready() {
     <View style={{flex: 1}}>
       <View style={[styles.divider, {backgroundColor: colors.divider}]} />
       <View style={{marginTop: 10, flex: 1}}>
+        {/* <ScrollView>*/}
         <FlatList
           keyExtractor={item => item?.id}
-          data={consignments}
+          data={products}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
+        {/* <View style={{height: 20}} /> */}
+        {/* </ScrollView> */}
       </View>
     </View>
   );

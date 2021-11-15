@@ -34,15 +34,27 @@ export default function SecondaryHeader(props) {
               #{props?.consignmentNumber}
             </Text>
           )}
+          {props.orderNo && (
+            <Text
+              style={{
+                fontFamily: 'SourceSansPro-Regular',
+                fontSize: 11,
+                color: 'grey',
+              }}>
+              #{props?.orderNo}
+            </Text>
+          )}
         </View>
       </View>
-      <View style={{position: 'absolute', right: 5}}>
-        <TouchableOpacity
-          style={styles.popUpMenuIcon}
-          onPress={() => props.setShowPopup(!props.showPopup)}>
-          {props.iconName}
-        </TouchableOpacity>
-      </View>
+      {props.iconName && (
+        <View style={{position: 'absolute', right: 5}}>
+          <TouchableOpacity
+            style={styles.popUpMenuIcon}
+            onPress={() => props.setShowPopup(!props.showPopup)}>
+            {props.iconName}
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }

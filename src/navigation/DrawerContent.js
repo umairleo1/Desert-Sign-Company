@@ -22,6 +22,7 @@ import {getUser} from '../service/app.service';
 import authStorage from '../utils/authStorage';
 import OrderIcon from '../../assets/svgs/OrderIcon';
 import TermsIcon from '../../assets/svgs/TermsIcon';
+import Privacy from '../../assets/svgs/privacy';
 
 export function DrawerContent(props) {
   const navigation = useNavigation();
@@ -106,7 +107,7 @@ export function DrawerContent(props) {
               labelStyle={{color: colors.placeholder}}
               icon={({color, size}) => <OrderIcon />}
               label="Orders"
-              onPress={() => navigation.navigate('homeStack')}
+              onPress={() => navigation.navigate('ordersStack')}
             />
           </Drawer.Section>
           <Drawer.Section style={styles.section}>
@@ -114,15 +115,15 @@ export function DrawerContent(props) {
               labelStyle={{color: colors.placeholder}}
               icon={({color, size}) => <TermsIcon />}
               label="Consignments"
-              onPress={() => handlePress('https://google.com')}
+              onPress={() => navigation.navigate('consignmentStack')}
             />
           </Drawer.Section>
           <Drawer.Section style={styles.section}>
             <DrawerItem
               labelStyle={{color: colors.placeholder}}
-              icon={({color, size}) => <TermsIcon />}
+              icon={({color, size}) => <Privacy />}
               label="Vehicles"
-              onPress={() => handlePress('https://google.com')}
+              onPress={() => navigation.navigate('vehiclesStack')}
             />
           </Drawer.Section>
         </View>

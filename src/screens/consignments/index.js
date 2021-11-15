@@ -13,11 +13,10 @@ import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch, connect} from 'react-redux';
 
-import Header from './Header';
-import AllOrders from './Product';
-import Shipping from './AllProduct';
-import TobeShipped from './Services';
-import Delivered from './Delivered';
+import Header from '../../common/Header';
+import Ready from './Ready';
+import Dispatch from './Dispatch';
+import Returned from './Returned';
 
 export default function index() {
   const layout = useWindowDimensions();
@@ -32,19 +31,16 @@ export default function index() {
   const savedItem = useSelector(state => state.savedItem.data);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'All Orders'},
-    {key: 'second', title: 'Shipping'},
-    {key: 'third', title: 'To be Shipped'},
-    {key: 'four', title: 'Delivered'},
+    {key: 'first', title: 'Ready'},
+    {key: 'second', title: 'Dispatch'},
+    {key: 'third', title: 'Returned'},
   ]);
 
   const renderScene = SceneMap({
-    first: AllOrders,
-    second: Shipping,
-    third: TobeShipped,
-    four: Delivered,
+    first: Ready,
+    second: Dispatch,
+    third: Returned,
   });
-  const renderHeader = props => <TabBar style={{elevation: 0}} {...props} />;
 
   const renderTabBar = props => (
     <TabBar
@@ -67,7 +63,7 @@ export default function index() {
         <StatusBar barStyle="dark-content" backgroundColor="white" />
       )}
       <View style={{paddingVertical: 10}}>
-        <Header />
+        <Header title="Consignments" />
       </View>
       <TabView
         navigationState={{index, routes}}
