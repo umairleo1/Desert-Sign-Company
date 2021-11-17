@@ -7,52 +7,36 @@ import {
   Text,
   View,
   RefreshControl,
+  useWindowDimensions,
 } from 'react-native';
+import {Button} from 'react-native-paper';
 import {useIsFocused} from '@react-navigation/native';
 import RenderItem from './renderItem';
-import mockData from '../../../mock/data.json';
-import {getProducts} from '../../service/app.service';
+import AuthContext from '../../utils/authContext';
+import LottieView from 'lottie-react-native';
 
-export default function Placed() {
+export default function Placed(props) {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
-  const [products, setProducts] = React.useState([
-    {
-      id: 1,
-      orderNo: 'ED123553DD4335',
-      orderPrice: 'AED 234',
-      date: 'Nov 08 2021',
-    },
-    {
-      id: 2,
-      orderNo: 'ABC423444V4445',
-      orderPrice: 'AED 133',
-      date: 'Nov 07 2021',
-    },
-    {
-      id: 3,
-      orderNo: 'VBD335VV665556',
-      orderPrice: 'AED 455',
-      date: 'Nov 07 2021',
-    },
-    {
-      id: 4,
-      orderNo: 'ASOH676BB55555',
-      orderPrice: 'AED 987',
-      date: 'Nov 06 2021',
-    },
-  ]);
+  const {height, width} = useWindowDimensions();
+
+  const authContext = React.useContext(AuthContext);
+  const [products, setProducts] = React.useState(props.orders);
   const [refreshing, setRefreshing] = React.useState(false);
-  const render = ({item}) => {
-    return <RenderItem item={item} />;
+  const [ordersConsignments, setRerender] = React.useState(
+    authContext.ordersConsignments,
+  );
+  const [loading, setLoading] = React.useState(false);
+
+  const handleConsignment = () => {
+    setLoading(true);
+    console.log('xx ', ordersConsignments);
+    setLoading(false);
   };
-  // React.useEffect(async () => {
-  //   // setActivityIndicator(true);
-  //   const data = await getProducts();
-  //   setProducts(data.data);
-  //   // console.log('products');
-  //   // setActivityIndicator(false);
-  // }, [isFocused]);
+
+  const render = ({item}) => {
+    return <RenderItem item={item} type="placed" />;
+  };
 
   const onRefresh = async () => {
     try {
@@ -77,20 +61,50 @@ export default function Placed() {
       />
     );
   };
+
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          height: height - 300,
+        }}>
+        <LottieView
+          source={require('../../../assets/empty.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
+
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.divider, {backgroundColor: colors.divider}]} />
+      {/* <View style={[styles.divider, {backgroundColor: colors.divider}]} /> */}
       <View style={{marginTop: 10, flex: 1}}>
         {/* <ScrollView>*/}
         <FlatList
-          keyExtractor={item => item?.id}
+          keyExtractor={item => item?._id}
           data={products}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
+          ListEmptyComponent={EmptyListMessage}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
+        {authContext.check > 0 && (
+          <View style={{zIndex: -1, width: '100%'}}>
+            <Button
+              color={colors.button}
+              onPress={() => handleConsignment()}
+              style={styles.button}
+              labelStyle={{color: colors.background}}
+              mode="contained"
+              disabled={loading}>
+              Make Consignment
+            </Button>
+          </View>
+        )}
         {/* <View style={{height: 20}} /> */}
         {/* </ScrollView> */}
       </View>
@@ -115,5 +129,19 @@ const styles = StyleSheet.create({
   divider: {
     height: 2,
     marginTop: 5,
+  },
+  button: {
+    // marginTop: 20,
+    padding: 10,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
+    // width: '100%',
   },
 });

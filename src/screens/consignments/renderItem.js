@@ -55,7 +55,8 @@ const renderItem = item => {
               color: '#6B7280',
               paddingBottom: 5,
             }}>
-            {item?.item.driverName}
+            {/* {item?.item.driverName} */}
+            Amir
           </Text>
           <Text
             style={{
@@ -64,7 +65,7 @@ const renderItem = item => {
               fontWeight: '600',
               color: '#0B0287',
             }}>
-            {item?.item.shippingStatus}
+            {item?.item.status}
           </Text>
         </View>
       </View>

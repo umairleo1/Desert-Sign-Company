@@ -7,42 +7,20 @@ import {
   Text,
   View,
   RefreshControl,
+  useWindowDimensions,
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import RenderItem from './renderItem';
 import mockData from '../../../mock/data.json';
 import {getProducts} from '../../service/app.service';
+import LottieView from 'lottie-react-native';
 
-export default function Ready() {
+export default function Ready(props) {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
+  const {height, width} = useWindowDimensions();
   const [refreshing, setRefreshing] = React.useState(false);
-  const [consignments, setConsignments] = React.useState([
-    {
-      id: 1,
-      consignmentNo: 'ED123553DD4335',
-      driverName: 'Amir',
-      shippingStatus: 'Ready',
-    },
-    {
-      id: 2,
-      consignmentNo: 'ABC423444V4445',
-      driverName: 'Adnan',
-      shippingStatus: 'Ready',
-    },
-    {
-      id: 3,
-      consignmentNo: 'VBD335VV665556',
-      driverName: 'Talha',
-      shippingStatus: 'Ready',
-    },
-    {
-      id: 4,
-      consignmentNo: 'ASOH676BB55555',
-      driverName: 'Ahmed',
-      shippingStatus: 'Ready',
-    },
-  ]);
+  const [consignments, setConsignments] = React.useState(props.consignment);
 
   const render = ({item}) => {
     return <RenderItem item={item} />;
@@ -67,15 +45,31 @@ export default function Ready() {
       />
     );
   };
+
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          height: height - 300,
+        }}>
+        <LottieView
+          source={require('../../../assets/empty.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.divider, {backgroundColor: colors.divider}]} />
+      {/* <View style={[styles.divider, {backgroundColor: colors.divider}]} /> */}
       <View style={{marginTop: 10, flex: 1}}>
         <FlatList
-          keyExtractor={item => item?.id}
+          keyExtractor={item => item?._id}
           data={consignments}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
+          ListEmptyComponent={EmptyListMessage}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

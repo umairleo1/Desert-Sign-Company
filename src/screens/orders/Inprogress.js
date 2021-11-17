@@ -7,41 +7,18 @@ import {
   Text,
   View,
   RefreshControl,
+  useWindowDimensions,
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import RenderItem from './renderItem';
-import mockData from '../../../mock/data.json';
-import {getProducts} from '../../service/app.service';
+import LottieView from 'lottie-react-native';
 
-export default function InProgress() {
+export default function InProgress(props) {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
-  const [products, setProducts] = React.useState([
-    {
-      id: 1,
-      orderNo: 'ED123553DD4335',
-      orderPrice: 'AED 699',
-      date: 'Nov 10 2021',
-    },
-    {
-      id: 2,
-      orderNo: 'ABC423444V4445',
-      orderPrice: 'AED 121',
-      date: 'Nov 10 2021',
-    },
-    {
-      id: 3,
-      orderNo: 'VBD335VV665556',
-      orderPrice: 'AED 987',
-      date: 'Nov 9 2021',
-    },
-    {
-      id: 4,
-      orderNo: 'ASOH676BB55555',
-      orderPrice: 'AED 432',
-      date: 'Nov 9 2021',
-    },
-  ]);
+  const {height, width} = useWindowDimensions();
+
+  const [products, setProducts] = React.useState(props.orders);
   const [refreshing, setRefreshing] = React.useState(false);
   const render = ({item}) => {
     return <RenderItem item={item} />;
@@ -77,22 +54,36 @@ export default function InProgress() {
       />
     );
   };
+
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          height: height - 300,
+        }}>
+        <LottieView
+          source={require('../../../assets/empty.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.divider, {backgroundColor: colors.divider}]} />
+      {/* <View style={[styles.divider, {backgroundColor: colors.divider}]} /> */}
       <View style={{marginTop: 10, flex: 1}}>
         {/* <ScrollView>*/}
         <FlatList
-          keyExtractor={item => item?.id}
+          keyExtractor={item => item?._id}
           data={products}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
+          ListEmptyComponent={EmptyListMessage}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
-        {/* <View style={{height: 20}} /> */}
-        {/* </ScrollView> */}
       </View>
     </View>
   );

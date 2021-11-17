@@ -4,14 +4,33 @@ import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, connect} from 'react-redux';
+import AuthContext from '../../utils/authContext';
 
 import Orders from '../../../assets/svgs/Orders';
 import Check from '../../../assets/svgs/Check';
 
 const renderItem = item => {
   const navigation = useNavigation();
+  const authContext = React.useContext(AuthContext);
 
   const [checkBox, setCheckbox] = React.useState(false);
+
+  const handleCheckBox = () => {
+    if (checkBox) {
+      setCheckbox(!checkBox);
+      authContext.ordersConsignments.length != 0 &&
+        // authContext.ordersConsignments.pop(item.item),
+        authContext.ordersConsignments.splice(
+          authContext.ordersConsignments.indexOf(item.item),
+          1,
+        ),
+        authContext.setCheck(authContext.check - 1);
+    } else {
+      setCheckbox(!checkBox);
+      authContext.ordersConsignments.push(item.item);
+      authContext.setCheck(authContext.check + 1);
+    }
+  };
   return (
     // <TouchableOpacity>
     <View style={styles.card}>
@@ -20,7 +39,7 @@ const renderItem = item => {
           <Orders />
         </View>
       </View>
-      <View style={styles.contentView}>
+      <View style={[styles.contentView, {width: item.type ? '70%' : '100%'}]}>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('OrderDetails', {order: item.item})
@@ -33,7 +52,7 @@ const renderItem = item => {
               color: '#060F2F',
               paddingVertical: 5,
             }}>
-            #{item?.item.orderNo}
+            {item?.item.orderId}
           </Text>
           <Text
             style={{
@@ -43,7 +62,7 @@ const renderItem = item => {
               color: '#6B7280',
               paddingBottom: 5,
             }}>
-            {item?.item.orderPrice}
+            AED {item?.item.total}
           </Text>
           <Text
             style={{
@@ -52,31 +71,33 @@ const renderItem = item => {
               fontWeight: '600',
               color: '#0B0287',
             }}>
-            {item?.item.date}
+            {/* {item?.item.date} */}
+            25 NOV 2021
           </Text>
         </TouchableOpacity>
       </View>
-
-      <View style={styles.checkBoxView}>
-        <TouchableOpacity
-          style={{
-            height: '100%',
-            width: '100%',
-            justifyContent: 'center',
-          }}
-          onPress={() => setCheckbox(!checkBox)}>
-          <View
-            style={[
-              styles.checkBox,
-              {
-                backgroundColor: checkBox ? '#1FA1DA' : '#fff',
-                borderColor: checkBox ? '#fff' : '#3D3D3D90',
-              },
-            ]}>
-            {checkBox && <Check />}
-          </View>
-        </TouchableOpacity>
-      </View>
+      {item.type && (
+        <View style={styles.checkBoxView}>
+          <TouchableOpacity
+            style={{
+              height: '100%',
+              width: '100%',
+              justifyContent: 'center',
+            }}
+            onPress={() => handleCheckBox()}>
+            <View
+              style={[
+                styles.checkBox,
+                {
+                  backgroundColor: checkBox ? '#1FA1DA' : '#fff',
+                  borderColor: checkBox ? '#fff' : '#3D3D3D90',
+                },
+              ]}>
+              {checkBox && <Check />}
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
 
     // </TouchableOpacity>
@@ -98,9 +119,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   contentView: {
-    width: '70%',
     height: '100%',
     paddingLeft: 10,
+    // backgroundColor: 'red',
   },
   circle: {
     height: 42,

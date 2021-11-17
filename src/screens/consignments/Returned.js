@@ -7,38 +7,17 @@ import {
   Text,
   View,
   RefreshControl,
+  useWindowDimensions,
 } from 'react-native';
 import RenderItem from './renderItem';
 import mockData from '../../../mock/data.json';
+import LottieView from 'lottie-react-native';
 
-export default function Returned() {
+export default function Returned(props) {
   const {colors} = useTheme();
-  const [products, setProducts] = React.useState([
-    {
-      id: 1,
-      consignmentNo: 'ED123553DD4335',
-      driverName: 'Amir',
-      shippingStatus: 'Returned',
-    },
-    {
-      id: 2,
-      consignmentNo: 'ABC423444V4445',
-      driverName: 'Adnan',
-      shippingStatus: 'Returned',
-    },
-    {
-      id: 3,
-      consignmentNo: 'VBD335VV665556',
-      driverName: 'Talha',
-      shippingStatus: 'Returned',
-    },
-    {
-      id: 4,
-      consignmentNo: 'ASOH676BB55555',
-      driverName: 'Ahmed',
-      shippingStatus: 'Returned',
-    },
-  ]);
+  const {height, width} = useWindowDimensions();
+
+  const [products, setProducts] = React.useState(props.consignment);
   const [refreshing, setRefreshing] = React.useState(false);
   const render = ({item}) => {
     return <RenderItem item={item} />;
@@ -53,6 +32,21 @@ export default function Returned() {
       />
     );
   };
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          height: height - 300,
+        }}>
+        <LottieView
+          source={require('../../../assets/empty.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
+
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -67,13 +61,14 @@ export default function Returned() {
   };
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.divider, {backgroundColor: colors.divider}]} />
+      {/* <View style={[styles.divider, {backgroundColor: colors.divider}]} /> */}
       <View style={{marginTop: 10, flex: 1}}>
         <FlatList
-          keyExtractor={item => item?.id}
+          keyExtractor={item => item?._id}
           data={products}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
+          ListEmptyComponent={EmptyListMessage}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

@@ -4,10 +4,11 @@ import {
   Text,
   View,
   FlatList,
-  useWindowDimensions,
   StatusBar,
   RefreshControl,
-  Dimensions,
+  Platform,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AnimatedLoader from 'react-native-animated-loader';
@@ -19,11 +20,6 @@ import SecondaryHeader from '../../common/SecondaryHeader';
 import Dots from '../../../assets/svgs/Dots';
 import StepIndicator from 'react-native-step-indicator';
 import RenderItem from '../consignments/DetailedOrderRender';
-import {
-  ScrollView,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
 
 export default function index() {
   const navigation = useNavigation();
@@ -114,6 +110,75 @@ export default function index() {
     );
   };
 
+  const listHeaderComponrnt = () => (
+    <>
+      <Text style={styles.heading}>
+        Awaiting: Your Consignment is about to get Ready
+      </Text>
+      <Text style={styles.subHeadingText}>
+        We are waiting for the Consignment to get Ready. Please contact customer
+        support if you have any query or problem regarding this consignment.
+      </Text>
+
+      <View style={{marginTop: 10}}>
+        <StepIndicator
+          customStyles={customStyles}
+          currentPosition={currentPosition}
+          labels={labels}
+          stepCount={3}
+        />
+      </View>
+      <View style={{alignItems: 'center', marginVertical: 10}}>
+        <Text style={[styles.subHeadingText, {color: '#060F2F'}]}>
+          Consignment under progress
+        </Text>
+      </View>
+      <Text style={styles.subHeadingText}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+        scelerisque egestas diam tellus volutpat ut.
+      </Text>
+      <View style={{flexDirection: 'row', marginVertical: 5}}>
+        <View style={{width: '50%', justifyContent: 'center'}}>
+          <Text style={styles.formLeftText}>Driver's Name</Text>
+        </View>
+        <View style={{width: '50%', flexDirection: 'row-reverse'}}>
+          <Text style={styles.formRightText}>
+            {route?.params?.consignment?.driverName}
+          </Text>
+        </View>
+      </View>
+
+      <View style={{flexDirection: 'row', marginBottom: 5}}>
+        <View style={{width: '50%', justifyContent: 'center'}}>
+          <Text style={styles.formLeftText}>Tax</Text>
+        </View>
+        <View style={{width: '50%', flexDirection: 'row-reverse'}}>
+          <Text style={styles.formRightText}>AED 20</Text>
+        </View>
+      </View>
+      <View style={{flexDirection: 'row', marginBottom: 5}}>
+        <View style={{width: '50%', justifyContent: 'center'}}>
+          <Text style={styles.formLeftText}>Summary</Text>
+        </View>
+        <View style={{width: '50%', flexDirection: 'row-reverse'}}>
+          <Text style={styles.formRightText}>AED 40</Text>
+        </View>
+      </View>
+      <View style={{flexDirection: 'row', marginBottom: 5}}>
+        <View style={{width: '50%', justifyContent: 'center'}}>
+          <Text style={styles.formLeftText}>Total Price</Text>
+        </View>
+        <View style={{width: '50%', flexDirection: 'row-reverse'}}>
+          <Text
+            style={[styles.formRightText, {fontSize: 16, fontWeight: '600'}]}>
+            AED 1440
+          </Text>
+        </View>
+      </View>
+      <View style={[styles.divider, {backgroundColor: colors.divider}]} />
+    </>
+  );
+
   return (
     <SafeAreaView style={{paddingHorizontal: 15, flex: 1}}>
       {isFocused && (
@@ -127,99 +192,23 @@ export default function index() {
         consignmentNumber={route?.params?.consignment?.consignmentNo}
       />
 
-      <View style={{flex: 1}}>
-        <ScrollView>
-          <TouchableWithoutFeedback onPress={() => setShowPopup(false)}>
-            <Text style={styles.heading}>
-              Awaiting: Your Consignment is about to get Ready
-            </Text>
-            <Text style={styles.subHeadingText}>
-              We are waiting for the Consignment to get Ready. Please contact
-              customer support if you have any query or problem regarding this
-              consignment.
-            </Text>
-
-            <View style={{marginTop: 10}}>
-              <StepIndicator
-                customStyles={customStyles}
-                currentPosition={currentPosition}
-                labels={labels}
-                stepCount={3}
-              />
-            </View>
-            <View style={{alignItems: 'center', marginVertical: 10}}>
-              <Text style={[styles.subHeadingText, {color: '#060F2F'}]}>
-                Consignment under progress
-              </Text>
-            </View>
-            <Text style={styles.subHeadingText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              scelerisque egestas diam tellus volutpat ut.
-            </Text>
-            <View style={{flexDirection: 'row', marginBottom: 5}}>
-              <View style={{width: '50%', justifyContent: 'center'}}>
-                <Text style={styles.formLeftText}>Driver's Name</Text>
-              </View>
-              <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-                <Text style={styles.formRightText}>
-                  {route?.params?.consignment?.driverName}
-                </Text>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginBottom: 5}}>
-              <View style={{width: '50%', justifyContent: 'center'}}>
-                <Text style={styles.formLeftText}>Shipping Address</Text>
-              </View>
-              <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-                <Text style={styles.formRightText}>
-                  H#22, Main boulevard, Newyork
-                </Text>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginBottom: 5}}>
-              <View style={{width: '50%', justifyContent: 'center'}}>
-                <Text style={styles.formLeftText}>Tax</Text>
-              </View>
-              <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-                <Text style={styles.formRightText}>AED 20</Text>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginBottom: 5}}>
-              <View style={{width: '50%', justifyContent: 'center'}}>
-                <Text style={styles.formLeftText}>Summary</Text>
-              </View>
-              <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-                <Text style={styles.formRightText}>AED 40</Text>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginBottom: 5}}>
-              <View style={{width: '50%', justifyContent: 'center'}}>
-                <Text style={styles.formLeftText}>Total Price</Text>
-              </View>
-              <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-                <Text
-                  style={[
-                    styles.formRightText,
-                    {fontSize: 16, fontWeight: '600'},
-                  ]}>
-                  AED 1440
-                </Text>
-              </View>
-            </View>
-            <View style={[styles.divider, {backgroundColor: colors.divider}]} />
-
-            <FlatList
-              keyExtractor={item => item?.id}
-              data={orders}
-              renderItem={render}
-              ItemSeparatorComponent={itemSeperator}
-              // refreshControl={
-              //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              // }
-            />
-          </TouchableWithoutFeedback>
-        </ScrollView>
+      <View onPress={() => setShowPopup(false)} style={{flex: 1}}>
+        <TouchableWithoutFeedback
+          style={{flex: 1}}
+          onPress={() => setShowPopup(false)}>
+          <FlatList
+            ListHeaderComponent={listHeaderComponrnt}
+            keyExtractor={item => item?.id}
+            data={orders}
+            renderItem={render}
+            ItemSeparatorComponent={itemSeperator}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          />
+        </TouchableWithoutFeedback>
       </View>
+
       {showPopup && (
         <View style={styles.popup}>
           <TouchableOpacity onPress={() => setShowPopup(!showPopup)}>
@@ -284,7 +273,7 @@ const styles = StyleSheet.create({
     height: 115,
     backgroundColor: '#fff',
     position: 'absolute',
-    top: 60,
+    top: Platform.OS == 'ios' ? 85 : 60,
     right: 20,
     borderRadius: 10,
     shadowColor: '#3D3D3D',
@@ -308,9 +297,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // fontWeight: '400',
     color: '#060F2F',
-  },
-  divider: {
-    height: 2,
-    marginTop: 5,
   },
 });

@@ -43,7 +43,8 @@ request.interceptors.request.use(
     const user = await authStorage.getToken();
     // console.log(user, 'header');
 
-    config.headers['Authorization'] = user;
+    config.headers['Authorization'] =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBkZXNlcnQtc2lnbi5jb20iLCJpZCI6IjYxMzIwOTY5ZmExNGZmZDE5OWFmZTA1ZiIsIm1vZGVsIjoiYWRtaW5zIiwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjM1NTI3MDI3LCJleHAiOjE2MzkxMjcwMjd9.ZV6FtZp_WmjtNqTm8eTTA0Qxunyd4ztJ_L48wfyY2YA';
 
     return config;
   },

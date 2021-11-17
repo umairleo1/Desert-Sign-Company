@@ -40,7 +40,7 @@ const renderItem = ({item}) => {
               color: '#060F2F',
               paddingVertical: 5,
             }}>
-            Reg No. {item.regNo}
+            Reg No. {item.registrationNumber}
           </Text>
           <Text
             style={{
@@ -50,7 +50,7 @@ const renderItem = ({item}) => {
               color: '#6B7280',
               paddingBottom: 5,
             }}>
-            {item.name}
+            {item.make}
           </Text>
           <Text
             style={{
@@ -59,7 +59,7 @@ const renderItem = ({item}) => {
               fontWeight: '600',
               color: '#0B0287',
             }}>
-            {item.status}
+            Available
           </Text>
         </View>
       </View>

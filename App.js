@@ -25,6 +25,8 @@ export default function App() {
   const [profile, setProfile] = React.useState();
   const {store, persistor} = configureStore();
   const [fcmNotification, setFcmNotification] = React.useState();
+  const [ordersConsignments, setOrdersConsignments] = React.useState([]);
+  const [check, setCheck] = React.useState(0);
 
   //configure push notification
 
@@ -179,6 +181,9 @@ export default function App() {
           setIsverified,
           profile,
           setProfile,
+          ordersConsignments,
+          check,
+          setCheck,
         }}>
         <Provider store={store}>
           {user && isVerified == 'true' ? <AppNavigator /> : <AuthNavigator />}

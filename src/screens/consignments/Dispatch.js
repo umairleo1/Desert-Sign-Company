@@ -8,6 +8,7 @@ import {
   View,
   StatusBar,
   RefreshControl,
+  useWindowDimensions,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import AnimatedLoader from 'react-native-animated-loader';
@@ -18,60 +19,12 @@ import RenderItem from './renderItem';
 import mockData from '../../../mock/data.json';
 import {getFeaturedProducts} from '../../service/app.service';
 
-export default function Dispatch() {
+export default function Dispatch(props) {
   const isFocused = useIsFocused();
   const {colors} = useTheme();
+  const {height, width} = useWindowDimensions();
 
-  const [products, setProducts] = React.useState([
-    {
-      id: 1,
-      consignmentNo: 'ED123553DD4335',
-      driverName: 'Amir',
-      shippingStatus: 'Dispatch',
-    },
-    {
-      id: 2,
-      consignmentNo: 'ABC423444V4445',
-      driverName: 'Adnan',
-      shippingStatus: 'Dispatch',
-    },
-    {
-      id: 3,
-      consignmentNo: 'VBD335VV665556',
-      driverName: 'Talha',
-      shippingStatus: 'Dispatch',
-    },
-    {
-      id: 4,
-      consignmentNo: 'ASOH676BB55555',
-      driverName: 'Ahmed',
-      shippingStatus: 'Dispatch',
-    },
-    {
-      id: 5,
-      consignmentNo: 'ED123553DD4335',
-      driverName: 'Amir',
-      shippingStatus: 'Dispatch',
-    },
-    {
-      id: 6,
-      consignmentNo: 'ABC423444V4445',
-      driverName: 'Adnan',
-      shippingStatus: 'Dispatch',
-    },
-    {
-      id: 7,
-      consignmentNo: 'VBD335VV665556',
-      driverName: 'Talha',
-      shippingStatus: 'Dispatch',
-    },
-    {
-      id: 8,
-      consignmentNo: 'ASOH676BB55555',
-      driverName: 'Ahmed',
-      shippingStatus: 'Dispatch',
-    },
-  ]);
+  const [products, setProducts] = React.useState(props.consignment);
   const [refreshing, setRefreshing] = React.useState(false);
   const savedItem = useSelector(state => state.savedItem.data);
   const [activityIndicatore, setActivityIndicator] = React.useState(false);
@@ -108,17 +61,33 @@ export default function Dispatch() {
       />
     );
   };
+
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          height: height - 300,
+        }}>
+        <LottieView
+          source={require('../../../assets/empty.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
   return (
     <View style={{flex: 1}}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
 
-      <View style={[styles.divider, {backgroundColor: colors.divider}]} />
+      {/* <View style={[styles.divider, {backgroundColor: colors.divider}]} /> */}
       <View style={{marginTop: 10, flex: 1}}>
         <FlatList
-          keyExtractor={item => item?.id}
+          keyExtractor={item => item?._id}
           data={products}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
+          ListEmptyComponent={EmptyListMessage}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

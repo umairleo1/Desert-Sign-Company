@@ -8,7 +8,6 @@ export const getUser = async id => {
   return client.get(URL.GET_USER_URL + `/${id}`);
 };
 export const updateUser = async (id, formData) => {
-  console.log(formData, 'dataaaaaaaa');
   return client.put(URL.UPDATE_USER_URL + `/${id}`, formData);
 };
 
@@ -48,4 +47,15 @@ export const giveOrder = async (
     customer,
     time,
   });
+};
+
+export const getAllOrders = async () => {
+  return client.get(URL.GET_ALL_ORDERS);
+};
+
+export const getAllConsignments = async () => {
+  return client.get(URL.GET_ALL_CONSIGNMENTS);
+};
+export const getAllVehicles = async () => {
+  return client.get(URL.GET_ALL_VEHICLES);
 };

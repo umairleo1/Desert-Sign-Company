@@ -17,4 +17,7 @@ export default {
   ORDER_HISTORY: '/orders/history',
   FEATURED_PRODUCT: '/products/featured',
   SEARCH_PRODUCTS: '/products/product',
+  GET_ALL_ORDERS: '/orders',
+  GET_ALL_CONSIGNMENTS: '/consignments',
+  GET_ALL_VEHICLES: '/vehicles',
 };

@@ -11,7 +11,9 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
+import {getAllConsignments} from '../../service/app.service';
 import {useSelector, useDispatch, connect} from 'react-redux';
+import ActivityIndicator from '../../common/ActivityIndicator';
 
 import Header from '../../common/Header';
 import Ready from './Ready';
@@ -29,6 +31,13 @@ export default function index() {
 
   const [count, setCount] = React.useState(0);
   const savedItem = useSelector(state => state.savedItem.data);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [readyConsignments, setReadyConsignments] = React.useState([]);
+  const [dispatchedConsignments, setDispatchedConsignments] = React.useState(
+    [],
+  );
+  const [returnedConsignments, setReturnedConsignments] = React.useState([]);
+
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: 'first', title: 'Ready'},
@@ -36,11 +45,44 @@ export default function index() {
     {key: 'third', title: 'Returned'},
   ]);
 
-  const renderScene = SceneMap({
-    first: Ready,
-    second: Dispatch,
-    third: Returned,
-  });
+  React.useEffect(() => {
+    console.log('Consignments');
+    getConsignments();
+  }, []);
+
+  const getConsignments = async () => {
+    try {
+      setIsLoading(true);
+      const result = await getAllConsignments();
+      console.log('all consignments ', result.data);
+      result.data.map(item => {
+        if (item.status === 'Ready') {
+          readyConsignments.push(item);
+        } else if (item.status === 'Dispatched') {
+          dispatchedConsignments.push(item);
+        } else if (item.status === 'Returned') {
+          returnedConsignments.push(item);
+        }
+      });
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
+  const renderScene = ({route}) => {
+    switch (route.key) {
+      case 'first':
+        return <Ready consignment={readyConsignments} />;
+      case 'second':
+        return <Dispatch consignment={dispatchedConsignments} />;
+      case 'third':
+        return <Returned consignment={returnedConsignments} />;
+      default:
+        return null;
+    }
+  };
 
   const renderTabBar = props => (
     <TabBar
@@ -62,6 +104,7 @@ export default function index() {
       {isFocused && (
         <StatusBar barStyle="dark-content" backgroundColor="white" />
       )}
+      <ActivityIndicator visible={isLoading} />
       <View style={{paddingVertical: 10}}>
         <Header title="Consignments" />
       </View>

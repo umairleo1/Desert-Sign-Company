@@ -1,5 +1,11 @@
 import * as React from 'react';
-import {StyleSheet, View, StatusBar, RefreshControl} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  StatusBar,
+  RefreshControl,
+  useWindowDimensions,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useIsFocused} from '@react-navigation/native';
 import {useNavigation, useTheme} from '@react-navigation/native';
@@ -7,38 +13,35 @@ import {useNavigation, useTheme} from '@react-navigation/native';
 import Header from '../../common/Header';
 import RenderItem from './renderItem';
 import {FlatList} from 'react-native-gesture-handler';
+import LottieView from 'lottie-react-native';
+import ActivityIndicator from '../../common/ActivityIndicator';
+import {getAllVehicles} from '../../service/app.service';
 
 export default function index() {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
+  const {height, width} = useWindowDimensions();
 
-  const [vehicles, setVehicles] = React.useState([
-    {
-      id: 1,
-      name: 'Toyota',
-      regNo: 'F 6578',
-      status: 'Available',
-    },
-    {
-      id: 2,
-      name: 'Honda',
-      regNo: 'A 005',
-      status: 'Available',
-    },
-    {
-      id: 3,
-      name: 'Toyota',
-      regNo: 'F 000',
-      status: 'Available',
-    },
-    {
-      id: 4,
-      name: 'Honda',
-      regNo: 'A 9234',
-      status: 'Available',
-    },
-  ]);
+  const [vehicles, setVehicles] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    getVehicles();
+  }, []);
+
+  const getVehicles = async () => {
+    try {
+      setIsLoading(true);
+      const result = await getAllVehicles();
+      console.log('all vehicles ', result.data);
+      setVehicles(result.data);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(eror);
+    }
+  };
 
   const render = ({item}) => {
     return <RenderItem item={item} />;
@@ -67,11 +70,27 @@ export default function index() {
       />
     );
   };
+
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          height: height - 300,
+        }}>
+        <LottieView
+          source={require('../../../assets/empty.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={{paddingHorizontal: 15, flex: 1}}>
       {isFocused && (
         <StatusBar barStyle="dark-content" backgroundColor="white" />
       )}
+      <ActivityIndicator visible={isLoading} />
       <View style={{paddingVertical: 10, flex: 1}}>
         <Header title="Vehicles" />
         <View
@@ -81,10 +100,11 @@ export default function index() {
           ]}
         />
         <FlatList
-          keyExtractor={item => item?.id}
+          keyExtractor={item => item?._id}
           data={vehicles}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
+          ListEmptyComponent={EmptyListMessage}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
