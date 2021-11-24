@@ -34,7 +34,7 @@ export default function index() {
     try {
       setIsLoading(true);
       const result = await getAllVehicles();
-      console.log('all vehicles ', result.data);
+      // console.log('all vehicles ', result.data);
       setVehicles(result.data);
       setIsLoading(false);
     } catch (error) {

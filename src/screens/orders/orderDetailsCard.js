@@ -34,9 +34,9 @@ export default function orderDetailsCard(item) {
         </View>
         <View style={styles.contentContainer}>
           <View style={styles.descriptionContainer}>
-            <Text style={styles.title}>{item.item.name}</Text>
+            <Text style={styles.title}>{item.item.product.name}</Text>
             <Text style={[styles.descriptionText]}>
-              {item.item.description}
+              {item.item.product.description}
             </Text>
           </View>
           <View style={styles.priceContainer}>
@@ -44,7 +44,7 @@ export default function orderDetailsCard(item) {
               AED {item.item.price}{' '}
             </Text>
             <Text style={[styles.descriptionText, {fontWeight: '300'}]}>
-              x 3
+              x {item.item.quantity}
             </Text>
           </View>
         </View>

@@ -37,6 +37,7 @@ export default function index() {
     [],
   );
   const [returnedConsignments, setReturnedConsignments] = React.useState([]);
+  const [reLoad, setReload] = React.useState(false);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -46,15 +47,16 @@ export default function index() {
   ]);
 
   React.useEffect(() => {
-    console.log('Consignments');
+    // console.log('Consignments');
     getConsignments();
-  }, []);
+  }, [reLoad]);
 
   const getConsignments = async () => {
+    // console.log(reLoad);
     try {
       setIsLoading(true);
       const result = await getAllConsignments();
-      console.log('all consignments ', result.data);
+      // console.log('all consignments ', result.data);
       result.data.map(item => {
         if (item.status === 'Ready') {
           readyConsignments.push(item);
@@ -74,11 +76,35 @@ export default function index() {
   const renderScene = ({route}) => {
     switch (route.key) {
       case 'first':
-        return <Ready consignment={readyConsignments} />;
+        return (
+          <Ready
+            reLoad={reLoad}
+            setReload={setReload}
+            consignment={readyConsignments}
+            dispatchedConsignments={dispatchedConsignments}
+            returnedConsignments={returnedConsignments}
+          />
+        );
       case 'second':
-        return <Dispatch consignment={dispatchedConsignments} />;
+        return (
+          <Dispatch
+            reLoad={reLoad}
+            setReload={setReload}
+            readyConsignments={readyConsignments}
+            consignment={dispatchedConsignments}
+            returnedConsignments={returnedConsignments}
+          />
+        );
       case 'third':
-        return <Returned consignment={returnedConsignments} />;
+        return (
+          <Returned
+            reLoad={reLoad}
+            setReload={setReload}
+            readyConsignments={readyConsignments}
+            dispatchedConsignments={dispatchedConsignments}
+            consignment={returnedConsignments}
+          />
+        );
       default:
         return null;
     }

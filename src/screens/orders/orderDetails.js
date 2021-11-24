@@ -10,7 +10,7 @@ import {
 import {useIsFocused} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation, useTheme, useRoute} from '@react-navigation/native';
-
+import StepIndicator from 'react-native-step-indicator';
 import SecondaryHeader from '../../common/SecondaryHeader';
 import RenderOrderDetails from './orderDetailsCard';
 
@@ -18,23 +18,46 @@ export default function orderDetails() {
   const isFocused = useIsFocused();
   const {colors} = useTheme();
   const route = useRoute();
-
+  // console.log('xxx ', route.params.order.products[0].price);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [orders, setOrders] = React.useState([
-    {
-      id: 1,
-      name: 'QN85A Neo QLED 4K Smart TV',
-      description: 'Evolution of Neo QLED comes with Quantum Matrix Technology',
-      price: '5,413',
-    },
-    {
-      id: 2,
-      name: 'LG G1 65 inch 4K Smart OLED TV ',
-      description:
-        'The next-generation OLED panel, combined with the computational power of the Alpha 9 Gen 4 processor',
-      price: '2,399',
-    },
-  ]);
+  const [orders, setOrders] = React.useState(route.params.order.products);
+  const [currentPosition, setCurrentPosition] = React.useState(1);
+  const labels = ['Placed', 'In Progress', 'Dispatched', 'Delivered'];
+  const customStyles = {
+    stepIndicatorSize: 25,
+    currentStepIndicatorSize: 30,
+    separatorStrokeWidth: 2,
+    currentStepStrokeWidth: 3,
+    stepStrokeCurrentColor: '#1FA1DA',
+    stepStrokeWidth: 3,
+    stepStrokeFinishedColor: '#1FA1DA',
+    stepStrokeUnFinishedColor: '#aaaaaa',
+    separatorFinishedColor: '#1FA1DA',
+    separatorUnFinishedColor: '#aaaaaa',
+    stepIndicatorFinishedColor: '#1FA1DA',
+    stepIndicatorUnFinishedColor: '#ffffff',
+    stepIndicatorCurrentColor: '#ffffff',
+    stepIndicatorLabelFontSize: 13,
+    currentStepIndicatorLabelFontSize: 13,
+    stepIndicatorLabelCurrentColor: '#1FA1DA',
+    stepIndicatorLabelFinishedColor: '#ffffff',
+    stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+    labelColor: '#999999',
+    labelSize: 13,
+    currentStepLabelColor: '#1FA1DA',
+  };
+
+  React.useEffect(() => {
+    if (route.params.order.status === 'Placed') {
+      setCurrentPosition(0);
+    } else if (route.params.order.status === 'InProgress') {
+      setCurrentPosition(1);
+    } else if (route.params.order.status === 'Dispatched') {
+      setCurrentPosition(2);
+    } else if (route.params.order.status === 'Delivered') {
+      setCurrentPosition(3);
+    }
+  }, []);
 
   const render = ({item}) => {
     return <RenderOrderDetails item={item} />;
@@ -65,7 +88,9 @@ export default function orderDetails() {
           <Text style={styles.formLeftText}>Company Name</Text>
         </View>
         <View style={{width: '50%', flexDirection: 'row-reverse'}}>
-          <Text style={styles.formRightText}>Al Jalil Developers</Text>
+          <Text style={styles.formRightText}>
+            {route.params.order.customer.companyName}
+          </Text>
         </View>
       </View>
       <View style={{flexDirection: 'row', marginBottom: 5}}>
@@ -74,7 +99,7 @@ export default function orderDetails() {
         </View>
         <View style={{width: '50%', flexDirection: 'row-reverse'}}>
           <Text style={styles.formRightText}>
-            H#22, Main boulevard, Newyork
+            {route.params.order.shippingAddress}
           </Text>
         </View>
       </View>
@@ -96,6 +121,14 @@ export default function orderDetails() {
       </View>
       <View style={{flexDirection: 'row', marginBottom: 5}}>
         <View style={{width: '50%', justifyContent: 'center'}}>
+          <Text style={styles.formLeftText}>Price</Text>
+        </View>
+        <View style={{width: '50%', flexDirection: 'row-reverse'}}>
+          <Text style={styles.formRightText}>{route.params.order.total}</Text>
+        </View>
+      </View>
+      <View style={{flexDirection: 'row', marginBottom: 5}}>
+        <View style={{width: '50%', justifyContent: 'center'}}>
           <Text style={styles.formLeftText}>Total Price</Text>
         </View>
         <View style={{width: '50%', flexDirection: 'row-reverse'}}>
@@ -106,6 +139,23 @@ export default function orderDetails() {
         </View>
       </View>
     </>
+  );
+
+  const listHeaderComponrnt = () => (
+    <View style={{marginTop: 10}}>
+      <StepIndicator
+        customStyles={customStyles}
+        currentPosition={currentPosition}
+        labels={labels}
+        stepCount={4}
+      />
+      <View
+        style={[
+          styles.divider,
+          {backgroundColor: colors.divider, marginBottom: 10},
+        ]}
+      />
+    </View>
   );
 
   const itemSeperator = () => {
@@ -134,6 +184,7 @@ export default function orderDetails() {
           data={orders}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}
+          ListHeaderComponent={listHeaderComponrnt}
           ListFooterComponent={listFooterComponrnt}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

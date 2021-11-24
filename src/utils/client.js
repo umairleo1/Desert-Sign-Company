@@ -44,7 +44,7 @@ request.interceptors.request.use(
     // console.log(user, 'header');
 
     config.headers['Authorization'] =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBkZXNlcnQtc2lnbi5jb20iLCJpZCI6IjYxMzIwOTY5ZmExNGZmZDE5OWFmZTA1ZiIsIm1vZGVsIjoiYWRtaW5zIiwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjM1NTI3MDI3LCJleHAiOjE2MzkxMjcwMjd9.ZV6FtZp_WmjtNqTm8eTTA0Qxunyd4ztJ_L48wfyY2YA';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRGF3b29kIEphdmVlZCIsImVtYWlsIjoiZGF3b29kMWZmZHNmZmRzMjNAZ21haWwuY29tIiwiaWQiOiI2MThmOGZjNzhhYzAyYjQ2MjQ0OTEyZjMiLCJyb2xlIjoiSW52ZW50b3J5IE1hbmFnZXIiLCJtb2RlbCI6InVzZXJzIiwiaWF0IjoxNjM2Nzk4NDIwLCJleHAiOjE2MzkzOTA0MjB9.62sycGoNG2GE5WZ6TTONowiAOlxqZGeWP4SB_dPY6ho';
 
     return config;
   },

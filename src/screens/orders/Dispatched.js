@@ -29,9 +29,12 @@ export default function Dispatched(props) {
   const onRefresh = async () => {
     try {
       setRefreshing(true);
-      // const data = await getProducts();
-
-      // setProducts(data.data);
+      props.orders.splice(0, props.orders.length);
+      props.placedOrders.splice(0, props.placedOrders.length);
+      props.inProgressOrders.splice(0, props.inProgressOrders.length);
+      props.deliveredOrders.splice(0, props.deliveredOrders.length);
+      props.vehicles.splice(0, props.vehicles.length);
+      props.setReload(!props.reLoad);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);
@@ -70,7 +73,7 @@ export default function Dispatched(props) {
       <View style={{marginTop: 10, flex: 1}}>
         {/* <ScrollView>*/}
         <FlatList
-          keyExtractor={item => item?._id}
+          // keyExtractor={item => item?._id}
           data={products}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}

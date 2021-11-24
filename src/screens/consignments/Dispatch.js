@@ -29,19 +29,13 @@ export default function Dispatch(props) {
   const savedItem = useSelector(state => state.savedItem.data);
   const [activityIndicatore, setActivityIndicator] = React.useState(false);
 
-  // React.useEffect(async () => {
-  //   setActivityIndicator(true);
-  //   const data = await getFeaturedProducts();
-  //   console.log('result .data', data.data);
-  //   setProducts(data.data);
-  //   setActivityIndicator(false);
-  // }, [isFocused]);
-
   const onRefresh = async () => {
     try {
       setRefreshing(true);
-      // const data = await getFeaturedProducts();
-      // setProducts(data.data);
+      props.consignment.splice(0, props.consignment.length);
+      props.readyConsignments.splice(0, props.readyConsignments.length);
+      props.returnedConsignments.splice(0, props.returnedConsignments.length);
+      props.setReload(!props.reLoad);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);

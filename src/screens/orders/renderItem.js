@@ -42,7 +42,9 @@ const renderItem = item => {
       <View style={[styles.contentView, {width: item.type ? '70%' : '100%'}]}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('OrderDetails', {order: item.item})
+            navigation.navigate('OrderDetails', {
+              order: item.item,
+            })
           }>
           <Text
             style={{
@@ -93,7 +95,7 @@ const renderItem = item => {
                   borderColor: checkBox ? '#fff' : '#3D3D3D90',
                 },
               ]}>
-              {checkBox && <Check />}
+              {checkBox && <Check color={'#ffffff'} width={8} height={8} />}
             </View>
           </TouchableOpacity>
         </View>

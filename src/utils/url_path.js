@@ -20,4 +20,5 @@ export default {
   GET_ALL_ORDERS: '/orders',
   GET_ALL_CONSIGNMENTS: '/consignments',
   GET_ALL_VEHICLES: '/vehicles',
+  CREATE_CONSIGNMENTS: '/consignments/new',
 };

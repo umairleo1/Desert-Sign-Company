@@ -1,9 +1,10 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button} from 'react-native-paper';
 import PushNotification, {Importance} from 'react-native-push-notification';
+import LottieView from 'lottie-react-native';
 
 import AppIcon from '../../../assets/svgs/AppIcon';
 import Delivery from '../../../assets/svgs/Delivery';
@@ -49,13 +50,23 @@ export default function index() {
       <View style={{paddingVertical: 10}}>
         <AppIcon />
       </View>
-      <View
+      {/* <View
         style={{
           marginTop: 10,
           alignItems: 'center',
+        }}> */}
+      {/* <Delivery /> */}
+      <View
+        style={{
+          height: 300,
         }}>
-        <Delivery />
+        <LottieView
+          source={require('../../../assets/10526-forklift.json')}
+          autoPlay
+          loop
+        />
       </View>
+      {/* </View> */}
       <View style={{marginTop: 10}}>
         <Text style={[styles.heading, {color: colors.secondary}]}>
           Welcome to
@@ -106,5 +117,9 @@ const styles = StyleSheet.create({
     marginTop: 40,
     padding: 10,
     borderRadius: 10,
+  },
+  lottie: {
+    height: 100,
+    width: 100,
   },
 });

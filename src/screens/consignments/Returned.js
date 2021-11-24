@@ -50,9 +50,13 @@ export default function Returned(props) {
   const onRefresh = async () => {
     try {
       setRefreshing(true);
-      // const data = await getProducts();
-
-      // setProducts(data.data);
+      props.consignment.splice(0, props.consignment.length);
+      props.readyConsignments.splice(0, props.readyConsignments.length);
+      props.dispatchedConsignments.splice(
+        0,
+        props.dispatchedConsignments.length,
+      );
+      props.setReload(!props.reLoad);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);

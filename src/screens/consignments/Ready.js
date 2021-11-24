@@ -29,6 +29,13 @@ export default function Ready(props) {
   const onRefresh = async () => {
     try {
       setRefreshing(true);
+      props.consignment.splice(0, props.consignment.length);
+      props.dispatchedConsignments.splice(
+        0,
+        props.dispatchedConsignments.length,
+      );
+      props.returnedConsignments.splice(0, props.returnedConsignments.length);
+      props.setReload(!props.reLoad);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);
@@ -65,7 +72,7 @@ export default function Ready(props) {
       {/* <View style={[styles.divider, {backgroundColor: colors.divider}]} /> */}
       <View style={{marginTop: 10, flex: 1}}>
         <FlatList
-          keyExtractor={item => item?._id}
+          // keyExtractor={item => item?._id}
           data={consignments}
           renderItem={render}
           ItemSeparatorComponent={itemSeperator}

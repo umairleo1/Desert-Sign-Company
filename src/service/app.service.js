@@ -59,3 +59,7 @@ export const getAllConsignments = async () => {
 export const getAllVehicles = async () => {
   return client.get(URL.GET_ALL_VEHICLES);
 };
+
+export const makeConsignment = async order => {
+  return client.post(URL.CREATE_CONSIGNMENTS, order);
+};

@@ -10,7 +10,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {Button} from 'react-native-paper';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import RenderItem from './renderItem';
 import AuthContext from '../../utils/authContext';
 import LottieView from 'lottie-react-native';
@@ -18,6 +18,7 @@ import LottieView from 'lottie-react-native';
 export default function Placed(props) {
   const {colors} = useTheme();
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
   const {height, width} = useWindowDimensions();
 
   const authContext = React.useContext(AuthContext);
@@ -28,9 +29,20 @@ export default function Placed(props) {
   );
   const [loading, setLoading] = React.useState(false);
 
+  React.useEffect(() => {}, []);
+
   const handleConsignment = () => {
     setLoading(true);
-    console.log('xx ', ordersConsignments);
+    // console.log('xx ', ordersConsignments);
+    navigation.navigate('CreateConsignments', {
+      vehicles: props.vehicles,
+      reLoad: props.reLoad,
+      setReload: props.setReload,
+      placedOrders: props.orders,
+      inProgressOrders: props.inProgressOrders,
+      dispatchedOrders: props.dispatchedOrders,
+      deliveredOrders: props.deliveredOrders,
+    });
     setLoading(false);
   };
 
@@ -41,9 +53,12 @@ export default function Placed(props) {
   const onRefresh = async () => {
     try {
       setRefreshing(true);
-      // const data = await getProducts();
-
-      // setProducts(data.data);
+      props.orders.splice(0, props.orders.length);
+      props.inProgressOrders.splice(0, props.inProgressOrders.length);
+      props.dispatchedOrders.splice(0, props.dispatchedOrders.length);
+      props.deliveredOrders.splice(0, props.deliveredOrders.length);
+      props.vehicles.splice(0, props.vehicles.length);
+      props.setReload(!props.reLoad);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);

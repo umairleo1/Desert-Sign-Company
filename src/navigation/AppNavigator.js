@@ -14,6 +14,7 @@ import consignments from '../screens/consignments';
 import Notifications from '../screens/consignments/Notifications';
 import Search from '../screens/consignments/Search';
 import ConsignmentDetails from '../screens/order/index';
+import CreateConsignments from '../screens/orders/createConsignments';
 import UpdateConsignment from '../screens/order/updateConsignment';
 import Orders from '../screens/orders/index';
 import orderDetails from '../screens/orders/orderDetails';
@@ -29,6 +30,7 @@ const ordersStack = () => (
     }}>
     <Stack.Screen name="Orders" component={Orders} />
     <Stack.Screen name="OrderDetails" component={orderDetails} />
+    <Stack.Screen name="CreateConsignments" component={CreateConsignments} />
     <Stack.Screen name="Notification" component={Notifications} />
     <Stack.Screen name="Search" component={Search} />
   </Stack.Navigator>
@@ -38,6 +40,7 @@ const consignmentStack = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
+      // detachPreviousScreen: false,
     }}>
     <Stack.Screen name="Consignments" component={consignments} />
     <Stack.Screen name="ConsignmentDetails" component={ConsignmentDetails} />

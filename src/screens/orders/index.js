@@ -5,6 +5,8 @@ import {
   View,
   useWindowDimensions,
   StatusBar,
+  TouchableOpacity,
+  Animated,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
@@ -21,7 +23,8 @@ import Placed from './Placed';
 import InProgress from './Inprogress';
 import Dispatched from './Dispatched';
 import Delivered from './Delivered';
-import {getAllOrders} from '../../service/app.service';
+import {getAllOrders, getAllVehicles} from '../../service/app.service';
+import CreateConsignments from './createConsignments';
 
 export default function index() {
   const layout = useWindowDimensions();
@@ -35,13 +38,15 @@ export default function index() {
 
   const [count, setCount] = React.useState(0);
   const savedItem = useSelector(state => state.savedItem.data);
-  const [index, setIndex] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(false);
   const [placedOrders, setPlacedOrders] = React.useState([]);
   const [inProgressOrders, setInProgressOrders] = React.useState([]);
   const [dispatchedOrders, setDispatchedOrders] = React.useState([]);
   const [deliveredOrders, setDeliveredOrders] = React.useState([]);
-
+  const [vehicles, setVehicles] = React.useState([]);
+  const [index, setIndex] = React.useState(0);
+  const [reload, setReload] = React.useState(false);
+  // var index = 0;
   const [routes] = React.useState([
     {key: 'first', title: 'Placed'},
     {key: 'second', title: 'In Progress'},
@@ -49,32 +54,38 @@ export default function index() {
     {key: 'four', title: 'Delivered'},
   ]);
 
-  // const renderScene = SceneMap({
-  //   first: Placed,
-  //   second: InProgress,
-  //   third: Dispatched,
-  //   four: Delivered,
-  // });
-
   React.useEffect(() => {
-    console.log('Orders');
+    // console.log('Orders');
     allOrders();
-  }, []);
+    allVehicles();
+  }, [reload]);
+
+  const allVehicles = async () => {
+    try {
+      setIsLoading(true);
+      const result = await getAllVehicles();
+      setVehicles(result.data);
+      // setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
 
   const allOrders = async () => {
     try {
       setIsLoading(true);
       const result = await getAllOrders();
       // console.log('all orders ', result.data.rejected);
-      result.data.rejected.map(item => {
-        if (item.status === 'pending') {
+      result.data.map(item => {
+        if (item.status === 'Placed') {
           placedOrders.push(item);
-        } else if (item.status === 'InProgress') {
-          placedOrders.push(item);
+        } else if (item.status === 'InProgress' || item.status === 'Ready') {
+          inProgressOrders.push(item);
         } else if (item.status === 'Dispatched') {
-          placedOrders.push(item);
+          dispatchedOrders.push(item);
         } else if (item.status === 'Delivered') {
-          placedOrders.push(item);
+          deliveredOrders.push(item);
         }
       });
       setIsLoading(false);
@@ -87,13 +98,53 @@ export default function index() {
   const renderScene = ({route}) => {
     switch (route.key) {
       case 'first':
-        return <Placed orders={placedOrders} />;
+        return (
+          <Placed
+            reLoad={reload}
+            setReload={setReload}
+            vehicles={vehicles}
+            orders={placedOrders}
+            inProgressOrders={inProgressOrders}
+            dispatchedOrders={dispatchedOrders}
+            deliveredOrders={deliveredOrders}
+          />
+        );
       case 'second':
-        return <InProgress orders={inProgressOrders} />;
+        return (
+          <InProgress
+            reLoad={reload}
+            setReload={setReload}
+            orders={inProgressOrders}
+            placedOrders={placedOrders}
+            dispatchedOrders={dispatchedOrders}
+            deliveredOrders={deliveredOrders}
+            vehicles={vehicles}
+          />
+        );
       case 'third':
-        return <Dispatched orders={dispatchedOrders} />;
+        return (
+          <Dispatched
+            reLoad={reload}
+            setReload={setReload}
+            orders={dispatchedOrders}
+            inProgressOrders={inProgressOrders}
+            placedOrders={placedOrders}
+            deliveredOrders={deliveredOrders}
+            vehicles={vehicles}
+          />
+        );
       case 'four':
-        return <Delivered orders={deliveredOrders} />;
+        return (
+          <Delivered
+            reLoad={reload}
+            setReload={setReload}
+            orders={deliveredOrders}
+            inProgressOrders={inProgressOrders}
+            dispatchedOrders={dispatchedOrders}
+            placedOrders={placedOrders}
+            vehicles={vehicles}
+          />
+        );
       default:
         return null;
     }
@@ -127,6 +178,7 @@ export default function index() {
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
+        // onIndexChange={val => (index = val)}
         onIndexChange={setIndex}
         initialLayout={{width: layout.width}}
         renderTabBar={renderTabBar}
@@ -138,4 +190,14 @@ export default function index() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  tabBar: {
+    flexDirection: 'row',
+    // paddingTop: Constants.statusBarHeight,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+});

@@ -1,27 +1,23 @@
-import {useTheme, useNavigation} from '@react-navigation/native';
-import {useIsFocused} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSelector, useDispatch, connect} from 'react-redux';
-
-import Orders from '../../../assets/svgs/Orders';
 import Check from '../../../assets/svgs/Check';
 
-const renderItem = item => {
-  const navigation = useNavigation();
+import Vehicle from '../../../assets/svgs/Vehicle';
 
-  const [checkBox, setCheckbox] = React.useState(false);
+const VehiclesRadio = ({item, setSelectedVehicle, selectedVehicle}) => {
   return (
-    // <TouchableOpacity>
-    <View style={styles.card}>
-      <View style={styles.logoView}>
-        <View style={styles.circle}>
-          <Orders />
+    <TouchableOpacity
+      onPress={() => {
+        setSelectedVehicle(item);
+      }}>
+      <View style={styles.card}>
+        <View style={styles.logoView}>
+          <View style={styles.circle}>
+            <Vehicle />
+          </View>
         </View>
-      </View>
-      <View style={styles.contentView}>
-        <TouchableOpacity>
+        <View style={styles.contentView}>
           <Text
             style={{
               fontFamily: 'SourceSansPro-Regular',
@@ -30,7 +26,7 @@ const renderItem = item => {
               color: '#060F2F',
               paddingVertical: 5,
             }}>
-            {item?.item.orderId}
+            Reg No. {item.registrationNumber}
           </Text>
           <Text
             style={{
@@ -40,7 +36,7 @@ const renderItem = item => {
               color: '#6B7280',
               paddingBottom: 5,
             }}>
-            {item?.item.total}
+            {item.make}
           </Text>
           <Text
             style={{
@@ -49,19 +45,22 @@ const renderItem = item => {
               fontWeight: '600',
               color: '#0B0287',
             }}>
-            {item?.item.time}
+            Available
           </Text>
-        </TouchableOpacity>
+        </View>
+        <View style={styles.checkView}>
+          {selectedVehicle._id === item._id && (
+            <Check color={'#7EC043'} width={18} height={18} />
+          )}
+        </View>
       </View>
-    </View>
-
-    // </TouchableOpacity>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    height: 80,
+    // height: 100,
     width: '100%',
     flexDirection: 'row',
     paddingVertical: 5,
@@ -74,9 +73,17 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   contentView: {
-    width: '80%',
+    width: '60%',
     height: '100%',
     paddingLeft: 10,
+  },
+  checkView: {
+    width: '20%',
+    // height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // paddingLeft: 10,
+    // backgroundColor: 'red',
   },
   circle: {
     height: 42,
@@ -97,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default renderItem;
+export default VehiclesRadio;

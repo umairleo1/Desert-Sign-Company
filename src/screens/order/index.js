@@ -11,8 +11,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import AnimatedLoader from 'react-native-animated-loader';
-import {useSelector, useDispatch} from 'react-redux';
 import {useTheme, useNavigation, useRoute} from '@react-navigation/native';
 import {useIsFocused} from '@react-navigation/native';
 
@@ -29,7 +27,7 @@ export default function index() {
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const [showPopup, setShowPopup] = React.useState(false);
-  const [currentPosition, setCurrentPosition] = React.useState(1);
+  const [currentPosition, setCurrentPosition] = React.useState();
 
   const labels = ['Ready', 'Dispatch', 'Delivered'];
   const customStyles = {
@@ -55,32 +53,17 @@ export default function index() {
     labelSize: 13,
     currentStepLabelColor: '#1FA1DA',
   };
-  const [orders, setOrders] = React.useState([
-    {
-      id: 1,
-      orderNo: 'ED123553DD4335',
-      orderPrice: 'AED 123',
-      date: 'Nov 12 2021',
-    },
-    {
-      id: 2,
-      orderNo: 'ABC423444V4445',
-      orderPrice: 'AED 989',
-      date: 'Nov 12 2021',
-    },
-    {
-      id: 3,
-      orderNo: 'VBD335VV665556',
-      orderPrice: 'AED 143',
-      date: 'Nov 12 2021',
-    },
-    {
-      id: 4,
-      orderNo: 'ASOH676BB55555',
-      orderPrice: 'AED 453',
-      date: 'Nov 12 2021',
-    },
-  ]);
+  const [orders, setOrders] = React.useState(route.params.consignment.orders);
+
+  useEffect(() => {
+    if (route.params.consignment.status === 'Ready') {
+      setCurrentPosition(0);
+    } else if (route.params.consignment.status === 'Dispatched') {
+      setCurrentPosition(1);
+    } else if (route.params.consignment.status === 'Delivered') {
+      setCurrentPosition(2);
+    }
+  }, []);
 
   const onRefresh = async () => {
     try {
@@ -197,10 +180,10 @@ export default function index() {
           style={{flex: 1}}
           onPress={() => setShowPopup(false)}>
           <FlatList
-            ListHeaderComponent={listHeaderComponrnt}
-            keyExtractor={item => item?.id}
+            keyExtractor={item => item?._id}
             data={orders}
             renderItem={render}
+            ListHeaderComponent={listHeaderComponrnt}
             ItemSeparatorComponent={itemSeperator}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

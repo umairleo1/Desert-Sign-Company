@@ -182,6 +182,7 @@ export default function App() {
           profile,
           setProfile,
           ordersConsignments,
+          setOrdersConsignments,
           check,
           setCheck,
         }}>

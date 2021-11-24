@@ -23,20 +23,16 @@ export default function InProgress(props) {
   const render = ({item}) => {
     return <RenderItem item={item} />;
   };
-  // React.useEffect(async () => {
-  //   // setActivityIndicator(true);
-  //   const data = await getProducts();
-  //   setProducts(data.data);
-  //   // console.log('products');
-  //   // setActivityIndicator(false);
-  // }, [isFocused]);
 
   const onRefresh = async () => {
     try {
       setRefreshing(true);
-      // const data = await getProducts();
-
-      // setProducts(data.data);
+      props.orders.splice(0, props.orders.length);
+      props.placedOrders.splice(0, props.placedOrders.length);
+      props.dispatchedOrders.splice(0, props.dispatchedOrders.length);
+      props.deliveredOrders.splice(0, props.deliveredOrders.length);
+      props.vehicles.splice(0, props.vehicles.length);
+      props.setReload(!props.reLoad);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);
