@@ -54,6 +54,7 @@ export default function index() {
     currentStepLabelColor: '#1FA1DA',
   };
   const [orders, setOrders] = React.useState(route.params.consignment.orders);
+  // console.log('xxx ', orders);
 
   useEffect(() => {
     if (route.params.consignment.status === 'Ready') {

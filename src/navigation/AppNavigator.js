@@ -14,8 +14,14 @@ import consignments from '../screens/consignments';
 import Notifications from '../screens/consignments/Notifications';
 import Search from '../screens/consignments/Search';
 import ConsignmentDetails from '../screens/order/index';
+import ConsignmentOrderDetails from '../screens/consignments/ConsignmentDetailsOrders';
 import CreateConsignments from '../screens/orders/createConsignments';
 import UpdateConsignment from '../screens/order/updateConsignment';
+import Products from '../screens/products/index';
+import FetaturedProducts from '../screens/products/fetaturedProducts';
+import AllProducts from '../screens/products/allProducts';
+import AllCategories from '../screens/products/allCategories';
+import categoryProduct from '../screens/products/categoryProduct';
 import Orders from '../screens/orders/index';
 import orderDetails from '../screens/orders/orderDetails';
 import Vehicles from '../screens/vehicles/index';
@@ -45,6 +51,26 @@ const consignmentStack = () => (
     <Stack.Screen name="Consignments" component={consignments} />
     <Stack.Screen name="ConsignmentDetails" component={ConsignmentDetails} />
     <Stack.Screen name="UpdateConsignment" component={UpdateConsignment} />
+    <Stack.Screen
+      name="ConsignmentOrderDetails"
+      component={ConsignmentOrderDetails}
+    />
+    <Stack.Screen name="Notification" component={Notifications} />
+    <Stack.Screen name="Search" component={Search} />
+  </Stack.Navigator>
+);
+
+const productsStack = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+      // detachPreviousScreen: false,
+    }}>
+    <Stack.Screen name="Products" component={Products} />
+    <Stack.Screen name="FetaturedProducts" component={FetaturedProducts} />
+    <Stack.Screen name="AllProducts" component={AllProducts} />
+    <Stack.Screen name="AllCategories" component={AllCategories} />
+    <Stack.Screen name="CategoryProduct" component={categoryProduct} />
     <Stack.Screen name="Notification" component={Notifications} />
     <Stack.Screen name="Search" component={Search} />
   </Stack.Navigator>
@@ -80,7 +106,12 @@ const Navigator = () => {
       screenOptions={{headerShown: false}}
       drawerContent={props => <DrawerContent {...props} />}>
       <Drawer.Screen name="ordersStack" component={ordersStack} />
-      <Drawer.Screen name="consignmentStack" component={consignmentStack} />
+      <Drawer.Screen
+        options={{unmountOnBlur: true}}
+        name="consignmentStack"
+        component={consignmentStack}
+      />
+      <Drawer.Screen name="productsStack" component={productsStack} />
       <Drawer.Screen name="profileStack" component={profileStack} />
       <Drawer.Screen name="vehiclesStack" component={vehiclesStack} />
     </Drawer.Navigator>

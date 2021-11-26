@@ -120,7 +120,7 @@ export default function App() {
 
     const verified = await authStorage.getIsVerified();
     const id = await authStorage.getUserid();
-
+    setUserID(id);
     setIsverified(verified);
     if (userToken) setUser(userToken);
   };

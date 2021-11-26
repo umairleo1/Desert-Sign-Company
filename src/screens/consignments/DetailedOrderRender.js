@@ -10,7 +10,7 @@ import Check from '../../../assets/svgs/Check';
 
 const renderItem = item => {
   const navigation = useNavigation();
-
+  // console.log('consignment details ', item);
   const [checkBox, setCheckbox] = React.useState(false);
   return (
     // <TouchableOpacity>
@@ -21,7 +21,10 @@ const renderItem = item => {
         </View>
       </View>
       <View style={styles.contentView}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ConsignmentOrderDetails', {order: item.item})
+          }>
           <Text
             style={{
               fontFamily: 'SourceSansPro-Regular',

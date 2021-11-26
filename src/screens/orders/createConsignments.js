@@ -132,7 +132,7 @@ export default function createConsignments() {
         <StatusBar barStyle="dark-content" backgroundColor="white" />
       )}
       <View style={{paddingVertical: 10}}>
-        <SecondaryHeader title="Create Consignments" />
+        <SecondaryHeader title="Select Vehicles" />
       </View>
       <View style={{flex: 1}}>
         <FlatList

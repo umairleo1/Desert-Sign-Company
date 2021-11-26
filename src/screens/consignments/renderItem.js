@@ -56,7 +56,7 @@ const renderItem = item => {
               paddingBottom: 5,
             }}>
             {/* {item?.item.driverName} */}
-            Amir
+            Driver Name: Amir
           </Text>
           <Text
             style={{
@@ -65,7 +65,7 @@ const renderItem = item => {
               fontWeight: '600',
               color: '#0B0287',
             }}>
-            {item?.item.status}
+            Vehicle: {item?.item?.vehicle?.registrationNumber}
           </Text>
         </View>
       </View>

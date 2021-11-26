@@ -29,8 +29,11 @@ const styles = StyleSheet.create({
   overLay: {
     position: 'absolute',
     backgroundColor: '#ffffff70',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    // backgroundColor: 'red',
+    // width: Dimensions.get('window').width,
+    // height: Dimensions.get('window').height,
+    height: '100%',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,

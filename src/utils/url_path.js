@@ -21,4 +21,8 @@ export default {
   GET_ALL_CONSIGNMENTS: '/consignments',
   GET_ALL_VEHICLES: '/vehicles',
   CREATE_CONSIGNMENTS: '/consignments/new',
+  GET_ALL_FEATURED_PRODUCTS: '/products/featured',
+  GET_ALL_PRODUCTS: '/products',
+  GET_ALL_CATAGORIES: '/categories',
+  GET_ALL_NOTIFICATION: '/notifications',
 };

@@ -14,7 +14,7 @@ const renderItem = item => {
   const authContext = React.useContext(AuthContext);
 
   const [checkBox, setCheckbox] = React.useState(false);
-
+  // console.log('xxx ', item.item);
   const handleCheckBox = () => {
     if (checkBox) {
       setCheckbox(!checkBox);
@@ -60,12 +60,22 @@ const renderItem = item => {
             style={{
               fontFamily: 'SourceSansPro-Regular',
               fontSize: 14,
+              fontWeight: '600',
+              color: '#0B0287',
+            }}>
+            {item?.item.customer.companyName}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'SourceSansPro-Regular',
+              fontSize: 14,
               fontWeight: '400',
               color: '#6B7280',
               paddingBottom: 5,
             }}>
             AED {item?.item.total}
           </Text>
+
           <Text
             style={{
               fontFamily: 'SourceSansPro-Regular',
@@ -108,7 +118,7 @@ const renderItem = item => {
 
 const styles = StyleSheet.create({
   card: {
-    height: 80,
+    height: 100,
     width: '100%',
     flexDirection: 'row',
     paddingVertical: 5,

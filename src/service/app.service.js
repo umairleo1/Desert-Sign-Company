@@ -63,3 +63,19 @@ export const getAllVehicles = async () => {
 export const makeConsignment = async order => {
   return client.post(URL.CREATE_CONSIGNMENTS, order);
 };
+
+export const allFeaturedProducts = async () => {
+  return client.get(URL.GET_ALL_FEATURED_PRODUCTS);
+};
+
+export const AllProducts = async () => {
+  return client.get(URL.GET_ALL_PRODUCTS);
+};
+
+export const AllCategories = async () => {
+  return client.get(URL.GET_ALL_CATAGORIES);
+};
+
+export const AllNotifications = async id => {
+  return client.get(URL.GET_ALL_NOTIFICATION + `/${id}`);
+};

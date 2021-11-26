@@ -110,12 +110,21 @@ export function DrawerContent(props) {
               onPress={() => navigation.navigate('ordersStack')}
             />
           </Drawer.Section>
+
           <Drawer.Section style={styles.section}>
             <DrawerItem
               labelStyle={{color: colors.placeholder}}
               icon={({color, size}) => <TermsIcon />}
               label="Consignments"
               onPress={() => navigation.navigate('consignmentStack')}
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.section}>
+            <DrawerItem
+              labelStyle={{color: colors.placeholder}}
+              icon={({color, size}) => <OrderIcon />}
+              label="Products"
+              onPress={() => navigation.navigate('productsStack')}
             />
           </Drawer.Section>
           <Drawer.Section style={styles.section}>
