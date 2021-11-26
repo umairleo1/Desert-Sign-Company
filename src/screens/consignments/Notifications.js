@@ -36,7 +36,7 @@ export default function Notifications() {
   const getAllNotifications = async () => {
     try {
       setIsloading(true);
-      const result = await AllNotifications('6130c74ad6a07ab567cad55e');
+      const result = await AllNotifications(authContext.userid);
       // console.log('notifications ', result.data);
       setNotification(result.data[0].notifications.reverse());
       setImage(result.data[0].customer.profilePhoto);
@@ -51,7 +51,7 @@ export default function Notifications() {
     notification.splice(0, notification.length);
     try {
       setIsloading(true);
-      const result = await AllNotifications('6130c74ad6a07ab567cad55e');
+      const result = await AllNotifications(authContext.userid);
       // console.log('notification ', result.data);
       setNotification(result.data[0].notifications.reverse());
       setImage(result.data[0].customer.profilePhoto);

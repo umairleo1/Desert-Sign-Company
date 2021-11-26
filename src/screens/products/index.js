@@ -71,7 +71,7 @@ export default function index() {
       )}
       <ActivityIndicator visible={isLoading} />
       <View style={{paddingVertical: 10}}>
-        <Header title="Products" />
+        <Header search={true} title="Products" />
       </View>
       <TabView
         navigationState={{index, routes}}

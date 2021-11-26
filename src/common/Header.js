@@ -31,11 +31,13 @@ export default function Header(props) {
         {props.title}
       </Text>
       <View style={{flexDirection: 'row', position: 'absolute', right: 0}}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Search')}
-          style={{marginRight: 15}}>
-          <SearchIcon />
-        </TouchableOpacity>
+        {props.search && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Search')}
+            style={{marginRight: 15}}>
+            <SearchIcon />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
           <NotificationIcon />
         </TouchableOpacity>
