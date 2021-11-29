@@ -8,6 +8,7 @@ import AuthContext from '../../utils/authContext';
 
 import Orders from '../../../assets/svgs/Orders';
 import Check from '../../../assets/svgs/Check';
+import moment from 'moment';
 
 const renderItem = item => {
   const navigation = useNavigation();
@@ -83,8 +84,8 @@ const renderItem = item => {
               fontWeight: '600',
               color: '#0B0287',
             }}>
-            {/* {item?.item.date} */}
-            25 NOV 2021
+            {/* {item?.item.createdAt} */}
+            {moment(item?.item.createdAt).format('DD/MM/YYYY')}
           </Text>
         </TouchableOpacity>
       </View>

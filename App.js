@@ -27,6 +27,23 @@ export default function App() {
   const [fcmNotification, setFcmNotification] = React.useState();
   const [ordersConsignments, setOrdersConsignments] = React.useState([]);
   const [check, setCheck] = React.useState(0);
+  const [updateOrder, setUpdateOrder] = React.useState([]);
+
+  const centralized = {
+    user,
+    setUser,
+    userid,
+    setUserID,
+    isVerified,
+    setIsverified,
+    profile,
+    setProfile,
+    ordersConsignments,
+    setOrdersConsignments,
+    check,
+    setCheck,
+    updateOrder,
+  };
 
   //configure push notification
 
@@ -171,21 +188,7 @@ export default function App() {
     <>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
 
-      <AuthContext.Provider
-        value={{
-          user,
-          setUser,
-          userid,
-          setUserID,
-          isVerified,
-          setIsverified,
-          profile,
-          setProfile,
-          ordersConsignments,
-          setOrdersConsignments,
-          check,
-          setCheck,
-        }}>
+      <AuthContext.Provider value={centralized}>
         <Provider store={store}>
           {user && isVerified == 'true' ? <AppNavigator /> : <AuthNavigator />}
         </Provider>

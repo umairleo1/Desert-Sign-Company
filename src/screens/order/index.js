@@ -10,9 +10,11 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
+import {Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme, useNavigation, useRoute} from '@react-navigation/native';
 import {useIsFocused} from '@react-navigation/native';
+import AuthContext from '../../utils/authContext';
 
 import SecondaryHeader from '../../common/SecondaryHeader';
 import Dots from '../../../assets/svgs/Dots';
@@ -25,9 +27,11 @@ export default function index() {
   const {colors} = useTheme();
 
   const isFocused = useIsFocused();
+  const authContext = React.useContext(AuthContext);
   const [refreshing, setRefreshing] = React.useState(false);
   const [showPopup, setShowPopup] = React.useState(false);
   const [currentPosition, setCurrentPosition] = React.useState();
+  const [loading, setLoading] = React.useState(false);
 
   const labels = ['Ready', 'Dispatch', 'Delivered'];
   const customStyles = {
@@ -64,7 +68,11 @@ export default function index() {
     } else if (route.params.consignment.status === 'Delivered') {
       setCurrentPosition(2);
     }
+    return () => {
+      authContext.updateOrder.splice(0, authContext.updateOrder.length);
+    };
   }, []);
+  const handleUpdate = () => {};
 
   const onRefresh = async () => {
     try {
@@ -191,6 +199,18 @@ export default function index() {
             }
           />
         </TouchableWithoutFeedback>
+
+        <View style={{zIndex: -1, width: '100%'}}>
+          <Button
+            color={colors.button}
+            onPress={() => handleUpdate()}
+            style={styles.button}
+            labelStyle={{color: colors.background}}
+            mode="contained"
+            disabled={loading}>
+            Marked as complete
+          </Button>
+        </View>
       </View>
 
       {showPopup && (
@@ -281,5 +301,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // fontWeight: '400',
     color: '#060F2F',
+  },
+  button: {
+    // marginTop: 20,
+    padding: 10,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
+    // width: '100%',
   },
 });

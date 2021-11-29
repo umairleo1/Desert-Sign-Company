@@ -13,6 +13,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, connect} from 'react-redux';
 
 import Clock from '../../../assets/svgs/Clock';
+import moment from 'moment';
 
 const renderItem = item => {
   const {colors} = useTheme();
@@ -66,6 +67,15 @@ const renderItem = item => {
               color: '#0B0287',
             }}>
             Vehicle: {item?.item?.vehicle?.registrationNumber}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'SourceSansPro-Regular',
+              fontSize: 14,
+              fontWeight: '600',
+              color: '#0B0287',
+            }}>
+            {moment(item?.item.createdAt).format('DD/MM/YYYY')}
           </Text>
         </View>
       </View>

@@ -16,7 +16,7 @@ import {useTheme, useNavigation} from '@react-navigation/native';
 export default function orderDetailsCard(item) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  console.log('xxxx ', item.item.product);
+  // console.log('xxxx ', item.item.product);
   return (
     <View style={{}}>
       {isFocused && (
