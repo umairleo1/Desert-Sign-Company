@@ -29,6 +29,12 @@ const renderItem = item => {
       onPress={() =>
         navigation.navigate('ConsignmentDetails', {
           consignment: item.item,
+          status: item.status,
+          ready: item.ready,
+          dispatched: item.dispatched,
+          returned: item.returned,
+          setReload: item.setReload,
+          reLoad: item.reLoad,
         })
       }>
       <View style={styles.card}>

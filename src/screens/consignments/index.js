@@ -51,6 +51,13 @@ export default function index() {
     getConsignments();
   }, [reLoad]);
 
+  // React.useEffect(() => {
+  // readyConsignments.splice(0, readyConsignments.length);
+  // dispatchedConsignments.splice(0, dispatchedConsignments.length);
+  // returnedConsignments.splice(0, returnedConsignments.length);
+  //   getConsignments();
+  // }, [isFocused]);
+
   const getConsignments = async () => {
     // console.log(reLoad);
     try {
@@ -78,6 +85,7 @@ export default function index() {
       case 'first':
         return (
           <Ready
+            status={'ready'}
             reLoad={reLoad}
             setReload={setReload}
             consignment={readyConsignments}
@@ -88,6 +96,7 @@ export default function index() {
       case 'second':
         return (
           <Dispatch
+            status={'dispatch'}
             reLoad={reLoad}
             setReload={setReload}
             readyConsignments={readyConsignments}
@@ -98,6 +107,7 @@ export default function index() {
       case 'third':
         return (
           <Returned
+            status={'returned'}
             reLoad={reLoad}
             setReload={setReload}
             readyConsignments={readyConsignments}

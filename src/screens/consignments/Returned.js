@@ -20,7 +20,7 @@ export default function Returned(props) {
   const [products, setProducts] = React.useState(props.consignment);
   const [refreshing, setRefreshing] = React.useState(false);
   const render = ({item}) => {
-    return <RenderItem item={item} />;
+    return <RenderItem status={props.status} item={item} />;
   };
   const itemSeperator = () => {
     return (

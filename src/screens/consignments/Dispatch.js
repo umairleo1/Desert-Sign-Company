@@ -44,7 +44,17 @@ export default function Dispatch(props) {
   };
 
   const render = ({item}) => {
-    return <RenderItem item={item} />;
+    return (
+      <RenderItem
+        dispatched={props.consignment}
+        ready={props.readyConsignments}
+        returned={props.returnedConsignments}
+        setReload={props.setReload}
+        reLoad={props.reLoad}
+        status={props.status}
+        item={item}
+      />
+    );
   };
   const itemSeperator = () => {
     return (

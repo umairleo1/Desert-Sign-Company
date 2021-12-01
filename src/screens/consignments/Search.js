@@ -15,7 +15,7 @@ import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import {getSpecificProduct} from '../../service/app.service';
-import RenderItem from './renderItem';
+import RenderSearch from './renderSearch';
 
 export default function Search() {
   const [products, setProducts] = React.useState();
@@ -35,6 +35,7 @@ export default function Search() {
     setSearch(val);
     try {
       const data = await getSpecificProduct(val);
+      // console.log('xxx search ', data.data);
       data.data ? setProducts(data?.data) : setFound(false);
     } catch (e) {
       console.warn(e);
@@ -43,7 +44,7 @@ export default function Search() {
   };
 
   const render = ({item}) => {
-    return <RenderItem item={item} />;
+    return <RenderSearch item={item} />;
   };
   const itemSeperator = () => {
     return (
@@ -56,64 +57,64 @@ export default function Search() {
   };
 
   return (
-    <SafeAreaView>
-      <View onPress={() => Keyboard.dismiss()} style={{}}>
-        <View style={[styles.header, {borderBottomColor: colors.headerBottom}]}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={styles.iconSection}>
-              <Icon
-                onPress={() => navigation.goBack()}
-                style={{fontSize: 25}}
-                name={'arrowleft'}
-              />
-            </View>
+    <SafeAreaView style={{flex: 1}} edges={['right', 'bottom', 'left', 'top']}>
+      {/* <View onPress={() => Keyboard.dismiss()} style={{}}> */}
+      <View style={[styles.header, {borderBottomColor: colors.headerBottom}]}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={styles.iconSection}>
+            <Icon
+              onPress={() => navigation.goBack()}
+              style={{fontSize: 25}}
+              name={'arrowleft'}
+            />
+          </View>
 
-            <View style={{width: '80%'}}>
-              <TextInput
-                style={[isFocus ? styles.focusInput : styles.input]}
-                onChangeText={text => {
-                  handleSearch(text);
-                }}
-                value={search}
-                placeholder="Search here"
-                placeholderTextColor={'gray'}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-              />
-              <Icon
-                // onPress={() => handleSearch(search)}
-                style={{position: 'absolute', right: 15, fontSize: 20, top: 20}}
-                name={'search1'}
-              />
-            </View>
+          <View style={{width: '80%'}}>
+            <TextInput
+              style={[isFocus ? styles.focusInput : styles.input]}
+              onChangeText={text => {
+                handleSearch(text);
+              }}
+              value={search}
+              placeholder="Search here"
+              placeholderTextColor={'gray'}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+            />
+            <Icon
+              // onPress={() => handleSearch(search)}
+              style={{position: 'absolute', right: 15, fontSize: 20, top: 20}}
+              name={'search1'}
+            />
           </View>
         </View>
-        {products && (
-          <View style={{marginTop: 10}}>
-            <FlatList
-              keyExtractor={item => item?._id}
-              data={products}
-              renderItem={render}
-              ItemSeparatorComponent={itemSeperator}
-              // refreshControl={
-              //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              // }
-            />
-          </View>
-        )}
-        {found == false && (
-          <View
-            style={{
-              height: height - 200,
-            }}>
-            <LottieView
-              source={require('../../../assets/empty.json')}
-              autoPlay
-              loop
-            />
-          </View>
-        )}
       </View>
+      {products && (
+        <View style={{margin: 10}}>
+          <FlatList
+            keyExtractor={item => item?._id}
+            data={products}
+            renderItem={render}
+            ItemSeparatorComponent={itemSeperator}
+            // refreshControl={
+            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            // }
+          />
+        </View>
+      )}
+      {found == false && (
+        <View
+          style={{
+            height: height - 200,
+          }}>
+          <LottieView
+            source={require('../../../assets/empty.json')}
+            autoPlay
+            loop
+          />
+        </View>
+      )}
+      {/* </View> */}
     </SafeAreaView>
   );
 }
@@ -132,7 +133,6 @@ const styles = StyleSheet.create({
   header: {
     height: 80,
     justifyContent: 'center',
-
     justifyContent: 'center',
     borderBottomWidth: 1,
   },

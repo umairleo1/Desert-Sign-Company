@@ -15,11 +15,14 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme, useNavigation, useRoute} from '@react-navigation/native';
 import {useIsFocused} from '@react-navigation/native';
 import AuthContext from '../../utils/authContext';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import SecondaryHeader from '../../common/SecondaryHeader';
 import Dots from '../../../assets/svgs/Dots';
 import StepIndicator from 'react-native-step-indicator';
 import RenderItem from '../consignments/DetailedOrderRender';
+import ActivityIndicator from '../../common/ActivityIndicator';
+import {UpdateConsignment} from '../../service/app.service';
 
 export default function index() {
   const navigation = useNavigation();
@@ -32,6 +35,7 @@ export default function index() {
   const [showPopup, setShowPopup] = React.useState(false);
   const [currentPosition, setCurrentPosition] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const labels = ['Ready', 'Dispatch', 'Delivered'];
   const customStyles = {
@@ -58,8 +62,7 @@ export default function index() {
     currentStepLabelColor: '#1FA1DA',
   };
   const [orders, setOrders] = React.useState(route.params.consignment.orders);
-  // console.log('xxx ', orders);
-
+  // console.log('xxx yyyyy ', route.params.consignment._id);
   useEffect(() => {
     if (route.params.consignment.status === 'Ready') {
       setCurrentPosition(0);
@@ -70,10 +73,48 @@ export default function index() {
     }
     return () => {
       authContext.updateOrder.splice(0, authContext.updateOrder.length);
+      authContext.setMarked(false);
     };
   }, []);
-  const handleUpdate = () => {};
 
+  const handleUpdate = () => {
+    authContext.setMarked(true);
+  };
+  const handleDone = async () => {
+    let orders = [];
+    if (authContext.updateOrder.length <= 0) {
+      showMessage({
+        message: 'You must select atleast one order',
+        type: 'warning',
+        floating: true,
+      });
+    } else {
+      authContext.updateOrder.map(item => {
+        orders.push(item._id);
+      });
+      try {
+        setIsLoading(true);
+        const result = await UpdateConsignment(
+          route.params.consignment._id,
+          orders,
+        );
+        console.log('update consignment ', result, orders);
+        route.params.ready.splice(0, route.params.ready.length);
+        route.params.dispatched.splice(0, route.params.dispatched.length);
+        route.params.returned.splice(0, route.params.returned.length);
+        route.params.setReload(!route.params.reLoad);
+        navigation.goBack();
+        showMessage({
+          message: 'Consignment successfuly updated',
+          type: 'success',
+          floating: true,
+        });
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+      }
+    }
+  };
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -185,6 +226,7 @@ export default function index() {
       />
 
       <View onPress={() => setShowPopup(false)} style={{flex: 1}}>
+        <ActivityIndicator visible={isLoading} />
         <TouchableWithoutFeedback
           style={{flex: 1}}
           onPress={() => setShowPopup(false)}>
@@ -199,18 +241,21 @@ export default function index() {
             }
           />
         </TouchableWithoutFeedback>
-
-        <View style={{zIndex: -1, width: '100%'}}>
-          <Button
-            color={colors.button}
-            onPress={() => handleUpdate()}
-            style={styles.button}
-            labelStyle={{color: colors.background}}
-            mode="contained"
-            disabled={loading}>
-            Marked as complete
-          </Button>
-        </View>
+        {route.params.status === 'dispatch' && (
+          <View style={{zIndex: -1, width: '100%'}}>
+            <Button
+              color={colors.button}
+              onPress={() =>
+                authContext.marked ? handleDone() : handleUpdate()
+              }
+              style={styles.button}
+              labelStyle={{color: colors.background}}
+              mode="contained"
+              disabled={loading}>
+              {authContext.marked ? 'Done' : 'Marked as complete'}
+            </Button>
+          </View>
+        )}
       </View>
 
       {showPopup && (

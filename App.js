@@ -28,6 +28,7 @@ export default function App() {
   const [ordersConsignments, setOrdersConsignments] = React.useState([]);
   const [check, setCheck] = React.useState(0);
   const [updateOrder, setUpdateOrder] = React.useState([]);
+  const [marked, setMarked] = React.useState(false);
 
   const centralized = {
     user,
@@ -43,6 +44,8 @@ export default function App() {
     check,
     setCheck,
     updateOrder,
+    marked,
+    setMarked,
   };
 
   //configure push notification

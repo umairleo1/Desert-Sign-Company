@@ -38,7 +38,11 @@ const renderItem = item => {
           <Orders />
         </View>
       </View>
-      <View style={[styles.contentView, {width: '70%'}]}>
+      <View
+        style={[
+          styles.contentView,
+          {width: authContext.marked ? '70%' : '100%'},
+        ]}>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('ConsignmentOrderDetails', {order: item.item})
@@ -75,27 +79,28 @@ const renderItem = item => {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <View style={styles.checkBoxView}>
-        <TouchableOpacity
-          style={{
-            height: '100%',
-            width: '100%',
-            justifyContent: 'center',
-          }}
-          onPress={() => handleTouch()}>
-          <View
-            style={[
-              styles.checkBox,
-              {
-                backgroundColor: checkBox ? '#1FA1DA' : '#fff',
-                borderColor: checkBox ? '#fff' : '#3D3D3D90',
-              },
-            ]}>
-            {checkBox && <Check color={'#ffffff'} width={8} height={8} />}
-          </View>
-        </TouchableOpacity>
-      </View>
+      {authContext.marked && (
+        <View style={styles.checkBoxView}>
+          <TouchableOpacity
+            style={{
+              height: '100%',
+              width: '100%',
+              justifyContent: 'center',
+            }}
+            onPress={() => handleTouch()}>
+            <View
+              style={[
+                styles.checkBox,
+                {
+                  backgroundColor: checkBox ? '#1FA1DA' : '#fff',
+                  borderColor: checkBox ? '#fff' : '#3D3D3D90',
+                },
+              ]}>
+              {checkBox && <Check color={'#ffffff'} width={8} height={8} />}
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
 
     // </TouchableOpacity>

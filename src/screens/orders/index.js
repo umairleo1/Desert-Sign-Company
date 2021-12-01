@@ -78,7 +78,7 @@ export default function index() {
       const result = await getAllOrders();
       // console.log('all orders ', result.data.rejected);
       result.data.map(item => {
-        if (item.status === 'Placed') {
+        if (item.status === 'Placed' || item.status === 'Returned') {
           placedOrders.push(item);
         } else if (item.status === 'InProgress' || item.status === 'Ready') {
           inProgressOrders.push(item);

@@ -79,3 +79,7 @@ export const AllCategories = async () => {
 export const AllNotifications = async id => {
   return client.get(URL.GET_ALL_NOTIFICATION + `/${id}`);
 };
+
+export const UpdateConsignment = async (id, orders) => {
+  return client.patch(URL.UPDATE_CONSIGNMENT + `/${id}`, {orders: orders});
+};
