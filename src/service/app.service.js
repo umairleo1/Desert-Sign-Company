@@ -83,3 +83,9 @@ export const AllNotifications = async id => {
 export const UpdateConsignment = async (id, orders) => {
   return client.patch(URL.UPDATE_CONSIGNMENT + `/${id}`, {orders: orders});
 };
+
+export const UpdateConsignmentStatus = async (id, status) => {
+  return client.patch(URL.UPDATE_CONSIGNMENT_STATUS + `/${id}`, {
+    status: status,
+  });
+};

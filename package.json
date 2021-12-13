@@ -49,6 +49,7 @@
     "react-native-reanimated": "^2.2.1",
     "react-native-rename": "^2.9.0",
     "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.9.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-step-indicator": "^1.0.3",
     "react-native-svg": "^12.1.1",

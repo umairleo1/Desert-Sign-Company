@@ -28,12 +28,12 @@ export default function ActivityIndicator({visible = false}) {
 const styles = StyleSheet.create({
   overLay: {
     position: 'absolute',
-    backgroundColor: '#ffffff70',
+    backgroundColor: '#ffffff',
     // backgroundColor: 'red',
     // width: Dimensions.get('window').width,
     // height: Dimensions.get('window').height,
     height: '100%',
-    width: '100%',
+    width: '110%',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,

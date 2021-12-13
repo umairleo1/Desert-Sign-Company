@@ -23,7 +23,17 @@ export default function Ready(props) {
   const [consignments, setConsignments] = React.useState(props.consignment);
 
   const render = ({item}) => {
-    return <RenderItem status={props.status} item={item} />;
+    return (
+      <RenderItem
+        status={props.status}
+        item={item}
+        dispatched={props.dispatchedConsignments}
+        ready={props.consignment}
+        returned={props.returnedConsignments}
+        setReload={props.setReload}
+        reLoad={props.reLoad}
+      />
+    );
   };
 
   const onRefresh = async () => {

@@ -22,7 +22,10 @@ import Dots from '../../../assets/svgs/Dots';
 import StepIndicator from 'react-native-step-indicator';
 import RenderItem from '../consignments/DetailedOrderRender';
 import ActivityIndicator from '../../common/ActivityIndicator';
-import {UpdateConsignment} from '../../service/app.service';
+import {
+  UpdateConsignment,
+  UpdateConsignmentStatus,
+} from '../../service/app.service';
 
 export default function index() {
   const navigation = useNavigation();
@@ -98,14 +101,14 @@ export default function index() {
           route.params.consignment._id,
           orders,
         );
-        console.log('update consignment ', result, orders);
+        // console.log('update consignment ', result, orders);
         route.params.ready.splice(0, route.params.ready.length);
         route.params.dispatched.splice(0, route.params.dispatched.length);
         route.params.returned.splice(0, route.params.returned.length);
         route.params.setReload(!route.params.reLoad);
         navigation.goBack();
         showMessage({
-          message: 'Consignment successfuly updated',
+          message: 'Consignment successfuly delivered',
           type: 'success',
           floating: true,
         });
@@ -115,12 +118,37 @@ export default function index() {
       }
     }
   };
+
+  const markedDispatch = async () => {
+    try {
+      setIsLoading(true);
+      const result = await UpdateConsignmentStatus(
+        route.params.consignment._id,
+        'Dispatched',
+      );
+      route.params.ready.splice(0, route.params.ready.length);
+      route.params.dispatched.splice(0, route.params.dispatched.length);
+      route.params.returned.splice(0, route.params.returned.length);
+      route.params.setReload(!route.params.reLoad);
+      navigation.goBack();
+      showMessage({
+        message: 'Consignment successfuly updated',
+        type: 'success',
+        floating: true,
+      });
+    } catch (e) {
+      setIsLoading(false);
+      console.warn(e);
+    }
+  };
+
   const onRefresh = async () => {
     try {
       setRefreshing(true);
       // const id = await authStorage.getUserid();
       // const result = await getOrderHistory(id);
       // setData(result?.data);
+
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);
@@ -219,7 +247,7 @@ export default function index() {
       )}
       <SecondaryHeader
         title={'Consignment Number'}
-        iconName={<Dots />}
+        // iconName={<Dots />}
         setShowPopup={setShowPopup}
         showPopup={showPopup}
         consignmentNumber={route?.params?.consignment?.consignmentNo}
@@ -251,8 +279,29 @@ export default function index() {
               style={styles.button}
               labelStyle={{color: colors.background}}
               mode="contained"
-              disabled={loading}>
+              // disabled={
+              //   authContext.marked
+              //     ? authContext.updateOrder.length <= 0
+              //       ? true
+              //       : false
+              //     : false
+              // }
+            >
               {authContext.marked ? 'Done' : 'Marked as complete'}
+            </Button>
+          </View>
+        )}
+        {route.params.status === 'ready' && (
+          <View style={{zIndex: -1, width: '100%'}}>
+            <Button
+              color={colors.button}
+              onPress={() => markedDispatch()}
+              style={styles.button}
+              labelStyle={{color: colors.background}}
+              mode="contained"
+              // disabled={loading}
+            >
+              marked as dispatch
             </Button>
           </View>
         )}

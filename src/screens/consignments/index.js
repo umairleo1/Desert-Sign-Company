@@ -69,7 +69,7 @@ export default function index() {
           readyConsignments.push(item);
         } else if (item.status === 'Dispatched') {
           dispatchedConsignments.push(item);
-        } else if (item.status === 'Returned') {
+        } else if (item.status === 'Returned' || item.status === 'Delivered') {
           returnedConsignments.push(item);
         }
       });

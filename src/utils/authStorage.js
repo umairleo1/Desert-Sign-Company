@@ -56,6 +56,22 @@ const getToken = async () => {
   }
 };
 
+const storeFcmToken = async fcmToken => {
+  try {
+    await AsyncStorage.setItem(key, fcmToken);
+  } catch (error) {
+    console.log('Error storing the fcm token', error);
+  }
+};
+
+const getFcmToken = async () => {
+  try {
+    return await AsyncStorage.getItem(key);
+  } catch (error) {
+    console.log('Error getting the fcm token', error);
+  }
+};
+
 // const getToken = async () => {
 //   try {
 //     return await SecureStore.getItem(key);
@@ -89,6 +105,8 @@ export default {
   setIsVerified,
   getIsVerified,
   removeValue,
+  storeFcmToken,
+  getFcmToken,
   // getUser,
   // removeToken,
 };
