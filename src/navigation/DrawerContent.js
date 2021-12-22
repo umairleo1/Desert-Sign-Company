@@ -23,6 +23,8 @@ import authStorage from '../utils/authStorage';
 import OrderIcon from '../../assets/svgs/OrderIcon';
 import TermsIcon from '../../assets/svgs/TermsIcon';
 import Privacy from '../../assets/svgs/privacy';
+import ActivityIndicator from '../common/ActivityIndicator';
+import {logOut} from '../service/auth.service';
 
 export function DrawerContent(props) {
   const navigation = useNavigation();
@@ -45,11 +47,17 @@ export function DrawerContent(props) {
     }
   };
 
-  const signOut = () => {
-    authStorage.removeValue();
-    context.setUser('');
-    context.setUserID('');
-    context.setIsverified('false');
+  const signOut = async () => {
+    try {
+      const result = await logOut(context.userid);
+      console.log('hahaaahahh ', result.data);
+      authStorage.removeValue();
+      context.setUser('');
+      context.setUserID('');
+      context.setIsverified('false');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handlePress = async url => {
@@ -149,6 +157,7 @@ export function DrawerContent(props) {
           </View>
         </View>
       </View>
+      {/* <ActivityIndicator visible={true} /> */}
       <AwesomeAlert
         show={showAlertSignOut}
         showProgress={false}

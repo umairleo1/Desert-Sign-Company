@@ -67,6 +67,12 @@ export const resendOTPReset = async id => {
 export const logIn = async (userName, password, fCMToken, type) => {
   return client.post(URL.SIGNIN_URL, {userName, password, fCMToken, type});
 };
+
+export const logOut = async userId => {
+  console.log('cfh ', userId);
+  return client.post(URL.LOGOUT, {id: userId});
+};
+
 export const valideteUserName = async userName => {
   return client.patch(URL.VERIFY_UNSERNAME_URL, {userName});
 };

@@ -33,11 +33,18 @@ export default function index() {
   const navigation = useNavigation();
   const context = React.useContext(AuthContext);
 
+  // console.log('xxx ', context.fcmToken);
+
   const handleLogIn = async () => {
     try {
       setLoading(true);
       Keyboard.dismiss();
-      const result = await logIn(email, password, '3232', 'Customer');
+      const result = await logIn(
+        email,
+        password,
+        context.fcmToken,
+        'Inventory Manager',
+      );
       // console.log('response    == ', result);
 
       if (result.message === 'You are not verified.') {
@@ -51,6 +58,7 @@ export default function index() {
         const token = jwtDecode(result?.data?.token);
         context.setUser(token);
         context.setIsverified('true');
+        context.setUserID(result?.data?._id);
         authStorage.setIsVerified('true');
         authStorage.storeUserid(result?.data?._id);
         showMessage({

@@ -27,4 +27,5 @@ export default {
   GET_ALL_NOTIFICATION: '/notifications',
   UPDATE_CONSIGNMENT: '/consignments/orders/status',
   UPDATE_CONSIGNMENT_STATUS: '/consignments/status',
+  LOGOUT: '/users/auth/logout',
 };

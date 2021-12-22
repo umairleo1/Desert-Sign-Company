@@ -134,7 +134,7 @@ export default function orderDetails() {
         <View style={{width: '50%', flexDirection: 'row-reverse'}}>
           <Text
             style={[styles.formRightText, {fontSize: 16, fontWeight: '600'}]}>
-            AED 1440
+            AED {route.params.order.total + 60}
           </Text>
         </View>
       </View>

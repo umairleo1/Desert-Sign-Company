@@ -29,7 +29,9 @@ export default function Placed(props) {
   );
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    // console.log('orders ', props.orders);
+  }, []);
 
   const handleConsignment = () => {
     setLoading(true);
@@ -59,6 +61,11 @@ export default function Placed(props) {
       props.deliveredOrders.splice(0, props.deliveredOrders.length);
       props.vehicles.splice(0, props.vehicles.length);
       props.setReload(!props.reLoad);
+      authContext.ordersConsignments.splice(
+        0,
+        authContext.ordersConsignments.length,
+      );
+      authContext.setCheck(0);
       setRefreshing(false);
     } catch (e) {
       setRefreshing(false);

@@ -1,6 +1,13 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View, Dimensions} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button} from 'react-native-paper';
 import PushNotification, {Importance} from 'react-native-push-notification';
@@ -58,7 +65,7 @@ export default function index() {
       {/* <Delivery /> */}
       <View
         style={{
-          height: 300,
+          height: Platform.OS === 'android' ? 200 : 300,
         }}>
         <LottieView
           source={require('../../../assets/10526-forklift.json')}

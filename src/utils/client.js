@@ -43,9 +43,8 @@ request.interceptors.request.use(
     const user = await authStorage.getToken();
     // console.log(user, 'header');
 
-    config.headers['Authorization'] =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRGF3b29kIEphdmVlZCIsImVtYWlsIjoiZGF3b29kMWZmZHNmZmRzMjNAZ21haWwuY29tIiwiaWQiOiI2MThmOGZjNzhhYzAyYjQ2MjQ0OTEyZjMiLCJyb2xlIjoiSW52ZW50b3J5IE1hbmFnZXIiLCJtb2RlbCI6InVzZXJzIiwiaWF0IjoxNjM2Nzk4NDIwLCJleHAiOjE2MzkzOTA0MjB9.62sycGoNG2GE5WZ6TTONowiAOlxqZGeWP4SB_dPY6ho';
-
+    config.headers['Authorization'] = user;
+    // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRGF3b29kIEphdmVlZCIsImVtYWlsIjoiZGF3b29kMWZmZHNmZmRzMjNAZ21haWwuY29tIiwiaWQiOiI2MThmOGZjNzhhYzAyYjQ2MjQ0OTEyZjMiLCJyb2xlIjoiSW52ZW50b3J5IE1hbmFnZXIiLCJtb2RlbCI6InVzZXJzIiwiaWF0IjoxNjM2Nzk4NDIwLCJleHAiOjE2MzkzOTA0MjB9.62sycGoNG2GE5WZ6TTONowiAOlxqZGeWP4SB_dPY6ho';
     return config;
   },
   error => Promise.reject(error),

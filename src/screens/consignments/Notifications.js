@@ -38,8 +38,8 @@ export default function Notifications() {
       setIsloading(true);
       const result = await AllNotifications(authContext.userid);
       // console.log('notifications ', result.data);
-      setNotification(result.data[0].notifications.reverse());
-      setImage(result.data[0].customer.profilePhoto);
+      setNotification(result.data[0]?.notifications.reverse());
+      setImage(result.data[0]?.customer.profilePhoto);
       setIsloading(false);
     } catch (error) {
       setIsloading(false);
@@ -53,8 +53,8 @@ export default function Notifications() {
       setIsloading(true);
       const result = await AllNotifications(authContext.userid);
       // console.log('notification ', result.data);
-      setNotification(result.data[0].notifications.reverse());
-      setImage(result.data[0].customer.profilePhoto);
+      setNotification(result.data[0]?.notifications.reverse());
+      setImage(result.data[0]?.customer.profilePhoto);
       setIsloading(false);
     } catch (error) {
       setIsloading(false);

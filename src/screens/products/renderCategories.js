@@ -7,17 +7,26 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import URL from '../../utils/url_path';
+import AuthContext from '../../utils/authContext';
 
 export default function RenderCategory(item) {
   const navigation = useNavigation();
+  const authContext = React.useContext(AuthContext);
   const data = item?.item;
-  //   console.log(data, 'ghghrth');
+  // const [isImageLoaded, setisImageLoaded] = React.useState();
+  // console.log(authContext.userid, 'ghghrth');
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('CategoryProduct', {data: data})}>
-      <View style={{marginBottom: 5}}>
+    <View
+      style={{
+        marginBottom: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('CategoryProduct', {data: data})}>
         <ImageBackground
           style={{
             height: 150,
@@ -26,16 +35,15 @@ export default function RenderCategory(item) {
             backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
-            // borderWidth: 0.2,
-            // borderRadius: 10,
-            // overflow: 'hidden',
           }}
           imageStyle={{borderRadius: 12}}
           source={{
-            uri: data?.categoryImage
-              ? URL.IMAGE_URL + data?.categoryImage
-              : 'https://media.pakprice.pk//test/tdT1cKbjNy8NBZJdI06z8rZD80siDDeRAEFCyRrI.png',
-          }}>
+            uri: URL.IMAGE_URL + data?.categoryImage,
+          }}
+          defaultSource={require('../.././../assets/noImage.png')}
+          // onLoadStart={() => setisImageLoaded(false)}
+          // onLoadEnd={() => setisImageLoaded(true)}
+        >
           <Text
             style={{
               color: 'white',
@@ -46,8 +54,14 @@ export default function RenderCategory(item) {
             {data?.name}
           </Text>
         </ImageBackground>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      {/* <ActivityIndicator
+        style={{
+          display: isImageLoaded ? 'none' : 'flex',
+          position: 'absolute',
+        }}
+      /> */}
+    </View>
   );
 }
 

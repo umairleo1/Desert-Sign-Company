@@ -7,16 +7,20 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useIsFocused} from '@react-navigation/native';
 import {useTheme, useNavigation} from '@react-navigation/native';
+import URL from '../../utils/url_path';
 
 export default function orderDetailsCard(item) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   // console.log('xxxx ', item.item.product);
+  const [isImageLoaded, setisImageLoaded] = React.useState();
+
   return (
     <View style={{}}>
       {isFocused && (
@@ -27,9 +31,18 @@ export default function orderDetailsCard(item) {
           <Image
             style={{height: 102, width: '100%', borderRadius: 10}}
             source={{
-              uri: 'https://media.pakprice.pk//test/tdT1cKbjNy8NBZJdI06z8rZD80siDDeRAEFCyRrI.png',
+              uri: URL.IMAGE_URL + item.item.product.image,
             }}
+            defaultSource={require('../../../assets/noImage.png')}
+            onLoadStart={() => setisImageLoaded(false)}
+            onLoadEnd={() => setisImageLoaded(true)}
             resizeMode="cover"
+          />
+          <ActivityIndicator
+            style={{
+              display: isImageLoaded ? 'none' : 'flex',
+              position: 'absolute',
+            }}
           />
         </View>
         <View style={styles.contentContainer}>

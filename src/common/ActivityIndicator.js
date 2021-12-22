@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     // width: Dimensions.get('window').width,
     // height: Dimensions.get('window').height,
-    height: '100%',
+    height: '110%',
     width: '110%',
     justifyContent: 'center',
     alignItems: 'center',

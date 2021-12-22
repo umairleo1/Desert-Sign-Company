@@ -40,7 +40,7 @@ export default function createConsignments() {
 
   React.useEffect(() => {
     authContext.ordersConsignments.map(item => ordersId.push(item._id));
-    console.log('orders id ', ordersId);
+    // console.log('orders id ', ordersId);
     return () => {
       console.log('returned');
     };

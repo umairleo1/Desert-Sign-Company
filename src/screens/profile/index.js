@@ -19,7 +19,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import {ActivityIndicator, Button} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -33,6 +33,7 @@ import {getUser, updateUser} from '../../service/app.service';
 import authStorage from '../../utils/authStorage';
 import URL from '../../utils/url_path';
 import AuthContext from '../../utils/authContext';
+import ActivityIndicator from '../../common/ActivityIndicator';
 
 export default function index() {
   const {height, width} = useWindowDimensions();
@@ -170,6 +171,7 @@ export default function index() {
   const navigation = useNavigation();
   return (
     <View style={{flex: 1}}>
+      <ActivityIndicator visible={activityIndicatore} />
       {/* <KeyboardAwareScrollView
       style={{flex: 1}}
       keyboardShouldPersistTaps={true}
@@ -262,6 +264,7 @@ export default function index() {
       </View>
       {/* </View> */}
       {/* <ScrollView style={{}}> */}
+
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps={'handled'}
         extraScrollHeight={175}>
@@ -368,55 +371,6 @@ export default function index() {
             </View>
           </View>
 
-          {/* <View style={[styles.field, {alignItems: 'center'}]}>
-            <Text style={[styles.values, {color: colors.profileBcackGround}]}>
-              Location
-            </Text>
-            {isEdit === false && (
-              <Text style={[{color: 'gray'}]}>{user?.data?.location}</Text>
-            )}
-            {isEdit === true && (
-              <View
-                style={{
-                  width: '50%',
-                }}>
-                <ScrollView style={{height: 70}}>
-                  <TouchableWithoutFeedback
-                    style={{}}
-                    onPress={() => ref.current?.focus()}>
-                    <GooglePlacesAutocomplete
-                      // autoFillOnNotFound={true}
-                      ref={ref}
-                      styles={{
-                        container: {height: 70},
-                        listView: {zIndex: 1},
-
-                        textInput: {
-                          borderBottomColor:
-                            isFocus == '3' ? colors.secondary : null,
-                          borderBottomWidth: 1,
-                        },
-                      }}
-                      textInputProps={{
-                        textAlign: 'left',
-                        placeholderTextColor: 'black',
-                        onFocus: () => handleonFocus('3'),
-                      }}
-                      onPress={(data, details = null) => {
-                        setLocation(data?.description);
-                        setListShow(false);
-                      }}
-                      keepResultsAfterBlur={listShow}
-                      query={{
-                        key: 'AIzaSyDDANw8GBVlla0rxNNegrBFhxjQizW6ZjE',
-                        language: 'en',
-                      }}
-                    />
-                  </TouchableWithoutFeedback>
-                </ScrollView>
-              </View>
-            )}
-          </View> */}
           <View
             style={[
               styles.field,
@@ -548,16 +502,6 @@ export default function index() {
               />
             )}
           </View>
-          {activityIndicatore && (
-            <View style={{}}>
-              <AnimatedLoader
-                visible={activityIndicatore}
-                overlayColor="rgba(255,255,255,0.55)"
-                source={require('../../../assets/loader.json')}
-                animationStyle={styles.lottie}
-                speed={1}></AnimatedLoader>
-            </View>
-          )}
         </View>
       </KeyboardAwareScrollView>
 

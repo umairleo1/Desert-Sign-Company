@@ -15,7 +15,7 @@ import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 export default function UpdatePassword() {
   const {colors} = useTheme();
-  const [userId, setUserId] = React.useState();
+  const [userId, setUserId] = React.useState('');
   const [secure, setSecure] = React.useState(true);
   const [secure2, setSecure2] = React.useState(true);
   const [secure3, setSecure3] = React.useState(true);
@@ -47,7 +47,7 @@ export default function UpdatePassword() {
       if (confirmPassword == password) {
         setLoading(true);
         const result = await upDatePassword(userId, oldPassword, password);
-        console.log(result);
+        // console.log(result);
         showMessage({
           message: result.message,
           type: 'success',
@@ -94,9 +94,7 @@ export default function UpdatePassword() {
   };
   return (
     <SafeAreaView edges={['top']} style={{paddingHorizontal: 15}}>
-      {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View> */}
-      <SecondaryHeader iconName={'arrowleft'} title={'Update Password'} />
+      <SecondaryHeader title={'Update Password'} />
       <View style={{marginVertical: 20}}>
         <Text style={[styles.title, {color: colors.secondary}]}>
           Update Password?
@@ -106,8 +104,7 @@ export default function UpdatePassword() {
         Are your sure you want to update your password? Make sure your password
         is Secure and protective
       </Text>
-      {/* </View>
-      </TouchableWithoutFeedback> */}
+
       <View style={styles.testHolder}>
         <Text style={{fontSize: 16}}>Old Password</Text>
         <View style={{alignItems: 'center', flexDirection: 'row'}}>

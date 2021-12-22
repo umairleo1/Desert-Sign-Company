@@ -8,18 +8,13 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 import {useSelector, useDispatch, connect} from 'react-redux';
 import URL from '../../utils/url_path';
 
 const renderItem = item => {
-  const {colors} = useTheme();
-  const [isSave, setIsSave] = React.useState(false);
-  const [savedID, setSavedID] = React.useState();
-
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const isFocused = useIsFocused();
+  const [isImageLoaded, setisImageLoaded] = React.useState();
 
   // console.log(URL.IMAGE_URL + item?.item.image, 'iamgeURl');
   return (
@@ -32,11 +27,18 @@ const renderItem = item => {
             <Image
               style={{height: 102, width: '100%', borderRadius: 10}}
               source={{
-                uri: item?.item?.image
-                  ? URL.IMAGE_URL + item?.item?.image
-                  : 'https://media.pakprice.pk//test/tdT1cKbjNy8NBZJdI06z8rZD80siDDeRAEFCyRrI.png',
+                uri: URL.IMAGE_URL + item?.item?.image,
               }}
+              defaultSource={require('../../../assets/noImage.png')}
+              onLoadStart={() => setisImageLoaded(false)}
+              onLoadEnd={() => setisImageLoaded(true)}
               resizeMode="cover"
+            />
+            <ActivityIndicator
+              style={{
+                display: isImageLoaded ? 'none' : 'flex',
+                position: 'absolute',
+              }}
             />
           </View>
           <View style={styles.contentContainer}>
@@ -72,13 +74,12 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: '28%',
     alignItems: 'center',
-
+    justifyContent: 'center',
     height: 102,
     // backgroundColor: 'red',
   },
   contentContainer: {
     width: '70%',
-
     flexDirection: 'row',
   },
   descriptionContainer: {
