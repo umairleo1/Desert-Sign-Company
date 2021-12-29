@@ -14,7 +14,7 @@
 		61C6BEDA9D25209BDE08B899 /* libPods-DesertSignCompany.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECEABB0C11BE86C77E599194 /* libPods-DesertSignCompany.a */; };
 		7934E0AE81CBC9321CFB81D4 /* libPods-DesertSignCompany-DesertSignCompanyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3F483AF4CFB4AF946EC8A1 /* libPods-DesertSignCompany-DesertSignCompanyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		93EBB24E273927B200D8505E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93EBB24D273927B200D8505E /* GoogleService-Info.plist */; };
+		93A08DFA277A10C200F60A1F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93A08DF9277A10C200F60A1F /* GoogleService-Info.plist */; };
 		DF214EDD26F1E6D900BC480E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF214EDC26F1E6D900BC480E /* File.swift */; };
 		DF633BE126D65F6A00447E06 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF633BE026D65F6A00447E06 /* libRNSVG.a */; };
 		EAAEF99416694453A9E03592 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35FAC54A7F264995BC8BAC37 /* Poppins-Regular.ttf */; };
@@ -55,7 +55,7 @@
 		7E7BF94B599B4ACCB658196D /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		80DEDCEDA6F9485FA916AE30 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DesertSignCompany/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		93EBB24D273927B200D8505E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		93A08DF9277A10C200F60A1F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9B91312AF4224981BDE9D4A9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		9C9FA8777EFDB989BC133BB6 /* Pods-DesertSignCompany-DesertSignCompanyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DesertSignCompany-DesertSignCompanyTests.release.xcconfig"; path = "Target Support Files/Pods-DesertSignCompany-DesertSignCompanyTests/Pods-DesertSignCompany-DesertSignCompanyTests.release.xcconfig"; sourceTree = "<group>"; };
 		BAFD2B50243E4BCA82FBF0A1 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				93EBB24D273927B200D8505E /* GoogleService-Info.plist */,
+				93A08DF9277A10C200F60A1F /* GoogleService-Info.plist */,
 				DF214EDC26F1E6D900BC480E /* File.swift */,
 				13B07FAE1A68108700A75B9A /* DesertSignCompany */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -307,9 +307,9 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				93A08DFA277A10C200F60A1F /* GoogleService-Info.plist in Resources */,
 				EAAEF99416694453A9E03592 /* Poppins-Regular.ttf in Resources */,
 				ED6ED06129474B229C943FE3 /* SourceSansPro-Regular.ttf in Resources */,
-				93EBB24E273927B200D8505E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +340,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DesertSignCompany/Pods-DesertSignCompany-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -575,13 +576,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.desertSignCcompany;
+				PRODUCT_BUNDLE_IDENTIFIER = com.desertSignCompany;
 				PRODUCT_NAME = DesertSignCompany;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DesertSignCompany-Bridging-Header.h";
@@ -607,13 +608,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.desertSignCcompany;
+				PRODUCT_BUNDLE_IDENTIFIER = com.desertSignCompany;
 				PRODUCT_NAME = DesertSignCompany;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DesertSignCompany-Bridging-Header.h";

@@ -7,6 +7,7 @@ import {
   View,
   Alert,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import AuthNavigator from './src/navigation/AuthNavigator';
@@ -82,19 +83,24 @@ export default function App() {
     // checkPermission();
     // storeProfile();
     requestUserPermission();
-    PushNotification.createChannel(
-      {
-        channelId: 'channel-id', // (required)
-        channelName: 'My channel', // (required)
-        channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
-        playSound: false, // (optional) default: true
-        soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-        importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
-      },
-      created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-    );
+
+    const type = 'notification';
+    Platform.OS == 'ios' &&
+      PushNotificationIOS.addEventListener(type, onRemoteNotification);
+    return () => {
+      Platform.OS == 'ios' && PushNotificationIOS.removeEventListener(type);
+    };
   }, []);
+
+  const onRemoteNotification = notification => {
+    const isClicked = notification.getData().userInteraction === 1;
+
+    if (isClicked) {
+      // Navigate user to another screen
+    } else {
+      // Do something else with push notification
+    }
+  };
 
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
@@ -103,167 +109,89 @@ export default function App() {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log('Authorization status:', authStatus);
-      messaging().setBackgroundMessageHandler(async remoteMessage => {
-        console.log('Message handled in the background!', remoteMessage);
-      });
-      PushNotification.configure({
-        // (optional) Called when Token is generated (iOS and Android)
-        onRegister: function (token) {
-          console.log('TOKEN:', token);
-          // setDeviceType(capitalizeFirstLetter(token?.os));
-          // console.log(deviceType);
-          setFcmToken(token?.token);
-        },
-
-        // (required) Called when a remote is received or opened, or local notification is opened
-        onNotification: function (notification) {
-          console.log('NOTIFICATION:', notification);
-
-          PushNotification.localNotification({
-            channelId: 'channel-id',
-            foreground: false,
-            userInteraction: true,
-            autoCancel: true,
-            // bigText: 'notification.data.body',
-            title: notification.title,
-            message: notification.message,
-            // subText: 'notification.data.body',
-            // actions: '["Yes", "No"]',
-          });
-          // (required) Called when a remote is received or opened, or local notification is opened
-          notification.finish(PushNotificationIOS.FetchResult.NoData);
-          notification.finish(PushNotificationIOS.FetchResult.NoData);
-        },
-
-        // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-        onAction: function (notification) {
-          // console.log('ACTION:', notification.action);
-          // console.log('NOTIFICATION:', notification);
-          // process the action
-        },
-
-        // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-        onRegistrationError: function (err) {
-          console.error(err.message, err);
-        },
-
-        // IOS ONLY (optional): default: all - Permissions to register.
-        permissions: {
-          alert: true,
-          badge: true,
-          sound: true,
-        },
-
-        // Should the initial notification be popped automatically
-        // default: true
-        popInitialNotification: true,
-
-        /**
-         * (optional) default: true
-         * - Specified if permissions (ios) and token (android and ios) will requested or not,
-         * - if not, you must call PushNotificationsHandler.requestPermissions() later
-         * - if you are not using remote notification or do not have Firebase installed, use this:
-         *     requestPermissions: Platform.OS === 'ios'
-         */
-        requestPermissions: true,
-      });
+      const fcmTokenn = await messaging().getToken();
+      setFcmToken(fcmTokenn);
+      console.log('Here is the fcm token ', Platform.OS, ' ', fcmTokenn);
+      // console.log('Authorization status:', authStatus);
     }
   }
 
-  // const notification = () => {
-  //   PushNotification.configure({
-  //     onNotification: function (notification) {
-  //       console.log('NOTIFICATION:', notification);
-  //       {
-  //         Platform.OS === 'android' &&
-  //           PushNotification.localNotification({
-  //             channelId: 'channel-id',
-  //             foreground: true,
-  //             userInteraction: false,
-  //             autoCancel: true,
-  //             // title: notification.data.title,
-  //             // message: notification.data.body,
-  //             title: notification.title,
-  //             message: notification.message,
-  //           });
-  //       }
-  //       // (required) Called when a remote is received or opened, or local notification is opened
-  //       notification.finish(PushNotificationIOS.FetchResult.NoData);
-  //     },
+  //Must be outside of any component LifeCycle (such as `componentDidMount`).
+  messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+  });
 
-  //     onAction: function (notification) {
-  //       console.log('ACTION:', notification.action);
-  //       console.log('NOTIFICATION:', notification);
-  //     },
+  PushNotification.configure({
+    // (optional) Called when Token is generated (iOS and Android)
+    onRegister: function (token) {
+      // console.log('TOKEN:', token);
+    },
 
-  //     onRegistrationError: function (err) {
-  //       console.error(err.message, err);
-  //     },
+    // (required) Called when a remote is received or opened, or local notification is opened
+    onNotification: function (notification) {
+      console.log('NOTIFICATION:', notification);
 
-  //     permissions: {
-  //       alert: true,
-  //       badge: true,
-  //       sound: true,
-  //     },
+      // Platform.OS === 'android' &&
+      PushNotification.localNotification({
+        channelId: 'channel-id',
+        foreground: false,
+        userInteraction: true,
+        autoCancel: true,
+        // bigText: 'notification.data.body',
+        title: notification.data.title,
+        message: notification.data.message,
+        // subText: 'notification.data.body',
+        // actions: '["Yes", "No"]',
+      });
+      // (required) Called when a remote is received or opened, or local notification is opened
+      notification.finish(PushNotificationIOS.FetchResult.NoData);
+    },
 
-  //     popInitialNotification: true,
-  //     requestPermissions: true,
-  //   });
-  //   messaging().setBackgroundMessageHandler(async remoteMessage => {
-  //     console.log('Message handled in the background!', remoteMessage);
-  //   });
-  // };
+    // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
+    onAction: function (notification) {
+      // console.log('ACTION:', notification.action);
+      // console.log('NOTIFICATION:', notification);
+      // process the action
+    },
 
-  // const checkPermission = async () => {
-  //   const enable = await messaging().requestPermission();
-  //   if (enable) {
-  //     getToken();
-  //   } else {
-  //     requestPermission();
-  //   }
-  // };
+    // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
+    onRegistrationError: function (err) {
+      console.error(err.message, err);
+    },
 
-  // const getToken = async () => {
-  //   let storageFcmToken = await authStorage.getFcmToken();
-  //   if (!storageFcmToken) {
-  //     const fcmToken = await messaging().getToken();
-  //     await authStorage.storeFcmToken(fcmToken);
-  //     setFcmToken(fcmToken);
-  //     console.log('Check Device FCM Token ', fcmToken);
-  //   } else {
-  //     setFcmToken(storageFcmToken);
-  //     console.log('Stored Device fcm token', storageFcmToken);
-  //   }
-  // };
-  // const requestPermission = async () => {
-  //   try {
-  //     if (Platform.OS === 'ios') {
-  //       await messaging().registerDeviceForRemoteMessages();
-  //     }
-  //     await messaging().requestPermission();
-  //     //user has permission
-  //     getToken();
-  //   } catch (error) {
-  //     //user has rejected permission
-  //     console.log('Request permission rejected ', error);
-  //   }
-  // };
+    // IOS ONLY (optional): default: all - Permissions to register.
+    permissions: {
+      alert: true,
+      badge: true,
+      sound: true,
+    },
 
-  // PushNotification.createChannel(
-  //   {
-  //     channelId: 'channel-id',
-  //     channelName: 'My channel',
-  //     channelDescription: 'A channel to categorise your notifications',
-  //     playSound: true,
-  //     soundName: 'default',
-  //     importance: 4,
-  //     vibrate: true,
-  //     vibration: 300,
-  //     playSound: true,
-  //   },
-  //   created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-  // );
+    // Should the initial notification be popped automatically
+    // default: true
+    popInitialNotification: true,
+
+    /**
+     * (optional) default: true
+     * - Specified if permissions (ios) and token (android and ios) will requested or not,
+     * - if not, you must call PushNotificationsHandler.requestPermissions() later
+     * - if you are not using remote notification or do not have Firebase installed, use this:
+     *     requestPermissions: Platform.OS === 'ios'
+     */
+    requestPermissions: true,
+  });
+
+  PushNotification.createChannel(
+    {
+      channelId: 'channel-id', // (required)
+      channelName: 'My channel', // (required)
+      channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+      playSound: false, // (optional) default: true
+      soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+      importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+      vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+    },
+    created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+  );
 
   const ExampleSend = () => {
     PushNotification.localNotification({
@@ -285,11 +213,11 @@ export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <TouchableOpacity onPress={() => ExampleSend()}>
+      {/* <TouchableOpacity onPress={() => ExampleSend()}>
         <View style={{height: 80, backgroundColor: 'red'}}>
           <Text>notification</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <AuthContext.Provider value={centralized}>
         <Provider store={store}>
           {user && isVerified == 'true' ? <AppNavigator /> : <AuthNavigator />}

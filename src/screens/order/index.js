@@ -39,6 +39,7 @@ export default function index() {
   const [currentPosition, setCurrentPosition] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [xx, setXX] = React.useState(false);
 
   const labels = ['Ready', 'Dispatch', 'Delivered'];
   const customStyles = {
@@ -270,8 +271,13 @@ export default function index() {
           />
         </TouchableWithoutFeedback>
         {route.params.status === 'dispatch' && (
-          <View style={{zIndex: -1, width: '100%'}}>
+          <View style={{zIndex: -1, width: '100%', marginBottom: 2}}>
             <Button
+              // disabled={
+              //   authContext.marked && authContext.updateOrder.length <= 0
+              //     ? true
+              //     : false
+              // }
               color={colors.button}
               onPress={() =>
                 authContext.marked ? handleDone() : handleUpdate()
